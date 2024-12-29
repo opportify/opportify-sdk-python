@@ -83,7 +83,7 @@ except Exception as e:
 
 ```python
 ip_insights.set_version("v1").set_debug_mode(True)
-email_insights.set_version("v1").set_debug_mode(False)
+email_insights.set_version("v1").set_debug_mode(True)
 ```
 
 ## About this package

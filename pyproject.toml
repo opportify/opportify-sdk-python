@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "opportify_sdk"
-version = "0.1.0"
+version = "0.1.1"
 description = "Opportify Insights API"
 authors = ["OpenAPI Generator Community <team@openapitools.org>"]
 license = "NoLicense"
 readme = "README.md"
 repository = "https://github.com/opportify/opportify-sdk-python"
 keywords = ["OpenAPI", "OpenAPI-Generator", "Opportify Insights API","Opportify"]
-include = ["lib/v1/openapi_client/py.typed"]
+include = ["/lib/v1/openapi_client/py.typed"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
