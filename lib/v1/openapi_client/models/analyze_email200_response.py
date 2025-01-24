@@ -20,7 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List
 from openapi_client.models.email_dns import EmailDNS
-from openapi_client.models.risk_report import RiskReport
+from openapi_client.models.risk_report_email import RiskReportEmail
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -30,15 +30,16 @@ class AnalyzeEmail200Response(BaseModel):
     """ # noqa: E501
     email_address: StrictStr = Field(description="The validated email address.", alias="emailAddress")
     email_provider: StrictStr = Field(description="The email provider or domain name.", alias="emailProvider")
-    email_type: StrictStr = Field(description="Type of email address (e.g., free, disposable, corporate, unknown).", alias="emailType")
+    email_type: StrictStr = Field(description="Type of email address (e.g., free, disposable, private, unknown).", alias="emailType")
     is_format_valid: StrictBool = Field(description="Indicates if the email address has a valid format.", alias="isFormatValid")
     email_correction: StrictStr = Field(description="Suggested corrected email address, if applicable.", alias="emailCorrection")
-    is_deliverable: StrictBool = Field(description="Checks if the email address exists and is deliverable using SMTP handshake simulation. This involves connecting to the mail server and issuing commands to verify deliverability. ", alias="isDeliverable")
+    is_deliverable: StrictStr = Field(description="Checks if the email address exists and is deliverable using SMTP handshake simulation. This involves connecting to the mail server and issuing commands to verify deliverability. The possible answers are `yes`, `no`, or `unknown`. We guarantee a high confidence level on this parameter since this is a real time verification. ", alias="isDeliverable")
     is_catch_all: StrictBool = Field(description="Determines if the email domain is configured as a catch-all, which accepts emails for all addresses within the domain. This is verified through multiple email tests. ", alias="isCatchAll")
+    is_mailbox_full: StrictBool = Field(description="Determines if the mailbox associated with the email is full, in association with isDeliverable field, it can give a reason why the email is not deliverable. ", alias="isMailboxFull")
     is_reachable: StrictBool = Field(description="Confirms if the email domain has valid MX DNS records using DNS lookup.", alias="isReachable")
     email_dns: EmailDNS = Field(alias="emailDNS")
-    risk_report: RiskReport = Field(alias="riskReport")
-    __properties: ClassVar[List[str]] = ["emailAddress", "emailProvider", "emailType", "isFormatValid", "emailCorrection", "isDeliverable", "isCatchAll", "isReachable", "emailDNS", "riskReport"]
+    risk_report: RiskReportEmail = Field(alias="riskReport")
+    __properties: ClassVar[List[str]] = ["emailAddress", "emailProvider", "emailType", "isFormatValid", "emailCorrection", "isDeliverable", "isCatchAll", "isMailboxFull", "isReachable", "emailDNS", "riskReport"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -104,9 +105,10 @@ class AnalyzeEmail200Response(BaseModel):
             "emailCorrection": obj.get("emailCorrection"),
             "isDeliverable": obj.get("isDeliverable"),
             "isCatchAll": obj.get("isCatchAll"),
+            "isMailboxFull": obj.get("isMailboxFull"),
             "isReachable": obj.get("isReachable"),
             "emailDNS": EmailDNS.from_dict(obj["emailDNS"]) if obj.get("emailDNS") is not None else None,
-            "riskReport": RiskReport.from_dict(obj["riskReport"]) if obj.get("riskReport") is not None else None
+            "riskReport": RiskReportEmail.from_dict(obj["riskReport"]) if obj.get("riskReport") is not None else None
         })
         return _obj
 
