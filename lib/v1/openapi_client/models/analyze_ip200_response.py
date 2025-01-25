@@ -21,7 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List
 from openapi_client.models.block_listed import BlockListed
 from openapi_client.models.geo import Geo
-from openapi_client.models.risk_report import RiskReport
+from openapi_client.models.risk_report_ip import RiskReportIp
 from openapi_client.models.trusted_provider import TrustedProvider
 from openapi_client.models.whois import Whois
 from typing import Optional, Set
@@ -41,7 +41,7 @@ class AnalyzeIp200Response(BaseModel):
     whois: Whois
     trusted_provider: TrustedProvider = Field(alias="trustedProvider")
     blocklisted: BlockListed
-    risk_report: RiskReport = Field(alias="riskReport")
+    risk_report: RiskReportIp = Field(alias="riskReport")
     __properties: ClassVar[List[str]] = ["ipAddress", "ipAddressNumber", "ipType", "ipCidr", "connectionType", "hostReverse", "geo", "whois", "trustedProvider", "blocklisted", "riskReport"]
 
     model_config = ConfigDict(
@@ -120,7 +120,7 @@ class AnalyzeIp200Response(BaseModel):
             "whois": Whois.from_dict(obj["whois"]) if obj.get("whois") is not None else None,
             "trustedProvider": TrustedProvider.from_dict(obj["trustedProvider"]) if obj.get("trustedProvider") is not None else None,
             "blocklisted": BlockListed.from_dict(obj["blocklisted"]) if obj.get("blocklisted") is not None else None,
-            "riskReport": RiskReport.from_dict(obj["riskReport"]) if obj.get("riskReport") is not None else None
+            "riskReport": RiskReportIp.from_dict(obj["riskReport"]) if obj.get("riskReport") is not None else None
         })
         return _obj
 

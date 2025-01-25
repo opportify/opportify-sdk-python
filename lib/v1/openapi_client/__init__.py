@@ -37,6 +37,8 @@ from openapi_client.models.admin_contact import AdminContact
 from openapi_client.models.analyze_email200_response import AnalyzeEmail200Response
 from openapi_client.models.analyze_email400_response import AnalyzeEmail400Response
 from openapi_client.models.analyze_email400_response_error import AnalyzeEmail400ResponseError
+from openapi_client.models.analyze_email403_response import AnalyzeEmail403Response
+from openapi_client.models.analyze_email403_response_error import AnalyzeEmail403ResponseError
 from openapi_client.models.analyze_email500_response import AnalyzeEmail500Response
 from openapi_client.models.analyze_email500_response_error import AnalyzeEmail500ResponseError
 from openapi_client.models.analyze_email_request import AnalyzeEmailRequest
@@ -52,12 +54,15 @@ from openapi_client.models.email_dns import EmailDNS
 from openapi_client.models.geo import Geo
 from openapi_client.models.internalerror import INTERNALERROR
 from openapi_client.models.invalidemail import INVALIDEMAIL
+from openapi_client.models.invalidplan import INVALIDPLAN
+from openapi_client.models.invalidtoken import INVALIDTOKEN
 from openapi_client.models.ipvalidationfailed import IPVALIDATIONFAILED
 from openapi_client.models.malformedrequest import MALFORMEDREQUEST
 from openapi_client.models.malformedrequest1 import MALFORMEDREQUEST1
 from openapi_client.models.notfound import NOTFOUND
 from openapi_client.models.organization import Organization
-from openapi_client.models.risk_report import RiskReport
+from openapi_client.models.risk_report_email import RiskReportEmail
+from openapi_client.models.risk_report_ip import RiskReportIp
 from openapi_client.models.tech_contact import TechContact
 from openapi_client.models.trusted_provider import TrustedProvider
 from openapi_client.models.whois import Whois
