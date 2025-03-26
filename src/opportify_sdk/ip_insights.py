@@ -15,7 +15,7 @@ class IpInsights:
         """
         self.config = ApiConfiguration()
         self.config.api_key = {"opportifyToken": api_key}
-        self.host = "https://api.opportify.com"
+        self.host = "https://api.opportify.ai"
         self.version = "v1"
         self.debug_mode = False
         self.api_instance = None
