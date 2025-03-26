@@ -90,12 +90,11 @@ class IPInsightsApi:
             _host_index=_host_index
         )
 
-        print ("_param", _param)
-
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AnalyzeIp200Response",
             '400': "AnalyzeIp400Response",
             '404': "AnalyzeIp404Response",
+            '403': "AnalyzeEmail403Response",
             '500': "AnalyzeIp500Response",
         }
         response_data = self.api_client.call_api(
@@ -166,6 +165,7 @@ class IPInsightsApi:
             '200': "AnalyzeIp200Response",
             '400': "AnalyzeIp400Response",
             '404': "AnalyzeIp404Response",
+            '403': "AnalyzeEmail403Response",
             '500': "AnalyzeIp500Response",
         }
         response_data = self.api_client.call_api(
@@ -236,6 +236,7 @@ class IPInsightsApi:
             '200': "AnalyzeIp200Response",
             '400': "AnalyzeIp400Response",
             '404': "AnalyzeIp404Response",
+            '403': "AnalyzeEmail403Response",
             '500': "AnalyzeIp500Response",
         }
         response_data = self.api_client.call_api(
