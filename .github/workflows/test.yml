@@ -1,0 +1,71 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Test Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+        pip install -r requirements.txt
+        pip install -r test-requirements.txt
+
+    - name: Install package
+      run: |
+        pip install -e .
+
+    - name: Run tests
+      run: |
+        pytest test/ -v
+
+    - name: Test README examples work
+      run: |
+        python -c "
+        # Test the basic imports from README
+        from opportify_sdk import EmailInsights, IpInsights
+        print('✓ Package imports successfully')
+        
+        # Test EmailInsights instantiation example from README
+        api_key = 'test-key'
+        email_insights = EmailInsights(api_key)
+        email_insights.set_version('v1')
+        print('✓ EmailInsights example from README works')
+        
+        # Test IpInsights instantiation example from README  
+        ip_insights = IpInsights(api_key)
+        ip_insights.set_version('v1')
+        print('✓ IpInsights example from README works')
+        
+        # Test method chaining example from README
+        ip_insights.set_version('v1').set_debug_mode(True)
+        email_insights.set_version('v1').set_debug_mode(True)
+        print('✓ Method chaining examples from README work')
+        
+        print('All README examples validated successfully!')
+        "
+
+    - name: Test package can be built and installed
+      run: |
+        python -m build
+        pip install dist/*.whl --force-reinstall
+        python -c "from opportify_sdk import EmailInsights, IpInsights; print('✓ Built package installs and imports correctly')"
