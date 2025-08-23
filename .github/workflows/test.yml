@@ -90,6 +90,7 @@ jobs:
 
     - name: Test package can be built and installed
       run: |
+        pip install build
         python -m build
         pip install dist/*.whl --force-reinstall
         python -c "from opportify_sdk import EmailInsights, IpInsights; print('✓ Built package installs and imports correctly')"
