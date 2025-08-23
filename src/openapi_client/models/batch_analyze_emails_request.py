@@ -17,17 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EmailDNS(BaseModel):
+class BatchAnalyzeEmailsRequest(BaseModel):
     """
-    DNS details for an email address domain.
+    BatchAnalyzeEmailsRequest
     """ # noqa: E501
-    mx: Optional[List[StrictStr]] = Field(default=None, description="Mail exchange records for the domain.")
-    __properties: ClassVar[List[str]] = ["mx"]
+    emails: List[StrictStr] = Field(description="Array of email addresses to analyze.")
+    enable_ai: Optional[StrictBool] = Field(default=None, description="Enable AI-based analysis for insights.", alias="enableAI")
+    enable_auto_correction: Optional[StrictBool] = Field(default=None, description="Suggest possible corrections for misspelled emails.", alias="enableAutoCorrection")
+    __properties: ClassVar[List[str]] = ["emails", "enableAI", "enableAutoCorrection"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -47,7 +49,7 @@ class EmailDNS(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EmailDNS from a JSON string"""
+        """Create an instance of BatchAnalyzeEmailsRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,7 +74,7 @@ class EmailDNS(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EmailDNS from a dict"""
+        """Create an instance of BatchAnalyzeEmailsRequest from a dict"""
         if obj is None:
             return None
 
@@ -80,7 +82,9 @@ class EmailDNS(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "mx": obj.get("mx")
+            "emails": obj.get("emails"),
+            "enableAI": obj.get("enableAI"),
+            "enableAutoCorrection": obj.get("enableAutoCorrection")
         })
         return _obj
 

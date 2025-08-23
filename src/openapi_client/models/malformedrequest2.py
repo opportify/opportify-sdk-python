@@ -17,17 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EmailDNS(BaseModel):
+class MALFORMEDREQUEST2(BaseModel):
     """
-    DNS details for an email address domain.
+    MALFORMEDREQUEST2
     """ # noqa: E501
-    mx: Optional[List[StrictStr]] = Field(default=None, description="Mail exchange records for the domain.")
-    __properties: ClassVar[List[str]] = ["mx"]
+    message: Optional[StrictStr] = None
+    code: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["message", "code"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -47,7 +48,7 @@ class EmailDNS(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EmailDNS from a JSON string"""
+        """Create an instance of MALFORMEDREQUEST2 from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,7 +73,7 @@ class EmailDNS(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EmailDNS from a dict"""
+        """Create an instance of MALFORMEDREQUEST2 from a dict"""
         if obj is None:
             return None
 
@@ -80,7 +81,8 @@ class EmailDNS(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "mx": obj.get("mx")
+            "message": obj.get("message"),
+            "code": obj.get("code")
         })
         return _obj
 

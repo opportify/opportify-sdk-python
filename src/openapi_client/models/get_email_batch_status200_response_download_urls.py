@@ -22,12 +22,15 @@ from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EmailDNS(BaseModel):
+class GetEmailBatchStatus200ResponseDownloadUrls(BaseModel):
     """
-    DNS details for an email address domain.
+    Available download URLs for the batch job results. Only present when status is \"COMPLETED\".
     """ # noqa: E501
-    mx: Optional[List[StrictStr]] = Field(default=None, description="Mail exchange records for the domain.")
-    __properties: ClassVar[List[str]] = ["mx"]
+    csv: Optional[StrictStr] = Field(default=None, description="Pre-signed URL to download results in CSV format.")
+    var_json: Optional[StrictStr] = Field(default=None, description="Pre-signed URL to download results in JSON format.", alias="json")
+    csv_compressed: Optional[StrictStr] = Field(default=None, description="Pre-signed URL to download compressed results in CSV format (gzip).", alias="csvCompressed")
+    json_compressed: Optional[StrictStr] = Field(default=None, description="Pre-signed URL to download compressed results in JSON format (gzip).", alias="jsonCompressed")
+    __properties: ClassVar[List[str]] = ["csv", "json", "csvCompressed", "jsonCompressed"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -47,7 +50,7 @@ class EmailDNS(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EmailDNS from a JSON string"""
+        """Create an instance of GetEmailBatchStatus200ResponseDownloadUrls from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,7 +75,7 @@ class EmailDNS(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EmailDNS from a dict"""
+        """Create an instance of GetEmailBatchStatus200ResponseDownloadUrls from a dict"""
         if obj is None:
             return None
 
@@ -80,7 +83,10 @@ class EmailDNS(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "mx": obj.get("mx")
+            "csv": obj.get("csv"),
+            "json": obj.get("json"),
+            "csvCompressed": obj.get("csvCompressed"),
+            "jsonCompressed": obj.get("jsonCompressed")
         })
         return _obj
 

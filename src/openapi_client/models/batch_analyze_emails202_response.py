@@ -17,17 +17,29 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EmailDNS(BaseModel):
+class BatchAnalyzeEmails202Response(BaseModel):
     """
-    DNS details for an email address domain.
+    BatchAnalyzeEmails202Response
     """ # noqa: E501
-    mx: Optional[List[StrictStr]] = Field(default=None, description="Mail exchange records for the domain.")
-    __properties: ClassVar[List[str]] = ["mx"]
+    job_id: Optional[StrictStr] = Field(default=None, description="Unique identifier for the batch job.", alias="jobId")
+    status: Optional[StrictStr] = Field(default=None, description="Current status of the batch job.")
+    status_description: Optional[StrictStr] = Field(default=None, description="Description of the status, particularly useful when status is ERROR.", alias="statusDescription")
+    __properties: ClassVar[List[str]] = ["jobId", "status", "statusDescription"]
+
+    @field_validator('status')
+    def status_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['QUEUED', 'PROCESSING', 'COMPLETED', 'ERROR']):
+            raise ValueError("must be one of enum values ('QUEUED', 'PROCESSING', 'COMPLETED', 'ERROR')")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -47,7 +59,7 @@ class EmailDNS(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EmailDNS from a JSON string"""
+        """Create an instance of BatchAnalyzeEmails202Response from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,7 +84,7 @@ class EmailDNS(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EmailDNS from a dict"""
+        """Create an instance of BatchAnalyzeEmails202Response from a dict"""
         if obj is None:
             return None
 
@@ -80,7 +92,9 @@ class EmailDNS(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "mx": obj.get("mx")
+            "jobId": obj.get("jobId"),
+            "status": obj.get("status"),
+            "statusDescription": obj.get("statusDescription")
         })
         return _obj
 

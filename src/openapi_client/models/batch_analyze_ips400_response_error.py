@@ -17,24 +17,24 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
-from openapi_client.models.invalidplan import INVALIDPLAN
-from openapi_client.models.invalidtoken import INVALIDTOKEN
+from openapi_client.models.invaliddata1 import INVALIDDATA1
+from openapi_client.models.malformedrequest2 import MALFORMEDREQUEST2
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-ANALYZEEMAIL403RESPONSEERROR_ONE_OF_SCHEMAS = ["INVALIDPLAN", "INVALIDTOKEN"]
+BATCHANALYZEIPS400RESPONSEERROR_ONE_OF_SCHEMAS = ["INVALIDDATA1", "MALFORMEDREQUEST2"]
 
-class AnalyzeEmail403ResponseError(BaseModel):
+class BatchAnalyzeIps400ResponseError(BaseModel):
     """
-    AnalyzeEmail403ResponseError
+    BatchAnalyzeIps400ResponseError
     """
-    # data type: INVALIDPLAN
-    oneof_schema_1_validator: Optional[INVALIDPLAN] = None
-    # data type: INVALIDTOKEN
-    oneof_schema_2_validator: Optional[INVALIDTOKEN] = None
-    actual_instance: Optional[Union[INVALIDPLAN, INVALIDTOKEN]] = None
-    one_of_schemas: Set[str] = { "INVALIDPLAN", "INVALIDTOKEN" }
+    # data type: MALFORMEDREQUEST2
+    oneof_schema_1_validator: Optional[MALFORMEDREQUEST2] = None
+    # data type: INVALIDDATA1
+    oneof_schema_2_validator: Optional[INVALIDDATA1] = None
+    actual_instance: Optional[Union[INVALIDDATA1, MALFORMEDREQUEST2]] = None
+    one_of_schemas: Set[str] = { "INVALIDDATA1", "MALFORMEDREQUEST2" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -54,25 +54,25 @@ class AnalyzeEmail403ResponseError(BaseModel):
 
     @field_validator('actual_instance')
     def actual_instance_must_validate_oneof(cls, v):
-        instance = AnalyzeEmail403ResponseError.model_construct()
+        instance = BatchAnalyzeIps400ResponseError.model_construct()
         error_messages = []
         match = 0
-        # validate data type: INVALIDPLAN
-        if not isinstance(v, INVALIDPLAN):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `INVALIDPLAN`")
+        # validate data type: MALFORMEDREQUEST2
+        if not isinstance(v, MALFORMEDREQUEST2):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MALFORMEDREQUEST2`")
         else:
             match += 1
-        # validate data type: INVALIDTOKEN
-        if not isinstance(v, INVALIDTOKEN):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `INVALIDTOKEN`")
+        # validate data type: INVALIDDATA1
+        if not isinstance(v, INVALIDDATA1):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `INVALIDDATA1`")
         else:
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in AnalyzeEmail403ResponseError with oneOf schemas: INVALIDPLAN, INVALIDTOKEN. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in BatchAnalyzeIps400ResponseError with oneOf schemas: INVALIDDATA1, MALFORMEDREQUEST2. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in AnalyzeEmail403ResponseError with oneOf schemas: INVALIDPLAN, INVALIDTOKEN. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in BatchAnalyzeIps400ResponseError with oneOf schemas: INVALIDDATA1, MALFORMEDREQUEST2. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -87,25 +87,25 @@ class AnalyzeEmail403ResponseError(BaseModel):
         error_messages = []
         match = 0
 
-        # deserialize data into INVALIDPLAN
+        # deserialize data into MALFORMEDREQUEST2
         try:
-            instance.actual_instance = INVALIDPLAN.from_json(json_str)
+            instance.actual_instance = MALFORMEDREQUEST2.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into INVALIDTOKEN
+        # deserialize data into INVALIDDATA1
         try:
-            instance.actual_instance = INVALIDTOKEN.from_json(json_str)
+            instance.actual_instance = INVALIDDATA1.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into AnalyzeEmail403ResponseError with oneOf schemas: INVALIDPLAN, INVALIDTOKEN. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into BatchAnalyzeIps400ResponseError with oneOf schemas: INVALIDDATA1, MALFORMEDREQUEST2. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into AnalyzeEmail403ResponseError with oneOf schemas: INVALIDPLAN, INVALIDTOKEN. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into BatchAnalyzeIps400ResponseError with oneOf schemas: INVALIDDATA1, MALFORMEDREQUEST2. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -119,7 +119,7 @@ class AnalyzeEmail403ResponseError(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], INVALIDPLAN, INVALIDTOKEN]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], INVALIDDATA1, MALFORMEDREQUEST2]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

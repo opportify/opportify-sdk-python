@@ -17,17 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EmailDNS(BaseModel):
+class BatchAnalyzeIpsRequest(BaseModel):
     """
-    DNS details for an email address domain.
+    BatchAnalyzeIpsRequest
     """ # noqa: E501
-    mx: Optional[List[StrictStr]] = Field(default=None, description="Mail exchange records for the domain.")
-    __properties: ClassVar[List[str]] = ["mx"]
+    ips: List[StrictStr] = Field(description="Array of IP addresses to analyze.")
+    enable_ai: Optional[StrictBool] = Field(default=None, description="Enable AI-based analysis for insights.", alias="enableAI")
+    __properties: ClassVar[List[str]] = ["ips", "enableAI"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -47,7 +48,7 @@ class EmailDNS(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EmailDNS from a JSON string"""
+        """Create an instance of BatchAnalyzeIpsRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,7 +73,7 @@ class EmailDNS(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EmailDNS from a dict"""
+        """Create an instance of BatchAnalyzeIpsRequest from a dict"""
         if obj is None:
             return None
 
@@ -80,7 +81,8 @@ class EmailDNS(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "mx": obj.get("mx")
+            "ips": obj.get("ips"),
+            "enableAI": obj.get("enableAI")
         })
         return _obj
 
