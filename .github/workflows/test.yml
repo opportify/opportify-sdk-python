@@ -34,6 +34,30 @@ jobs:
       run: |
         pip install -e .
 
+    - name: Verify installation
+      run: |
+        python -c "
+        import sys
+        print('Python path:', sys.path)
+        try:
+            import opportify_sdk
+            print('✓ opportify_sdk imported successfully')
+        except ImportError as e:
+            print('✗ opportify_sdk import failed:', e)
+            
+        try:
+            import openapi_client
+            print('✓ openapi_client imported successfully')
+        except ImportError as e:
+            print('✗ openapi_client import failed:', e)
+            
+        try:
+            from openapi_client.models.abuse_contact import AbuseContact
+            print('✓ openapi_client.models imports work')
+        except ImportError as e:
+            print('✗ openapi_client.models import failed:', e)
+        "
+
     - name: Run tests
       run: |
         pytest test/ -v
