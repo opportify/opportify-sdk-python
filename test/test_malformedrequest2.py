@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
+from openapi_client.models.malformedrequest2 import MALFORMEDREQUEST2
 
-class TestAnalyzeIpRequest(unittest.TestCase):
-    """AnalyzeIpRequest unit test stubs"""
+class TestMALFORMEDREQUEST2(unittest.TestCase):
+    """MALFORMEDREQUEST2 unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,27 +25,26 @@ class TestAnalyzeIpRequest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> AnalyzeIpRequest:
-        """Test AnalyzeIpRequest
+    def make_instance(self, include_optional) -> MALFORMEDREQUEST2:
+        """Test MALFORMEDREQUEST2
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `AnalyzeIpRequest`
+        # uncomment below to create an instance of `MALFORMEDREQUEST2`
         """
-        model = AnalyzeIpRequest()
+        model = MALFORMEDREQUEST2()
         if include_optional:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
-                enable_ai = True
+            return MALFORMEDREQUEST2(
+                message = 'The request is improperly formatted or missing required data.',
+                code = 'MALFORMED_REQUEST'
             )
         else:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
+            return MALFORMEDREQUEST2(
         )
         """
 
-    def testAnalyzeIpRequest(self):
-        """Test AnalyzeIpRequest"""
+    def testMALFORMEDREQUEST2(self):
+        """Test MALFORMEDREQUEST2"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

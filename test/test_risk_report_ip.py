@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
+from openapi_client.models.risk_report_ip import RiskReportIp
 
-class TestAnalyzeIpRequest(unittest.TestCase):
-    """AnalyzeIpRequest unit test stubs"""
+class TestRiskReportIp(unittest.TestCase):
+    """RiskReportIp unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,27 +25,26 @@ class TestAnalyzeIpRequest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> AnalyzeIpRequest:
-        """Test AnalyzeIpRequest
+    def make_instance(self, include_optional) -> RiskReportIp:
+        """Test RiskReportIp
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `AnalyzeIpRequest`
+        # uncomment below to create an instance of `RiskReportIp`
         """
-        model = AnalyzeIpRequest()
+        model = RiskReportIp()
         if include_optional:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
-                enable_ai = True
+            return RiskReportIp(
+                score = 850,
+                level = 'highest'
             )
         else:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
+            return RiskReportIp(
         )
         """
 
-    def testAnalyzeIpRequest(self):
-        """Test AnalyzeIpRequest"""
+    def testRiskReportIp(self):
+        """Test RiskReportIp"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

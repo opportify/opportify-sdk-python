@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
+from openapi_client.models.batch_analyze_emails413_response_error import BatchAnalyzeEmails413ResponseError
 
-class TestAnalyzeIpRequest(unittest.TestCase):
-    """AnalyzeIpRequest unit test stubs"""
+class TestBatchAnalyzeEmails413ResponseError(unittest.TestCase):
+    """BatchAnalyzeEmails413ResponseError unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,27 +25,26 @@ class TestAnalyzeIpRequest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> AnalyzeIpRequest:
-        """Test AnalyzeIpRequest
+    def make_instance(self, include_optional) -> BatchAnalyzeEmails413ResponseError:
+        """Test BatchAnalyzeEmails413ResponseError
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `AnalyzeIpRequest`
+        # uncomment below to create an instance of `BatchAnalyzeEmails413ResponseError`
         """
-        model = AnalyzeIpRequest()
+        model = BatchAnalyzeEmails413ResponseError()
         if include_optional:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
-                enable_ai = True
+            return BatchAnalyzeEmails413ResponseError(
+                message = 'The submitted payload exceeds the 3MB size limit.',
+                code = 'PAYLOAD_TOO_LARGE'
             )
         else:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
+            return BatchAnalyzeEmails413ResponseError(
         )
         """
 
-    def testAnalyzeIpRequest(self):
-        """Test AnalyzeIpRequest"""
+    def testBatchAnalyzeEmails413ResponseError(self):
+        """Test BatchAnalyzeEmails413ResponseError"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
+from openapi_client.models.get_email_batch_status200_response_download_urls import GetEmailBatchStatus200ResponseDownloadUrls
 
-class TestAnalyzeIpRequest(unittest.TestCase):
-    """AnalyzeIpRequest unit test stubs"""
+class TestGetEmailBatchStatus200ResponseDownloadUrls(unittest.TestCase):
+    """GetEmailBatchStatus200ResponseDownloadUrls unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,27 +25,28 @@ class TestAnalyzeIpRequest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> AnalyzeIpRequest:
-        """Test AnalyzeIpRequest
+    def make_instance(self, include_optional) -> GetEmailBatchStatus200ResponseDownloadUrls:
+        """Test GetEmailBatchStatus200ResponseDownloadUrls
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `AnalyzeIpRequest`
+        # uncomment below to create an instance of `GetEmailBatchStatus200ResponseDownloadUrls`
         """
-        model = AnalyzeIpRequest()
+        model = GetEmailBatchStatus200ResponseDownloadUrls()
         if include_optional:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
-                enable_ai = True
+            return GetEmailBatchStatus200ResponseDownloadUrls(
+                csv = 'https://batch-object.opportify.ai/output/job-id.csv?X-Amz-Algorithm=...',
+                var_json = 'https://batch-object.opportify.ai/output/job-id.json?X-Amz-Algorithm=...',
+                csv_compressed = 'https://batch-object.opportify.ai/output/job-id.csv.gz?X-Amz-Algorithm=...',
+                json_compressed = 'https://batch-object.opportify.ai/output/job-id.json.gz?X-Amz-Algorithm=...'
             )
         else:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
+            return GetEmailBatchStatus200ResponseDownloadUrls(
         )
         """
 
-    def testAnalyzeIpRequest(self):
-        """Test AnalyzeIpRequest"""
+    def testGetEmailBatchStatus200ResponseDownloadUrls(self):
+        """Test GetEmailBatchStatus200ResponseDownloadUrls"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

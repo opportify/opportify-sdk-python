@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
+from openapi_client.models.batch_analyze_ips_request import BatchAnalyzeIpsRequest
 
-class TestAnalyzeIpRequest(unittest.TestCase):
-    """AnalyzeIpRequest unit test stubs"""
+class TestBatchAnalyzeIpsRequest(unittest.TestCase):
+    """BatchAnalyzeIpsRequest unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,27 +25,27 @@ class TestAnalyzeIpRequest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> AnalyzeIpRequest:
-        """Test AnalyzeIpRequest
+    def make_instance(self, include_optional) -> BatchAnalyzeIpsRequest:
+        """Test BatchAnalyzeIpsRequest
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `AnalyzeIpRequest`
+        # uncomment below to create an instance of `BatchAnalyzeIpsRequest`
         """
-        model = AnalyzeIpRequest()
+        model = BatchAnalyzeIpsRequest()
         if include_optional:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
+            return BatchAnalyzeIpsRequest(
+                ips = ["192.168.0.1","10.0.0.1","172.16.0.1"],
                 enable_ai = True
             )
         else:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
+            return BatchAnalyzeIpsRequest(
+                ips = ["192.168.0.1","10.0.0.1","172.16.0.1"],
         )
         """
 
-    def testAnalyzeIpRequest(self):
-        """Test AnalyzeIpRequest"""
+    def testBatchAnalyzeIpsRequest(self):
+        """Test BatchAnalyzeIpsRequest"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

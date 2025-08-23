@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
+from openapi_client.models.batch_analyze_emails400_response import BatchAnalyzeEmails400Response
 
-class TestAnalyzeIpRequest(unittest.TestCase):
-    """AnalyzeIpRequest unit test stubs"""
+class TestBatchAnalyzeEmails400Response(unittest.TestCase):
+    """BatchAnalyzeEmails400Response unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,27 +25,25 @@ class TestAnalyzeIpRequest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> AnalyzeIpRequest:
-        """Test AnalyzeIpRequest
+    def make_instance(self, include_optional) -> BatchAnalyzeEmails400Response:
+        """Test BatchAnalyzeEmails400Response
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `AnalyzeIpRequest`
+        # uncomment below to create an instance of `BatchAnalyzeEmails400Response`
         """
-        model = AnalyzeIpRequest()
+        model = BatchAnalyzeEmails400Response()
         if include_optional:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
-                enable_ai = True
+            return BatchAnalyzeEmails400Response(
+                error = openapi_client.models.batch_analyze_emails_400_response_error.batchAnalyzeEmails_400_response_error()
             )
         else:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
+            return BatchAnalyzeEmails400Response(
         )
         """
 
-    def testAnalyzeIpRequest(self):
-        """Test AnalyzeIpRequest"""
+    def testBatchAnalyzeEmails400Response(self):
+        """Test BatchAnalyzeEmails400Response"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

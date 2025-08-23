@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
+from openapi_client.models.get_email_batch_status200_response import GetEmailBatchStatus200Response
 
-class TestAnalyzeIpRequest(unittest.TestCase):
-    """AnalyzeIpRequest unit test stubs"""
+class TestGetEmailBatchStatus200Response(unittest.TestCase):
+    """GetEmailBatchStatus200Response unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,27 +25,33 @@ class TestAnalyzeIpRequest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> AnalyzeIpRequest:
-        """Test AnalyzeIpRequest
+    def make_instance(self, include_optional) -> GetEmailBatchStatus200Response:
+        """Test GetEmailBatchStatus200Response
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `AnalyzeIpRequest`
+        # uncomment below to create an instance of `GetEmailBatchStatus200Response`
         """
-        model = AnalyzeIpRequest()
+        model = GetEmailBatchStatus200Response()
         if include_optional:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
-                enable_ai = True
+            return GetEmailBatchStatus200Response(
+                job_id = 'uuid-12345-67890',
+                status = 'COMPLETED',
+                status_description = '',
+                progress = 100,
+                download_urls = openapi_client.models.get_email_batch_status_200_response_download_urls.getEmailBatchStatus_200_response_downloadUrls(
+                    csv = 'https://batch-object.opportify.ai/output/job-id.csv?X-Amz-Algorithm=...', 
+                    json = 'https://batch-object.opportify.ai/output/job-id.json?X-Amz-Algorithm=...', 
+                    csv_compressed = 'https://batch-object.opportify.ai/output/job-id.csv.gz?X-Amz-Algorithm=...', 
+                    json_compressed = 'https://batch-object.opportify.ai/output/job-id.json.gz?X-Amz-Algorithm=...', )
             )
         else:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
+            return GetEmailBatchStatus200Response(
         )
         """
 
-    def testAnalyzeIpRequest(self):
-        """Test AnalyzeIpRequest"""
+    def testGetEmailBatchStatus200Response(self):
+        """Test GetEmailBatchStatus200Response"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

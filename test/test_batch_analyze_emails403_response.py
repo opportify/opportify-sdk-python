@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
+from openapi_client.models.batch_analyze_emails403_response import BatchAnalyzeEmails403Response
 
-class TestAnalyzeIpRequest(unittest.TestCase):
-    """AnalyzeIpRequest unit test stubs"""
+class TestBatchAnalyzeEmails403Response(unittest.TestCase):
+    """BatchAnalyzeEmails403Response unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,27 +25,27 @@ class TestAnalyzeIpRequest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> AnalyzeIpRequest:
-        """Test AnalyzeIpRequest
+    def make_instance(self, include_optional) -> BatchAnalyzeEmails403Response:
+        """Test BatchAnalyzeEmails403Response
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `AnalyzeIpRequest`
+        # uncomment below to create an instance of `BatchAnalyzeEmails403Response`
         """
-        model = AnalyzeIpRequest()
+        model = BatchAnalyzeEmails403Response()
         if include_optional:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
-                enable_ai = True
+            return BatchAnalyzeEmails403Response(
+                error = openapi_client.models.batch_analyze_emails_403_response_error.batchAnalyzeEmails_403_response_error(
+                    message = 'The token provided is either invalid, expired, or missing, preventing access to the resource.', 
+                    code = 'INVALID_TOKEN', )
             )
         else:
-            return AnalyzeIpRequest(
-                ip = '192.168.0.1',
+            return BatchAnalyzeEmails403Response(
         )
         """
 
-    def testAnalyzeIpRequest(self):
-        """Test AnalyzeIpRequest"""
+    def testBatchAnalyzeEmails403Response(self):
+        """Test BatchAnalyzeEmails403Response"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 
