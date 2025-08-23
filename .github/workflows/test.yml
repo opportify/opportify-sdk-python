@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: Test Python ${{ matrix.python-version }}
+    name: Python ${{ matrix.python-version }} - Test, Verify, and Build
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
