@@ -4,6 +4,7 @@ from openapi_client.configuration import Configuration as ApiConfiguration
 from openapi_client.api_client import ApiClient
 from openapi_client.api.ip_insights_api import IPInsightsApi
 from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
+from openapi_client.models.batch_analyze_ips_request import BatchAnalyzeIpsRequest
 from openapi_client.exceptions import ApiException
 
 class IpInsights:
@@ -41,6 +42,52 @@ class IpInsights:
 
         try:
             result = self.api_instance.analyze_ip(analyze_ip_request)
+            return result.to_dict()
+        except ApiException as e:
+            raise Exception(f"API exception: {e.reason}")
+
+    def batch_analyze(self, params: dict) -> dict:
+        """
+        Start a batch analysis of multiple IP addresses.
+
+        :param params: Dictionary containing parameters for batch IP analysis.
+                      Should include "ips" (list of IPs) and optionally "enable_ai".
+        :return: The batch job information as a dictionary (job_id, status, etc.).
+        :raises Exception: If an API exception occurs.
+        """
+        params = self._normalize_batch_request(params)
+
+        # Configure the host and create the API client instance
+        self.config.host = f"{self.host}/insights/{self.version}"
+        api_client = ApiClient(configuration=self.config)
+        api_client.configuration.debug = self.debug_mode
+        self.api_instance = IPInsightsApi(api_client)
+
+        # Prepare the BatchAnalyzeIpsRequest object
+        batch_analyze_ips_request = BatchAnalyzeIpsRequest(**params)
+
+        try:
+            result = self.api_instance.batch_analyze_ips(batch_analyze_ips_request)
+            return result.to_dict()
+        except ApiException as e:
+            raise Exception(f"API exception: {e.reason}")
+
+    def get_batch_status(self, job_id: str) -> dict:
+        """
+        Get the status of a batch IP analysis job.
+
+        :param job_id: The unique identifier of the batch job.
+        :return: The batch job status as a dictionary.
+        :raises Exception: If an API exception occurs.
+        """
+        # Configure the host and create the API client instance
+        self.config.host = f"{self.host}/insights/{self.version}"
+        api_client = ApiClient(configuration=self.config)
+        api_client.configuration.debug = self.debug_mode
+        self.api_instance = IPInsightsApi(api_client)
+
+        try:
+            result = self.api_instance.get_ip_batch_status(job_id)
             return result.to_dict()
         except ApiException as e:
             raise Exception(f"API exception: {e.reason}")
@@ -85,6 +132,33 @@ class IpInsights:
         normalized = {}
         normalized["ip"] = str(params["ip"])
 
+        if "enableAi" in params:
+            params["enable_ai"] = params.pop("enableAi")
+
+        normalized["enable_ai"] = bool(params.get("enable_ai", False))
+
+        return normalized
+
+    def _normalize_batch_request(self, params: dict) -> dict:
+        """
+        Normalize the batch request parameters.
+
+        :param params: The raw parameters.
+        :return: Normalized parameters.
+        """
+        normalized = {}
+        
+        # Ensure ips is a list of strings
+        if "ips" not in params:
+            raise ValueError("'ips' parameter is required for batch analysis")
+        
+        ips = params["ips"]
+        if not isinstance(ips, list):
+            raise ValueError("'ips' parameter must be a list")
+        
+        normalized["ips"] = [str(ip) for ip in ips]
+
+        # Handle enableAi parameter name conversion
         if "enableAi" in params:
             params["enable_ai"] = params.pop("enableAi")
 
