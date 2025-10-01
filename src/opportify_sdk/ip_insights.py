@@ -1,5 +1,7 @@
-# src/ip_insights.py
-import openapi_client
+from __future__ import annotations
+
+from typing import Any, Dict, Optional
+
 from openapi_client.configuration import Configuration as ApiConfiguration
 from openapi_client.api_client import ApiClient
 from openapi_client.api.ip_insights_api import IPInsightsApi
@@ -8,160 +10,138 @@ from openapi_client.models.batch_analyze_ips_request import BatchAnalyzeIpsReque
 from openapi_client.exceptions import ApiException
 
 class IpInsights:
-    def __init__(self, api_key: str):
-        """
-        Initialize the IpInsights class with the provided API key.
+    def __init__(
+        self,
+        api_key: str,
+        api_instance: Optional[IPInsightsApi] = None,
+        *,
+        host: str = "https://api.opportify.ai",
+        prefix: str = "insights",
+        version: str = "v1",
+    ) -> None:
+        self._host = host.rstrip("/")
+        self._prefix = prefix.strip("/")
+        self._version = version.strip("/")
+        self._final_url = self._compose_final_url()
+        self._config_changed = True
+        self._debug_mode = False
 
-        :param api_key: The API key for authentication.
-        """
         self.config = ApiConfiguration()
         self.config.api_key = {"opportifyToken": api_key}
-        self.host = "https://api.opportify.ai"
-        self.version = "v1"
-        self.debug_mode = False
-        self.api_instance = None
 
-    def analyze(self, params: dict) -> dict:
-        """
-        Analyze the IP address based on the provided parameters.
+        self.api_instance: Optional[IPInsightsApi] = api_instance
+        if api_instance is None:
+            self._refresh_api_instance(first_run=True)
+        else:
+            self.api_instance.api_client.configuration.host = self._final_url
 
-        :param params: Dictionary containing parameters for IP analysis.
-        :return: The analysis result as a dictionary.
-        :raises Exception: If an API exception occurs.
-        """
-        params = self._normalize_request(params)
-
-        # Configure the host and create the API client instance
-        self.config.host = f"{self.host}/insights/{self.version}"
-        api_client = ApiClient(configuration=self.config)
-        api_client.configuration.debug = self.debug_mode
-        self.api_instance = IPInsightsApi(api_client)
-
-        # Prepare the AnalyzeIpRequest object
-        analyze_ip_request = AnalyzeIpRequest(**params)
-
-        try:
-            result = self.api_instance.analyze_ip(analyze_ip_request)
-            return result.to_dict()
-        except ApiException as e:
-            raise Exception(f"API exception: {e.reason}")
-
-    def batch_analyze(self, params: dict) -> dict:
-        """
-        Start a batch analysis of multiple IP addresses.
-
-        :param params: Dictionary containing parameters for batch IP analysis.
-                      Should include "ips" (list of IPs) and optionally "enable_ai".
-        :return: The batch job information as a dictionary (job_id, status, etc.).
-        :raises Exception: If an API exception occurs.
-        """
-        params = self._normalize_batch_request(params)
-
-        # Configure the host and create the API client instance
-        self.config.host = f"{self.host}/insights/{self.version}"
-        api_client = ApiClient(configuration=self.config)
-        api_client.configuration.debug = self.debug_mode
-        self.api_instance = IPInsightsApi(api_client)
-
-        # Prepare the BatchAnalyzeIpsRequest object
-        batch_analyze_ips_request = BatchAnalyzeIpsRequest(**params)
-
-        try:
-            result = self.api_instance.batch_analyze_ips(batch_analyze_ips_request)
-            return result.to_dict()
-        except ApiException as e:
-            raise Exception(f"API exception: {e.reason}")
-
-    def get_batch_status(self, job_id: str) -> dict:
-        """
-        Get the status of a batch IP analysis job.
-
-        :param job_id: The unique identifier of the batch job.
-        :return: The batch job status as a dictionary.
-        :raises Exception: If an API exception occurs.
-        """
-        # Configure the host and create the API client instance
-        self.config.host = f"{self.host}/insights/{self.version}"
-        api_client = ApiClient(configuration=self.config)
-        api_client.configuration.debug = self.debug_mode
-        self.api_instance = IPInsightsApi(api_client)
-
-        try:
-            result = self.api_instance.get_ip_batch_status(job_id)
-            return result.to_dict()
-        except ApiException as e:
-            raise Exception(f"API exception: {e.reason}")
-
+    # ------------------------------------------------------------------
+    # Public mutators
+    # ------------------------------------------------------------------
     def set_host(self, host: str) -> "IpInsights":
-        """
-        Set the host.
-
-        :param host: The host URL.
-        :return: The current instance for chaining.
-        """
-        self.host = host
+        host = host.rstrip("/")
+        if host != self._host:
+            self._host = host
+            self._mark_config_changed()
         return self
 
     def set_version(self, version: str) -> "IpInsights":
-        """
-        Set the version.
+        version = version.strip("/")
+        if version != self._version:
+            self._version = version
+            self._mark_config_changed()
+        return self
 
-        :param version: The API version.
-        :return: The current instance for chaining.
-        """
-        self.version = version
+    def set_prefix(self, prefix: str) -> "IpInsights":
+        prefix = prefix.strip("/")
+        if prefix != self._prefix:
+            self._prefix = prefix
+            self._mark_config_changed()
         return self
 
     def set_debug_mode(self, debug_mode: bool) -> "IpInsights":
-        """
-        Set the debug mode.
-
-        :param debug_mode: Enable or disable debug mode.
-        :return: The current instance for chaining.
-        """
-        self.debug_mode = debug_mode
+        if debug_mode != self._debug_mode:
+            self._debug_mode = debug_mode
+            self._mark_config_changed()
         return self
 
-    def _normalize_request(self, params: dict) -> dict:
-        """
-        Normalize the request parameters.
+    # ------------------------------------------------------------------
+    # Endpoint wrappers
+    # ------------------------------------------------------------------
+    def analyze(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        self._refresh_api_instance()
+        norm = self._normalize_request(params)
+        request_body = AnalyzeIpRequest(**norm)
+        try:
+            result = self.api_instance.analyze_ip(request_body)
+            return result.to_dict()
+        except ApiException as exc:  # pragma: no cover
+            raise Exception(f"API exception: {exc.status} {exc.reason}") from exc
 
-        :param params: The raw parameters.
-        :return: Normalized parameters.
-        """
-        normalized = {}
-        normalized["ip"] = str(params["ip"])
+    def batch_analyze(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        self._refresh_api_instance()
+        norm = self._normalize_batch_request(params)
+        request_body = BatchAnalyzeIpsRequest(**norm)
+        try:
+            result = self.api_instance.batch_analyze_ips(request_body)
+            return result.to_dict()
+        except ApiException as exc:  # pragma: no cover
+            raise Exception(f"API exception: {exc.status} {exc.reason}") from exc
 
-        if "enableAi" in params:
+    def get_batch_status(self, job_id: str) -> Dict[str, Any]:
+        self._refresh_api_instance()
+        try:
+            result = self.api_instance.get_ip_batch_status(job_id)
+            return result.to_dict()
+        except ApiException as exc:  # pragma: no cover
+            raise Exception(f"API exception: {exc.status} {exc.reason}") from exc
+
+    # ------------------------------------------------------------------
+    # Internal helpers
+    # ------------------------------------------------------------------
+    def _mark_config_changed(self) -> None:
+        self._config_changed = True
+
+    def _compose_final_url(self) -> str:
+        segments = [self._host]
+        if self._prefix:
+            segments.append(self._prefix)
+        if self._version:
+            segments.append(self._version)
+        return "/".join(segments)
+
+    def _refresh_api_instance(self, *, first_run: bool = False) -> None:
+        if not self._config_changed and not first_run and self.api_instance is not None:
+            return
+        self._final_url = self._compose_final_url()
+        self.config.host = self._final_url
+        api_client = ApiClient(configuration=self.config)
+        api_client.configuration.debug = self._debug_mode
+        self.api_instance = IPInsightsApi(api_client)
+        self._config_changed = False
+
+    def _normalize_request(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        if "ip" not in params:
+            raise ValueError("'ip' is required")
+        normalized: Dict[str, Any] = {"ip": str(params["ip"]) }
+        if "enableAi" in params and "enable_ai" not in params:
             params["enable_ai"] = params.pop("enableAi")
-
-        normalized["enable_ai"] = bool(params.get("enable_ai", False))
-
+        if "enable_ai" in params:
+            normalized["enable_ai"] = bool(params["enable_ai"])
         return normalized
 
-    def _normalize_batch_request(self, params: dict) -> dict:
-        """
-        Normalize the batch request parameters.
-
-        :param params: The raw parameters.
-        :return: Normalized parameters.
-        """
-        normalized = {}
-        
-        # Ensure ips is a list of strings
-        if "ips" not in params:
-            raise ValueError("'ips' parameter is required for batch analysis")
-        
-        ips = params["ips"]
-        if not isinstance(ips, list):
-            raise ValueError("'ips' parameter must be a list")
-        
-        normalized["ips"] = [str(ip) for ip in ips]
-
-        # Handle enableAi parameter name conversion
-        if "enableAi" in params:
+    def _normalize_batch_request(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        if "ips" not in params or not isinstance(params["ips"], list):
+            raise ValueError("'ips' (list) is required for batch submission")
+        ips = [str(ip) for ip in params["ips"] if ip]
+        if not ips:
+            raise ValueError("'ips' list must contain at least one ip")
+        if "enableAi" in params and "enable_ai" not in params:
             params["enable_ai"] = params.pop("enableAi")
+        out: Dict[str, Any] = {"ips": ips}
+        if "name" in params:
+            out["name"] = str(params["name"])
+        if "enable_ai" in params:
+            out["enable_ai"] = bool(params["enable_ai"])
+        return out
 
-        normalized["enable_ai"] = bool(params.get("enable_ai", False))
-
-        return normalized
