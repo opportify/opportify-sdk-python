@@ -125,6 +125,58 @@ except Exception as e:
     print(f"Error: {e}")
 ```
 
+### Batch Email Analysis (File Upload Examples)
+
+You can submit a large list of emails via a local CSV or plain text file. The CSV may contain one or multiple columns; the backend extracts all valid emails it finds. A plain text file should contain one email per line.
+
+#### 1. Using the convenience helper `batch_analyze_file`
+
+```python
+from opportify_sdk import EmailInsights
+
+api_key = "<YOUR-API-KEY-HERE>"
+email_insights = EmailInsights(api_key)
+
+try:
+    response = email_insights.batch_analyze_file(
+        "/path/to/emails.csv",
+        enableAi=True,
+        enableAutoCorrection=True,
+        name="marketing-upload-oct"
+    )
+    print("Batch file upload started:", response)
+    # Typical keys (camelCase) include: response['jobId']
+except Exception as e:
+    print(f"Error: {e}")
+```
+
+#### 2. Using the generic `batch_analyze` with explicit multipart content type
+
+```python
+from opportify_sdk import EmailInsights
+
+api_key = "<YOUR-API-KEY-HERE>"
+email_insights = EmailInsights(api_key)
+
+params = {
+    "file": "/path/to/emails.txt",  # Can also be .csv
+    "enableAi": True,
+    "enableAutoCorrection": False,
+    "name": "text-upload-list"
+}
+
+try:
+    response = email_insights.batch_analyze(params, content_type="multipart/form-data")
+    print("Multipart batch started:", response)
+except Exception as e:
+    print(f"Error: {e}")
+```
+
+Notes:
+* Use `enableAi` / `enableAutoCorrection` (camelCase) or their snake_case variants; both are accepted.
+* The helper `batch_analyze_file` automatically sets the correct content type.
+* The response uses camelCase keys (e.g., `jobId`, `downloadUrls`).
+
 ### Batch IP Analysis
 
 ```python
@@ -162,6 +214,47 @@ try:
         
 except Exception as e:
     print(f"Error: {e}")
+```
+
+### Batch IP Analysis (File Upload)
+
+```python
+from opportify_sdk import IpInsights
+
+api_key = "<YOUR-API-KEY-HERE>"
+ip_insights = IpInsights(api_key)
+
+try:
+    response = ip_insights.batch_analyze_file(
+        "/path/to/ips.txt",  # one IP per line or CSV of IPs
+        enableAi=True,
+        name="edge-nodes-seed"
+    )
+    print("IP batch file job:", response['jobId'])
+except Exception as e:
+    print(f"Error: {e}")
+```
+
+### Batch IP Analysis (text/plain)
+
+```python
+from opportify_sdk import IpInsights
+
+api_key = "<YOUR-API-KEY-HERE>"
+ip_insights = IpInsights(api_key)
+
+# Raw text submission
+plain_response = ip_insights.batch_analyze(
+    {"text": "1.1.1.1\n8.8.8.8", "name": "dns-providers"},
+    content_type="text/plain"
+)
+print("Job:", plain_response['jobId'])
+
+# Derived from list automatically
+plain_response2 = ip_insights.batch_analyze(
+    {"ips": ["10.0.0.1", "10.0.0.2"], "name": "internal-segment"},
+    content_type="text/plain"
+)
 ```
 
 ## Configuration
