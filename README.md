@@ -102,7 +102,8 @@ batch_params = {
         "test@example.com"
     ],
     "enableAutoCorrection": True,
-    "enableAi": True 
+    "enableAi": True,
+    "name": "my batch job 1"
 }
 
 # Start batch analysis
@@ -140,7 +141,8 @@ batch_params = {
         "1.1.1.1",
         "192.168.1.1"
     ],
-    "enableAi": True 
+    "enableAi": True,
+    "name": "my batch job 1"
 }
 
 # Start batch analysis
