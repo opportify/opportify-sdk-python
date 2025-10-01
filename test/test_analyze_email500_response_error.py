@@ -12,41 +12,6 @@
 """  # noqa: E501
 
 
-import unittest
+import pytest
 
-from openapi_client.models.analyze_email500_response_error import AnalyzeEmail500ResponseError
-
-class TestAnalyzeEmail500ResponseError(unittest.TestCase):
-    """AnalyzeEmail500ResponseError unit test stubs"""
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
-    def make_instance(self, include_optional) -> AnalyzeEmail500ResponseError:
-        """Test AnalyzeEmail500ResponseError
-            include_optional is a boolean, when False only required
-            params are included, when True both required and
-            optional params are included """
-        # uncomment below to create an instance of `AnalyzeEmail500ResponseError`
-        """
-        model = AnalyzeEmail500ResponseError()
-        if include_optional:
-            return AnalyzeEmail500ResponseError(
-                message = 'An internal error occurred while processing the request.',
-                code = 'INTERNAL_ERROR'
-            )
-        else:
-            return AnalyzeEmail500ResponseError(
-        )
-        """
-
-    def testAnalyzeEmail500ResponseError(self):
-        """Test AnalyzeEmail500ResponseError"""
-        # inst_req_only = self.make_instance(include_optional=False)
-        # inst_req_and_optional = self.make_instance(include_optional=True)
-
-if __name__ == '__main__':
-    unittest.main()
+pytest.skip("Obsolete test file: AnalyzeEmail500ResponseError model removed from spec", allow_module_level=True)

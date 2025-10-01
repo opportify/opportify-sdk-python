@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.batch_analyze_emails403_response_error import BatchAnalyzeEmails403ResponseError
+from openapi_client.models.batch_analyze_emails402_response import BatchAnalyzeEmails402Response
 
-class TestBatchAnalyzeEmails403ResponseError(unittest.TestCase):
-    """BatchAnalyzeEmails403ResponseError unit test stubs"""
+class TestBatchAnalyzeEmails402Response(unittest.TestCase):
+    """BatchAnalyzeEmails402Response unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,26 +25,26 @@ class TestBatchAnalyzeEmails403ResponseError(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> BatchAnalyzeEmails403ResponseError:
-        """Test BatchAnalyzeEmails403ResponseError
+    def make_instance(self, include_optional) -> BatchAnalyzeEmails402Response:
+        """Test BatchAnalyzeEmails402Response
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `BatchAnalyzeEmails403ResponseError`
+        # uncomment below to create an instance of `BatchAnalyzeEmails402Response`
         """
-        model = BatchAnalyzeEmails403ResponseError()
+        model = BatchAnalyzeEmails402Response()
         if include_optional:
-            return BatchAnalyzeEmails403ResponseError(
-                message = 'The token provided is either invalid, expired, or missing, preventing access to the resource.',
-                code = 'INVALID_TOKEN'
+            return BatchAnalyzeEmails402Response(
+                error_message = 'Your quota has been exceeded. Please upgrade your plan or wait for the quota to reset.',
+                error_code = 'QUOTA_EXCEEDED'
             )
         else:
-            return BatchAnalyzeEmails403ResponseError(
+            return BatchAnalyzeEmails402Response(
         )
         """
 
-    def testBatchAnalyzeEmails403ResponseError(self):
-        """Test BatchAnalyzeEmails403ResponseError"""
+    def testBatchAnalyzeEmails402Response(self):
+        """Test BatchAnalyzeEmails402Response"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

@@ -36,6 +36,7 @@ class TestBatchAnalyzeIpsRequest(unittest.TestCase):
         if include_optional:
             return BatchAnalyzeIpsRequest(
                 ips = ["192.168.0.1","10.0.0.1","172.16.0.1"],
+                name = 'my list of IPs',
                 enable_ai = True
             )
         else:

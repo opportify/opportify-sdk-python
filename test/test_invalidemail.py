@@ -35,8 +35,8 @@ class TestINVALIDEMAIL(unittest.TestCase):
         model = INVALIDEMAIL()
         if include_optional:
             return INVALIDEMAIL(
-                message = 'The email provided is invalid, please provide a valid email.',
-                code = 'INVALID_EMAIL'
+                error_message = 'The email provided is invalid, please provide a valid email.',
+                error_code = 'INVALID_EMAIL'
             )
         else:
             return INVALIDEMAIL(

@@ -36,6 +36,7 @@ class TestGetEmailBatchStatus200Response(unittest.TestCase):
         if include_optional:
             return GetEmailBatchStatus200Response(
                 job_id = 'uuid-12345-67890',
+                name = 'my list of emails',
                 status = 'COMPLETED',
                 status_description = '',
                 progress = 100,

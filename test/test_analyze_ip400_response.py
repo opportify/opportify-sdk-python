@@ -35,7 +35,8 @@ class TestAnalyzeIp400Response(unittest.TestCase):
         model = AnalyzeIp400Response()
         if include_optional:
             return AnalyzeIp400Response(
-                error = openapi_client.models.analyze_ip_400_response_error.analyzeIp_400_response_error()
+                error_message = 'The JSON request doesn’t seem to be correct or valid.',
+                error_code = 'MALFORMED_REQUEST'
             )
         else:
             return AnalyzeIp400Response(

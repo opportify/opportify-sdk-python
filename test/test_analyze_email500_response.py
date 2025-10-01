@@ -35,9 +35,8 @@ class TestAnalyzeEmail500Response(unittest.TestCase):
         model = AnalyzeEmail500Response()
         if include_optional:
             return AnalyzeEmail500Response(
-                error = openapi_client.models.analyze_email_500_response_error.analyzeEmail_500_response_error(
-                    message = 'An internal error occurred while processing the request.', 
-                    code = 'INTERNAL_ERROR', )
+                error_message = 'An internal error occurred while processing the request.',
+                error_code = 'INTERNAL_ERROR'
             )
         else:
             return AnalyzeEmail500Response(

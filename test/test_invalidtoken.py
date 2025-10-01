@@ -35,8 +35,8 @@ class TestINVALIDTOKEN(unittest.TestCase):
         model = INVALIDTOKEN()
         if include_optional:
             return INVALIDTOKEN(
-                message = 'The token provided is either invalid, expired, or missing, preventing access to the resource.',
-                code = 'INVALID_TOKEN'
+                error_message = 'The token provided is either invalid, expired, or missing, preventing access to the resource.',
+                error_code = 'INVALID_TOKEN'
             )
         else:
             return INVALIDTOKEN(

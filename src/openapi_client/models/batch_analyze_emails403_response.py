@@ -13,79 +13,181 @@
 
 
 from __future__ import annotations
-import pprint
-import re  # noqa: F401
 import json
+import pprint
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
+from typing import Any, List, Optional
+from openapi_client.models.forbidden import FORBIDDEN
+from openapi_client.models.internalerror import INTERNALERROR
+from openapi_client.models.invalidplan import INVALIDPLAN
+from openapi_client.models.invalidtoken import INVALIDTOKEN
+from openapi_client.models.malformedrequest1 import MALFORMEDREQUEST1
+from openapi_client.models.toomanyrequests import TOOMANYREQUESTS
+from pydantic import StrictStr, Field
+from typing import Union, List, Set, Optional, Dict
+from typing_extensions import Literal, Self
 
-from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List, Optional
-from openapi_client.models.batch_analyze_emails403_response_error import BatchAnalyzeEmails403ResponseError
-from typing import Optional, Set
-from typing_extensions import Self
+BATCHANALYZEEMAILS403RESPONSE_ONE_OF_SCHEMAS = ["FORBIDDEN", "INTERNALERROR", "INVALIDPLAN", "INVALIDTOKEN", "MALFORMEDREQUEST1", "TOOMANYREQUESTS"]
 
 class BatchAnalyzeEmails403Response(BaseModel):
     """
     BatchAnalyzeEmails403Response
-    """ # noqa: E501
-    error: Optional[BatchAnalyzeEmails403ResponseError] = None
-    __properties: ClassVar[List[str]] = ["error"]
+    """
+    # data type: MALFORMEDREQUEST1
+    oneof_schema_1_validator: Optional[MALFORMEDREQUEST1] = None
+    # data type: INVALIDTOKEN
+    oneof_schema_2_validator: Optional[INVALIDTOKEN] = None
+    # data type: INVALIDPLAN
+    oneof_schema_3_validator: Optional[INVALIDPLAN] = None
+    # data type: FORBIDDEN
+    oneof_schema_4_validator: Optional[FORBIDDEN] = None
+    # data type: TOOMANYREQUESTS
+    oneof_schema_5_validator: Optional[TOOMANYREQUESTS] = None
+    # data type: INTERNALERROR
+    oneof_schema_6_validator: Optional[INTERNALERROR] = None
+    actual_instance: Optional[Union[FORBIDDEN, INTERNALERROR, INVALIDPLAN, INVALIDTOKEN, MALFORMEDREQUEST1, TOOMANYREQUESTS]] = None
+    one_of_schemas: Set[str] = { "FORBIDDEN", "INTERNALERROR", "INVALIDPLAN", "INVALIDTOKEN", "MALFORMEDREQUEST1", "TOOMANYREQUESTS" }
 
     model_config = ConfigDict(
-        populate_by_name=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
 
 
-    def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+    def __init__(self, *args, **kwargs) -> None:
+        if args:
+            if len(args) > 1:
+                raise ValueError("If a position argument is used, only 1 is allowed to set `actual_instance`")
+            if kwargs:
+                raise ValueError("If a position argument is used, keyword arguments cannot be used.")
+            super().__init__(actual_instance=args[0])
+        else:
+            super().__init__(**kwargs)
+
+    @field_validator('actual_instance')
+    def actual_instance_must_validate_oneof(cls, v):
+        instance = BatchAnalyzeEmails403Response.model_construct()
+        error_messages = []
+        match = 0
+        # validate data type: MALFORMEDREQUEST1
+        if not isinstance(v, MALFORMEDREQUEST1):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MALFORMEDREQUEST1`")
+        else:
+            match += 1
+        # validate data type: INVALIDTOKEN
+        if not isinstance(v, INVALIDTOKEN):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `INVALIDTOKEN`")
+        else:
+            match += 1
+        # validate data type: INVALIDPLAN
+        if not isinstance(v, INVALIDPLAN):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `INVALIDPLAN`")
+        else:
+            match += 1
+        # validate data type: FORBIDDEN
+        if not isinstance(v, FORBIDDEN):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `FORBIDDEN`")
+        else:
+            match += 1
+        # validate data type: TOOMANYREQUESTS
+        if not isinstance(v, TOOMANYREQUESTS):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `TOOMANYREQUESTS`")
+        else:
+            match += 1
+        # validate data type: INTERNALERROR
+        if not isinstance(v, INTERNALERROR):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `INTERNALERROR`")
+        else:
+            match += 1
+        if match > 1:
+            # more than 1 match
+            raise ValueError("Multiple matches found when setting `actual_instance` in BatchAnalyzeEmails403Response with oneOf schemas: FORBIDDEN, INTERNALERROR, INVALIDPLAN, INVALIDTOKEN, MALFORMEDREQUEST1, TOOMANYREQUESTS. Details: " + ", ".join(error_messages))
+        elif match == 0:
+            # no match
+            raise ValueError("No match found when setting `actual_instance` in BatchAnalyzeEmails403Response with oneOf schemas: FORBIDDEN, INTERNALERROR, INVALIDPLAN, INVALIDTOKEN, MALFORMEDREQUEST1, TOOMANYREQUESTS. Details: " + ", ".join(error_messages))
+        else:
+            return v
+
+    @classmethod
+    def from_dict(cls, obj: Union[str, Dict[str, Any]]) -> Self:
+        return cls.from_json(json.dumps(obj))
+
+    @classmethod
+    def from_json(cls, json_str: str) -> Self:
+        """Returns the object represented by the json string"""
+        instance = cls.model_construct()
+        error_messages = []
+        match = 0
+
+        # deserialize data into MALFORMEDREQUEST1
+        try:
+            instance.actual_instance = MALFORMEDREQUEST1.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into INVALIDTOKEN
+        try:
+            instance.actual_instance = INVALIDTOKEN.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into INVALIDPLAN
+        try:
+            instance.actual_instance = INVALIDPLAN.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into FORBIDDEN
+        try:
+            instance.actual_instance = FORBIDDEN.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into TOOMANYREQUESTS
+        try:
+            instance.actual_instance = TOOMANYREQUESTS.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into INTERNALERROR
+        try:
+            instance.actual_instance = INTERNALERROR.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+
+        if match > 1:
+            # more than 1 match
+            raise ValueError("Multiple matches found when deserializing the JSON string into BatchAnalyzeEmails403Response with oneOf schemas: FORBIDDEN, INTERNALERROR, INVALIDPLAN, INVALIDTOKEN, MALFORMEDREQUEST1, TOOMANYREQUESTS. Details: " + ", ".join(error_messages))
+        elif match == 0:
+            # no match
+            raise ValueError("No match found when deserializing the JSON string into BatchAnalyzeEmails403Response with oneOf schemas: FORBIDDEN, INTERNALERROR, INVALIDPLAN, INVALIDTOKEN, MALFORMEDREQUEST1, TOOMANYREQUESTS. Details: " + ", ".join(error_messages))
+        else:
+            return instance
 
     def to_json(self) -> str:
-        """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        """Returns the JSON representation of the actual instance"""
+        if self.actual_instance is None:
+            return "null"
 
-    @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of BatchAnalyzeEmails403Response from a JSON string"""
-        return cls.from_dict(json.loads(json_str))
+        if hasattr(self.actual_instance, "to_json") and callable(self.actual_instance.to_json):
+            return self.actual_instance.to_json()
+        else:
+            return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
-        """
-        excluded_fields: Set[str] = set([
-        ])
-
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude=excluded_fields,
-            exclude_none=True,
-        )
-        # override the default output from pydantic by calling `to_dict()` of error
-        if self.error:
-            _dict['error'] = self.error.to_dict()
-        return _dict
-
-    @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of BatchAnalyzeEmails403Response from a dict"""
-        if obj is None:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], FORBIDDEN, INTERNALERROR, INVALIDPLAN, INVALIDTOKEN, MALFORMEDREQUEST1, TOOMANYREQUESTS]]:
+        """Returns the dict representation of the actual instance"""
+        if self.actual_instance is None:
             return None
 
-        if not isinstance(obj, dict):
-            return cls.model_validate(obj)
+        if hasattr(self.actual_instance, "to_dict") and callable(self.actual_instance.to_dict):
+            return self.actual_instance.to_dict()
+        else:
+            # primitive type
+            return self.actual_instance
 
-        _obj = cls.model_validate({
-            "error": BatchAnalyzeEmails403ResponseError.from_dict(obj["error"]) if obj.get("error") is not None else None
-        })
-        return _obj
+    def to_str(self) -> str:
+        """Returns the string representation of the actual instance"""
+        return pprint.pformat(self.model_dump())
 
 

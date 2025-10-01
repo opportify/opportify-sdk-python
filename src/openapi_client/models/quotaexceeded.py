@@ -17,18 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class AnalyzeEmail500ResponseError(BaseModel):
+class QUOTAEXCEEDED(BaseModel):
     """
-    AnalyzeEmail500ResponseError
+    QUOTAEXCEEDED
     """ # noqa: E501
-    message: Optional[StrictStr] = None
-    code: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["message", "code"]
+    error_message: Optional[StrictStr] = Field(default=None, alias="errorMessage")
+    error_code: Optional[StrictStr] = Field(default=None, alias="errorCode")
+    __properties: ClassVar[List[str]] = ["errorMessage", "errorCode"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +48,7 @@ class AnalyzeEmail500ResponseError(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AnalyzeEmail500ResponseError from a JSON string"""
+        """Create an instance of QUOTAEXCEEDED from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +73,7 @@ class AnalyzeEmail500ResponseError(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AnalyzeEmail500ResponseError from a dict"""
+        """Create an instance of QUOTAEXCEEDED from a dict"""
         if obj is None:
             return None
 
@@ -81,8 +81,8 @@ class AnalyzeEmail500ResponseError(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "message": obj.get("message"),
-            "code": obj.get("code")
+            "errorMessage": obj.get("errorMessage"),
+            "errorCode": obj.get("errorCode")
         })
         return _obj
 

@@ -35,7 +35,8 @@ class TestBatchAnalyzeIps400Response(unittest.TestCase):
         model = BatchAnalyzeIps400Response()
         if include_optional:
             return BatchAnalyzeIps400Response(
-                error = openapi_client.models.batch_analyze_ips_400_response_error.batchAnalyzeIps_400_response_error()
+                error_message = 'The submitted data contains invalid IP addresses.',
+                error_code = 'INVALID_DATA'
             )
         else:
             return BatchAnalyzeIps400Response(

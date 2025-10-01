@@ -28,11 +28,12 @@ class GetEmailBatchStatus200Response(BaseModel):
     GetEmailBatchStatus200Response
     """ # noqa: E501
     job_id: Optional[StrictStr] = Field(default=None, description="Unique identifier for the batch job.", alias="jobId")
+    name: Optional[StrictStr] = Field(default=None, description="Name of the batch job, if provided.")
     status: Optional[StrictStr] = Field(default=None, description="Current status of the batch job.")
     status_description: Optional[StrictStr] = Field(default=None, description="Description of the status, particularly useful when status is ERROR.", alias="statusDescription")
     progress: Optional[StrictInt] = Field(default=None, description="Percentage of completion for the batch job (0-100).")
     download_urls: Optional[GetEmailBatchStatus200ResponseDownloadUrls] = Field(default=None, alias="downloadUrls")
-    __properties: ClassVar[List[str]] = ["jobId", "status", "statusDescription", "progress", "downloadUrls"]
+    __properties: ClassVar[List[str]] = ["jobId", "name", "status", "statusDescription", "progress", "downloadUrls"]
 
     @field_validator('status')
     def status_validate_enum(cls, value):
@@ -99,6 +100,7 @@ class GetEmailBatchStatus200Response(BaseModel):
 
         _obj = cls.model_validate({
             "jobId": obj.get("jobId"),
+            "name": obj.get("name"),
             "status": obj.get("status"),
             "statusDescription": obj.get("statusDescription"),
             "progress": obj.get("progress"),

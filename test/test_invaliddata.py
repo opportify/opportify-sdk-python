@@ -25,28 +25,20 @@ class TestINVALIDDATA(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> INVALIDDATA:
-        """Test INVALIDDATA
-            include_optional is a boolean, when False only required
-            params are included, when True both required and
-            optional params are included """
-        # uncomment below to create an instance of `INVALIDDATA`
-        """
-        model = INVALIDDATA()
+    def make_instance(self, include_optional: bool) -> INVALIDDATA:
         if include_optional:
-            return INVALIDDATA(
-                message = 'The submitted data contains invalid entries.',
-                code = 'INVALID_DATA'
-            )
-        else:
-            return INVALIDDATA(
-        )
-        """
+            return INVALIDDATA(errorMessage="The submitted data contains invalid entries.", errorCode="INVALID_DATA")
+        return INVALIDDATA()
 
-    def testINVALIDDATA(self):
-        """Test INVALIDDATA"""
-        # inst_req_only = self.make_instance(include_optional=False)
-        # inst_req_and_optional = self.make_instance(include_optional=True)
+    def test_invaliddata_minimal(self):
+        inst = self.make_instance(include_optional=False)
+        self.assertEqual(inst.to_dict(), {})
+
+    def test_invaliddata_full(self):
+        inst = self.make_instance(include_optional=True)
+        data = inst.to_dict()
+        self.assertEqual(data.get("errorMessage"), "The submitted data contains invalid entries.")
+        self.assertEqual(data.get("errorCode"), "INVALID_DATA")
 
 if __name__ == '__main__':
     unittest.main()

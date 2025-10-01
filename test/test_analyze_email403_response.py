@@ -35,7 +35,8 @@ class TestAnalyzeEmail403Response(unittest.TestCase):
         model = AnalyzeEmail403Response()
         if include_optional:
             return AnalyzeEmail403Response(
-                error = openapi_client.models.analyze_email_403_response_error.analyzeEmail_403_response_error()
+                error_message = 'Your quota has been exceeded. Please upgrade your plan or wait for the quota to reset.',
+                error_code = 'QUOTA_EXCEEDED'
             )
         else:
             return AnalyzeEmail403Response(

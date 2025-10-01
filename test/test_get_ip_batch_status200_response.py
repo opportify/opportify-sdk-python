@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.batch_analyze_emails413_response_error import BatchAnalyzeEmails413ResponseError
+from openapi_client.models.get_ip_batch_status200_response import GetIpBatchStatus200Response
 
-class TestBatchAnalyzeEmails413ResponseError(unittest.TestCase):
-    """BatchAnalyzeEmails413ResponseError unit test stubs"""
+class TestGetIpBatchStatus200Response(unittest.TestCase):
+    """GetIpBatchStatus200Response unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,26 +25,34 @@ class TestBatchAnalyzeEmails413ResponseError(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> BatchAnalyzeEmails413ResponseError:
-        """Test BatchAnalyzeEmails413ResponseError
+    def make_instance(self, include_optional) -> GetIpBatchStatus200Response:
+        """Test GetIpBatchStatus200Response
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `BatchAnalyzeEmails413ResponseError`
+        # uncomment below to create an instance of `GetIpBatchStatus200Response`
         """
-        model = BatchAnalyzeEmails413ResponseError()
+        model = GetIpBatchStatus200Response()
         if include_optional:
-            return BatchAnalyzeEmails413ResponseError(
-                message = 'The submitted payload exceeds the 3MB size limit.',
-                code = 'PAYLOAD_TOO_LARGE'
+            return GetIpBatchStatus200Response(
+                job_id = 'uuid-12345-67890',
+                name = 'my list of IPs',
+                status = 'COMPLETED',
+                status_description = '',
+                progress = 100,
+                download_urls = openapi_client.models.get_email_batch_status_200_response_download_urls.getEmailBatchStatus_200_response_downloadUrls(
+                    csv = 'https://batch-object.opportify.ai/output/job-id.csv?X-Amz-Algorithm=...', 
+                    json = 'https://batch-object.opportify.ai/output/job-id.json?X-Amz-Algorithm=...', 
+                    csv_compressed = 'https://batch-object.opportify.ai/output/job-id.csv.gz?X-Amz-Algorithm=...', 
+                    json_compressed = 'https://batch-object.opportify.ai/output/job-id.json.gz?X-Amz-Algorithm=...', )
             )
         else:
-            return BatchAnalyzeEmails413ResponseError(
+            return GetIpBatchStatus200Response(
         )
         """
 
-    def testBatchAnalyzeEmails413ResponseError(self):
-        """Test BatchAnalyzeEmails413ResponseError"""
+    def testGetIpBatchStatus200Response(self):
+        """Test GetIpBatchStatus200Response"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

@@ -35,7 +35,8 @@ class TestBatchAnalyzeEmails400Response(unittest.TestCase):
         model = BatchAnalyzeEmails400Response()
         if include_optional:
             return BatchAnalyzeEmails400Response(
-                error = openapi_client.models.batch_analyze_emails_400_response_error.batchAnalyzeEmails_400_response_error()
+                error_message = 'The submitted data contains invalid entries.',
+                error_code = 'INVALID_DATA'
             )
         else:
             return BatchAnalyzeEmails400Response(

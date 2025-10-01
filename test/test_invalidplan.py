@@ -35,8 +35,8 @@ class TestINVALIDPLAN(unittest.TestCase):
         model = INVALIDPLAN()
         if include_optional:
             return INVALIDPLAN(
-                message = 'Your plan does not support AI features, please upgrade your plan or set enableAI as false.',
-                code = 'INVALID_PLAN'
+                error_message = 'The account does not have a valid plan to access the requested resource.',
+                error_code = 'INVALID_PLAN'
             )
         else:
             return INVALIDPLAN(

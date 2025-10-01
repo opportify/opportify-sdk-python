@@ -13,40 +13,27 @@
 
 
 import unittest
+from openapi_client.models.analyze_email400_response import AnalyzeEmail400Response
+from openapi_client.models.invalidemail import INVALIDEMAIL
+from openapi_client.models.malformedrequest import MALFORMEDREQUEST
 
-from openapi_client.models.analyze_email400_response_error import AnalyzeEmail400ResponseError
 
-class TestAnalyzeEmail400ResponseError(unittest.TestCase):
-    """AnalyzeEmail400ResponseError unit test stubs"""
+class TestAnalyzeEmail400ResponseOneOf(unittest.TestCase):
+    """Concrete tests for oneOf wrapper AnalyzeEmail400Response replacing removed *_error model."""
 
-    def setUp(self):
-        pass
+    def test_invalid_email_variant(self):
+        variant = INVALIDEMAIL(errorMessage="bad", errorCode="INVALID_EMAIL")
+        wrapper = AnalyzeEmail400Response(variant)
+        self.assertIs(wrapper.actual_instance, variant)
+        data = wrapper.to_dict()
+        self.assertEqual(data.get("errorCode"), "INVALID_EMAIL")
 
-    def tearDown(self):
-        pass
-
-    def make_instance(self, include_optional) -> AnalyzeEmail400ResponseError:
-        """Test AnalyzeEmail400ResponseError
-            include_optional is a boolean, when False only required
-            params are included, when True both required and
-            optional params are included """
-        # uncomment below to create an instance of `AnalyzeEmail400ResponseError`
-        """
-        model = AnalyzeEmail400ResponseError()
-        if include_optional:
-            return AnalyzeEmail400ResponseError(
-                message = 'The email provided is invalid, please provide a valid email.',
-                code = 'INVALID_EMAIL'
-            )
-        else:
-            return AnalyzeEmail400ResponseError(
-        )
-        """
-
-    def testAnalyzeEmail400ResponseError(self):
-        """Test AnalyzeEmail400ResponseError"""
-        # inst_req_only = self.make_instance(include_optional=False)
-        # inst_req_and_optional = self.make_instance(include_optional=True)
+    def test_malformed_request_variant(self):
+        variant = MALFORMEDREQUEST(errorMessage="malformed", errorCode="MALFORMED_REQUEST")
+        wrapper = AnalyzeEmail400Response(variant)
+        self.assertIs(wrapper.actual_instance, variant)
+        json_str = wrapper.to_json()
+        self.assertIn("malformed", json_str)
 
 if __name__ == '__main__':
     unittest.main()

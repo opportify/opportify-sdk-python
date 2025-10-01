@@ -344,7 +344,7 @@ class EmailInsightsApi:
     ) -> BatchAnalyzeEmails202Response:
         """Batch Analyze Emails
 
-        The **Batch Analyze Emails** endpoint enables processing of large volumes of email addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of emails for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of email addresses. - **CSV Upload**: Upload a CSV file with email addresses in a single column (with header row). - **Line-Separated Text**: Submit a plain text file with one email address per line.  ### Example JSON Request: ```json {   \"emails\": [     \"first-email@domain.com\",     \"second-email@domain.com\",     \"third-email@domain.com\"   ] } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
+        The **Batch Analyze Emails** endpoint enables processing of large volumes of email addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of emails for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of email addresses. - **CSV Upload**: Upload a CSV file with email addresses. It accepts with or without headers and multiple columns, the system will extract all valid emails. - **Line-Separated Text**: Submit a plain text file with one email address per line.  ### Example JSON Request: ```json {   \"emails\": [     \"first-email@domain.com\",     \"second-email@domain.com\"   ],   \"name\": \"my list of emails\",   \"enableAI\": true,   \"enableAutoCorrection\": true } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
 
         :param batch_analyze_emails_request: (required)
         :type batch_analyze_emails_request: BatchAnalyzeEmailsRequest
@@ -381,8 +381,11 @@ class EmailInsightsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '202': "BatchAnalyzeEmails202Response",
             '400': "BatchAnalyzeEmails400Response",
-            '413': "BatchAnalyzeEmails413Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '413': "BatchAnalyzeEmails413Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -415,7 +418,7 @@ class EmailInsightsApi:
     ) -> ApiResponse[BatchAnalyzeEmails202Response]:
         """Batch Analyze Emails
 
-        The **Batch Analyze Emails** endpoint enables processing of large volumes of email addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of emails for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of email addresses. - **CSV Upload**: Upload a CSV file with email addresses in a single column (with header row). - **Line-Separated Text**: Submit a plain text file with one email address per line.  ### Example JSON Request: ```json {   \"emails\": [     \"first-email@domain.com\",     \"second-email@domain.com\",     \"third-email@domain.com\"   ] } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
+        The **Batch Analyze Emails** endpoint enables processing of large volumes of email addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of emails for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of email addresses. - **CSV Upload**: Upload a CSV file with email addresses. It accepts with or without headers and multiple columns, the system will extract all valid emails. - **Line-Separated Text**: Submit a plain text file with one email address per line.  ### Example JSON Request: ```json {   \"emails\": [     \"first-email@domain.com\",     \"second-email@domain.com\"   ],   \"name\": \"my list of emails\",   \"enableAI\": true,   \"enableAutoCorrection\": true } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
 
         :param batch_analyze_emails_request: (required)
         :type batch_analyze_emails_request: BatchAnalyzeEmailsRequest
@@ -452,8 +455,11 @@ class EmailInsightsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '202': "BatchAnalyzeEmails202Response",
             '400': "BatchAnalyzeEmails400Response",
-            '413': "BatchAnalyzeEmails413Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '413': "BatchAnalyzeEmails413Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -486,7 +492,7 @@ class EmailInsightsApi:
     ) -> RESTResponseType:
         """Batch Analyze Emails
 
-        The **Batch Analyze Emails** endpoint enables processing of large volumes of email addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of emails for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of email addresses. - **CSV Upload**: Upload a CSV file with email addresses in a single column (with header row). - **Line-Separated Text**: Submit a plain text file with one email address per line.  ### Example JSON Request: ```json {   \"emails\": [     \"first-email@domain.com\",     \"second-email@domain.com\",     \"third-email@domain.com\"   ] } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
+        The **Batch Analyze Emails** endpoint enables processing of large volumes of email addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of emails for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of email addresses. - **CSV Upload**: Upload a CSV file with email addresses. It accepts with or without headers and multiple columns, the system will extract all valid emails. - **Line-Separated Text**: Submit a plain text file with one email address per line.  ### Example JSON Request: ```json {   \"emails\": [     \"first-email@domain.com\",     \"second-email@domain.com\"   ],   \"name\": \"my list of emails\",   \"enableAI\": true,   \"enableAutoCorrection\": true } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
 
         :param batch_analyze_emails_request: (required)
         :type batch_analyze_emails_request: BatchAnalyzeEmailsRequest
@@ -523,8 +529,11 @@ class EmailInsightsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '202': "BatchAnalyzeEmails202Response",
             '400': "BatchAnalyzeEmails400Response",
-            '413': "BatchAnalyzeEmails413Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '413': "BatchAnalyzeEmails413Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -668,8 +677,11 @@ class EmailInsightsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GetEmailBatchStatus200Response",
-            '404': "GetEmailBatchStatus404Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '404': "GetEmailBatchStatus404Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -738,8 +750,11 @@ class EmailInsightsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GetEmailBatchStatus200Response",
-            '404': "GetEmailBatchStatus404Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '404': "GetEmailBatchStatus404Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -808,8 +823,11 @@ class EmailInsightsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GetEmailBatchStatus200Response",
-            '404': "GetEmailBatchStatus404Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '404': "GetEmailBatchStatus404Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(

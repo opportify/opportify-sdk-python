@@ -36,6 +36,7 @@ class TestBatchAnalyzeEmailsRequest(unittest.TestCase):
         if include_optional:
             return BatchAnalyzeEmailsRequest(
                 emails = ["first-email@domain.com","second-email@domain.com"],
+                name = 'my list of emails',
                 enable_ai = True,
                 enable_auto_correction = True
             )

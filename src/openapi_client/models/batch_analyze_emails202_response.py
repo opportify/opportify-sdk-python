@@ -27,9 +27,10 @@ class BatchAnalyzeEmails202Response(BaseModel):
     BatchAnalyzeEmails202Response
     """ # noqa: E501
     job_id: Optional[StrictStr] = Field(default=None, description="Unique identifier for the batch job.", alias="jobId")
+    name: Optional[StrictStr] = Field(default=None, description="Name of the batch job, if provided.")
     status: Optional[StrictStr] = Field(default=None, description="Current status of the batch job.")
     status_description: Optional[StrictStr] = Field(default=None, description="Description of the status, particularly useful when status is ERROR.", alias="statusDescription")
-    __properties: ClassVar[List[str]] = ["jobId", "status", "statusDescription"]
+    __properties: ClassVar[List[str]] = ["jobId", "name", "status", "statusDescription"]
 
     @field_validator('status')
     def status_validate_enum(cls, value):
@@ -93,6 +94,7 @@ class BatchAnalyzeEmails202Response(BaseModel):
 
         _obj = cls.model_validate({
             "jobId": obj.get("jobId"),
+            "name": obj.get("name"),
             "status": obj.get("status"),
             "statusDescription": obj.get("statusDescription")
         })

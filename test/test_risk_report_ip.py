@@ -25,28 +25,20 @@ class TestRiskReportIp(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> RiskReportIp:
-        """Test RiskReportIp
-            include_optional is a boolean, when False only required
-            params are included, when True both required and
-            optional params are included """
-        # uncomment below to create an instance of `RiskReportIp`
-        """
-        model = RiskReportIp()
+    def make_instance(self, include_optional: bool) -> RiskReportIp:
         if include_optional:
-            return RiskReportIp(
-                score = 850,
-                level = 'highest'
-            )
-        else:
-            return RiskReportIp(
-        )
-        """
+            return RiskReportIp(score=850, level="highest")
+        return RiskReportIp()
 
-    def testRiskReportIp(self):
-        """Test RiskReportIp"""
-        # inst_req_only = self.make_instance(include_optional=False)
-        # inst_req_and_optional = self.make_instance(include_optional=True)
+    def test_risk_report_ip_minimal(self):
+        inst = self.make_instance(include_optional=False)
+        self.assertEqual(inst.to_dict(), {})
+
+    def test_risk_report_ip_full(self):
+        inst = self.make_instance(include_optional=True)
+        data = inst.to_dict()
+        self.assertEqual(data.get("score"), 850)
+        self.assertEqual(data.get("level"), "highest")
 
 if __name__ == '__main__':
     unittest.main()

@@ -36,6 +36,7 @@ class TestBatchAnalyzeEmails202Response(unittest.TestCase):
         if include_optional:
             return BatchAnalyzeEmails202Response(
                 job_id = 'uuid-12345-67890',
+                name = 'my list of emails',
                 status = 'QUEUED',
                 status_description = ''
             )

@@ -25,29 +25,20 @@ class TestRiskReportEmail(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> RiskReportEmail:
-        """Test RiskReportEmail
-            include_optional is a boolean, when False only required
-            params are included, when True both required and
-            optional params are included """
-        # uncomment below to create an instance of `RiskReportEmail`
-        """
-        model = RiskReportEmail()
+    def make_instance(self, include_optional: bool) -> RiskReportEmail:
         if include_optional:
-            return RiskReportEmail(
-                score = 850,
-                level = 'highest',
-                base_analysis = ["instance-bounce","future-bounce","fraud"]
-            )
-        else:
-            return RiskReportEmail(
-        )
-        """
+            return RiskReportEmail(score=750, level="high")
+        return RiskReportEmail()
 
-    def testRiskReportEmail(self):
-        """Test RiskReportEmail"""
-        # inst_req_only = self.make_instance(include_optional=False)
-        # inst_req_and_optional = self.make_instance(include_optional=True)
+    def test_risk_report_email_minimal(self):
+        inst = self.make_instance(include_optional=False)
+        self.assertEqual(inst.to_dict(), {})
+
+    def test_risk_report_email_full(self):
+        inst = self.make_instance(include_optional=True)
+        data = inst.to_dict()
+        self.assertEqual(data.get("score"), 750)
+        self.assertEqual(data.get("level"), "high")
 
 if __name__ == '__main__':
     unittest.main()

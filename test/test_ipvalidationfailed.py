@@ -35,8 +35,8 @@ class TestIPVALIDATIONFAILED(unittest.TestCase):
         model = IPVALIDATIONFAILED()
         if include_optional:
             return IPVALIDATIONFAILED(
-                message = 'The input provided is not a valid IPv4 or IPv6 address.',
-                code = 'IP_VALIDATION_FAILED'
+                error_message = 'The input provided is not a valid IPv4 or IPv6 address.',
+                error_code = 'IP_VALIDATION_FAILED'
             )
         else:
             return IPVALIDATIONFAILED(

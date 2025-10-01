@@ -35,8 +35,8 @@ class TestINVALIDDATA1(unittest.TestCase):
         model = INVALIDDATA1()
         if include_optional:
             return INVALIDDATA1(
-                message = 'The submitted data contains invalid IP addresses.',
-                code = 'INVALID_DATA'
+                error_message = 'The submitted data contains invalid IP addresses.',
+                error_code = 'INVALID_DATA'
             )
         else:
             return INVALIDDATA1(

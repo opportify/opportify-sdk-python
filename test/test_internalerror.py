@@ -35,8 +35,8 @@ class TestINTERNALERROR(unittest.TestCase):
         model = INTERNALERROR()
         if include_optional:
             return INTERNALERROR(
-                message = 'Something went wrong on our side. We'll investigate.',
-                code = 'INTERNAL_ERROR'
+                error_message = 'An internal error occurred while processing the request.',
+                error_code = 'INTERNAL_ERROR'
             )
         else:
             return INTERNALERROR(

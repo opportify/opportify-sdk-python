@@ -12,80 +12,43 @@
 """  # noqa: E501
 
 
-from __future__ import annotations
-import pprint
-import re  # noqa: F401
-import json
+import unittest
 
-from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List, Optional
-from openapi_client.models.internalerror import INTERNALERROR
-from typing import Optional, Set
-from typing_extensions import Self
+from openapi_client.models.batch_analyze_ips202_response import BatchAnalyzeIps202Response
 
-class AnalyzeIp500Response(BaseModel):
-    """
-    AnalyzeIp500Response
-    """ # noqa: E501
-    error: Optional[INTERNALERROR] = None
-    __properties: ClassVar[List[str]] = ["error"]
+class TestBatchAnalyzeIps202Response(unittest.TestCase):
+    """BatchAnalyzeIps202Response unit test stubs"""
 
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
+    def setUp(self):
+        pass
 
+    def tearDown(self):
+        pass
 
-    def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
-
-    def to_json(self) -> str:
-        """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
-
-    @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AnalyzeIp500Response from a JSON string"""
-        return cls.from_dict(json.loads(json_str))
-
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
+    def make_instance(self, include_optional) -> BatchAnalyzeIps202Response:
+        """Test BatchAnalyzeIps202Response
+            include_optional is a boolean, when False only required
+            params are included, when True both required and
+            optional params are included """
+        # uncomment below to create an instance of `BatchAnalyzeIps202Response`
         """
-        excluded_fields: Set[str] = set([
-        ])
-
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude=excluded_fields,
-            exclude_none=True,
+        model = BatchAnalyzeIps202Response()
+        if include_optional:
+            return BatchAnalyzeIps202Response(
+                job_id = 'uuid-12345-67890',
+                name = 'my list of IPs',
+                status = 'QUEUED',
+                status_description = ''
+            )
+        else:
+            return BatchAnalyzeIps202Response(
         )
-        # override the default output from pydantic by calling `to_dict()` of error
-        if self.error:
-            _dict['error'] = self.error.to_dict()
-        return _dict
+        """
 
-    @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AnalyzeIp500Response from a dict"""
-        if obj is None:
-            return None
+    def testBatchAnalyzeIps202Response(self):
+        """Test BatchAnalyzeIps202Response"""
+        # inst_req_only = self.make_instance(include_optional=False)
+        # inst_req_and_optional = self.make_instance(include_optional=True)
 
-        if not isinstance(obj, dict):
-            return cls.model_validate(obj)
-
-        _obj = cls.model_validate({
-            "error": INTERNALERROR.from_dict(obj["error"]) if obj.get("error") is not None else None
-        })
-        return _obj
-
-
+if __name__ == '__main__':
+    unittest.main()

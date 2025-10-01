@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.analyze_ip404_response import AnalyzeIp404Response
+from openapi_client.models.forbidden import FORBIDDEN
 
-class TestAnalyzeIp404Response(unittest.TestCase):
-    """AnalyzeIp404Response unit test stubs"""
+class TestFORBIDDEN(unittest.TestCase):
+    """FORBIDDEN unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,27 +25,26 @@ class TestAnalyzeIp404Response(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> AnalyzeIp404Response:
-        """Test AnalyzeIp404Response
+    def make_instance(self, include_optional) -> FORBIDDEN:
+        """Test FORBIDDEN
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `AnalyzeIp404Response`
+        # uncomment below to create an instance of `FORBIDDEN`
         """
-        model = AnalyzeIp404Response()
+        model = FORBIDDEN()
         if include_optional:
-            return AnalyzeIp404Response(
-                error = openapi_client.models.not_found.NOT_FOUND(
-                    message = 'The input provided doesn’t match any RIR database.', 
-                    code = 'NOT_FOUND', )
+            return FORBIDDEN(
+                error_message = 'The request does not have permission to access the requested resource, even with valid credentials.',
+                error_code = 'FORBIDDEN'
             )
         else:
-            return AnalyzeIp404Response(
+            return FORBIDDEN(
         )
         """
 
-    def testAnalyzeIp404Response(self):
-        """Test AnalyzeIp404Response"""
+    def testFORBIDDEN(self):
+        """Test FORBIDDEN"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

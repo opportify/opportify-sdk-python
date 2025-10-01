@@ -35,9 +35,8 @@ class TestBatchAnalyzeEmails413Response(unittest.TestCase):
         model = BatchAnalyzeEmails413Response()
         if include_optional:
             return BatchAnalyzeEmails413Response(
-                error = openapi_client.models.batch_analyze_emails_413_response_error.batchAnalyzeEmails_413_response_error(
-                    message = 'The submitted payload exceeds the 3MB size limit.', 
-                    code = 'PAYLOAD_TOO_LARGE', )
+                error_message = 'The submitted payload exceeds the 3MB size limit.',
+                error_code = 'PAYLOAD_TOO_LARGE'
             )
         else:
             return BatchAnalyzeEmails413Response(

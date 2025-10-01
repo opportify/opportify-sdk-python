@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.analyze_ip500_response import AnalyzeIp500Response
+from openapi_client.models.batch_analyze_emails429_response import BatchAnalyzeEmails429Response
 
-class TestAnalyzeIp500Response(unittest.TestCase):
-    """AnalyzeIp500Response unit test stubs"""
+class TestBatchAnalyzeEmails429Response(unittest.TestCase):
+    """BatchAnalyzeEmails429Response unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,27 +25,26 @@ class TestAnalyzeIp500Response(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> AnalyzeIp500Response:
-        """Test AnalyzeIp500Response
+    def make_instance(self, include_optional) -> BatchAnalyzeEmails429Response:
+        """Test BatchAnalyzeEmails429Response
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `AnalyzeIp500Response`
+        # uncomment below to create an instance of `BatchAnalyzeEmails429Response`
         """
-        model = AnalyzeIp500Response()
+        model = BatchAnalyzeEmails429Response()
         if include_optional:
-            return AnalyzeIp500Response(
-                error = openapi_client.models.internal_error.INTERNAL_ERROR(
-                    message = 'Something went wrong on our side. We'll investigate.', 
-                    code = 'INTERNAL_ERROR', )
+            return BatchAnalyzeEmails429Response(
+                error_message = 'Too many requests. Please slow down and try again later.',
+                error_code = 'TOO_MANY_REQUESTS'
             )
         else:
-            return AnalyzeIp500Response(
+            return BatchAnalyzeEmails429Response(
         )
         """
 
-    def testAnalyzeIp500Response(self):
-        """Test AnalyzeIp500Response"""
+    def testBatchAnalyzeEmails429Response(self):
+        """Test BatchAnalyzeEmails429Response"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

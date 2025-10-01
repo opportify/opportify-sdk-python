@@ -35,9 +35,8 @@ class TestBatchAnalyzeEmails403Response(unittest.TestCase):
         model = BatchAnalyzeEmails403Response()
         if include_optional:
             return BatchAnalyzeEmails403Response(
-                error = openapi_client.models.batch_analyze_emails_403_response_error.batchAnalyzeEmails_403_response_error(
-                    message = 'The token provided is either invalid, expired, or missing, preventing access to the resource.', 
-                    code = 'INVALID_TOKEN', )
+                error_message = 'An internal error occurred while processing the request.',
+                error_code = 'INTERNAL_ERROR'
             )
         else:
             return BatchAnalyzeEmails403Response(

@@ -35,8 +35,8 @@ class TestMALFORMEDREQUEST(unittest.TestCase):
         model = MALFORMEDREQUEST()
         if include_optional:
             return MALFORMEDREQUEST(
-                message = 'The request is improperly formatted, email field is required.',
-                code = 'MALFORMED_REQUEST'
+                error_message = 'The request is improperly formatted, email field is required.',
+                error_code = 'MALFORMED_REQUEST'
             )
         else:
             return MALFORMEDREQUEST(

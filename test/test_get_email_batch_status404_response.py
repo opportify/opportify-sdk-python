@@ -35,9 +35,8 @@ class TestGetEmailBatchStatus404Response(unittest.TestCase):
         model = GetEmailBatchStatus404Response()
         if include_optional:
             return GetEmailBatchStatus404Response(
-                error = openapi_client.models.get_email_batch_status_404_response_error.getEmailBatchStatus_404_response_error(
-                    message = 'The requested job ID was not found or has expired.', 
-                    code = 'JOB_NOT_FOUND', )
+                error_message = 'The requested job ID was not found or has expired.',
+                error_code = 'JOB_NOT_FOUND'
             )
         else:
             return GetEmailBatchStatus404Response(

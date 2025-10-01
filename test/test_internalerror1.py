@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.get_email_batch_status404_response_error import GetEmailBatchStatus404ResponseError
+from openapi_client.models.internalerror1 import INTERNALERROR1
 
-class TestGetEmailBatchStatus404ResponseError(unittest.TestCase):
-    """GetEmailBatchStatus404ResponseError unit test stubs"""
+class TestINTERNALERROR1(unittest.TestCase):
+    """INTERNALERROR1 unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,26 +25,26 @@ class TestGetEmailBatchStatus404ResponseError(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> GetEmailBatchStatus404ResponseError:
-        """Test GetEmailBatchStatus404ResponseError
+    def make_instance(self, include_optional) -> INTERNALERROR1:
+        """Test INTERNALERROR1
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `GetEmailBatchStatus404ResponseError`
+        # uncomment below to create an instance of `INTERNALERROR1`
         """
-        model = GetEmailBatchStatus404ResponseError()
+        model = INTERNALERROR1()
         if include_optional:
-            return GetEmailBatchStatus404ResponseError(
-                message = 'The requested job ID was not found or has expired.',
-                code = 'JOB_NOT_FOUND'
+            return INTERNALERROR1(
+                error_message = 'Something went wrong on our side. We'll investigate.',
+                error_code = 'INTERNAL_ERROR'
             )
         else:
-            return GetEmailBatchStatus404ResponseError(
+            return INTERNALERROR1(
         )
         """
 
-    def testGetEmailBatchStatus404ResponseError(self):
-        """Test GetEmailBatchStatus404ResponseError"""
+    def testINTERNALERROR1(self):
+        """Test INTERNALERROR1"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

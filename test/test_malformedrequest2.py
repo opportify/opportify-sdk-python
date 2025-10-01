@@ -35,8 +35,8 @@ class TestMALFORMEDREQUEST2(unittest.TestCase):
         model = MALFORMEDREQUEST2()
         if include_optional:
             return MALFORMEDREQUEST2(
-                message = 'The request is improperly formatted or missing required data.',
-                code = 'MALFORMED_REQUEST'
+                error_message = 'The JSON request doesn’t seem to be correct or valid.',
+                error_code = 'MALFORMED_REQUEST'
             )
         else:
             return MALFORMEDREQUEST2(

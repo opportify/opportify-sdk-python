@@ -20,9 +20,9 @@ from pydantic import Field, StrictStr
 from typing_extensions import Annotated
 from openapi_client.models.analyze_ip200_response import AnalyzeIp200Response
 from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
-from openapi_client.models.batch_analyze_emails202_response import BatchAnalyzeEmails202Response
+from openapi_client.models.batch_analyze_ips202_response import BatchAnalyzeIps202Response
 from openapi_client.models.batch_analyze_ips_request import BatchAnalyzeIpsRequest
-from openapi_client.models.get_email_batch_status200_response import GetEmailBatchStatus200Response
+from openapi_client.models.get_ip_batch_status200_response import GetIpBatchStatus200Response
 
 from openapi_client.api_client import ApiClient, RequestSerialized
 from openapi_client.api_response import ApiResponse
@@ -98,9 +98,9 @@ class IPInsightsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AnalyzeIp200Response",
             '400': "AnalyzeIp400Response",
-            '404': "AnalyzeIp404Response",
+            '404': "NOTFOUND",
             '403': "AnalyzeEmail403Response",
-            '500': "AnalyzeIp500Response",
+            '500': "INTERNALERROR1",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -169,9 +169,9 @@ class IPInsightsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AnalyzeIp200Response",
             '400': "AnalyzeIp400Response",
-            '404': "AnalyzeIp404Response",
+            '404': "NOTFOUND",
             '403': "AnalyzeEmail403Response",
-            '500': "AnalyzeIp500Response",
+            '500': "INTERNALERROR1",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -240,9 +240,9 @@ class IPInsightsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AnalyzeIp200Response",
             '400': "AnalyzeIp400Response",
-            '404': "AnalyzeIp404Response",
+            '404': "NOTFOUND",
             '403': "AnalyzeEmail403Response",
-            '500': "AnalyzeIp500Response",
+            '500': "INTERNALERROR1",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -344,10 +344,10 @@ class IPInsightsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> BatchAnalyzeEmails202Response:
+    ) -> BatchAnalyzeIps202Response:
         """Batch Analyze IPs
 
-        The **Batch Analyze IPs** endpoint enables processing of large volumes of IP addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of IP addresses for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of IP addresses. - **CSV Upload**: Upload a CSV file with IP addresses in a single column (with header row). - **Line-Separated Text**: Submit a plain text file with one IP address per line.  ### Example JSON Request: ```json {   \"ips\": [     \"192.168.0.1\",     \"10.0.0.1\",     \"172.16.0.1\"   ] } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
+        The **Batch Analyze IPs** endpoint enables processing of large volumes of IP addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of IP addresses for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of IP addresses. - **CSV Upload**: Upload a CSV file with IP addresses. It accepts with or without headers and multiple columns, the system will extract all valid IPs. - **Line-Separated Text**: Submit a plain text file with one IP address per line.  ### Example JSON Request: ```json {   \"ips\": [     \"192.168.0.1\",     \"10.0.0.1\",     \"172.16.0.1\"   ],   \"name\": \"my list of IPs\",   \"enableAI\": true } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
 
         :param batch_analyze_ips_request: (required)
         :type batch_analyze_ips_request: BatchAnalyzeIpsRequest
@@ -382,10 +382,13 @@ class IPInsightsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '202': "BatchAnalyzeEmails202Response",
+            '202': "BatchAnalyzeIps202Response",
             '400': "BatchAnalyzeIps400Response",
-            '413': "BatchAnalyzeEmails413Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '413': "BatchAnalyzeEmails413Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -415,10 +418,10 @@ class IPInsightsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[BatchAnalyzeEmails202Response]:
+    ) -> ApiResponse[BatchAnalyzeIps202Response]:
         """Batch Analyze IPs
 
-        The **Batch Analyze IPs** endpoint enables processing of large volumes of IP addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of IP addresses for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of IP addresses. - **CSV Upload**: Upload a CSV file with IP addresses in a single column (with header row). - **Line-Separated Text**: Submit a plain text file with one IP address per line.  ### Example JSON Request: ```json {   \"ips\": [     \"192.168.0.1\",     \"10.0.0.1\",     \"172.16.0.1\"   ] } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
+        The **Batch Analyze IPs** endpoint enables processing of large volumes of IP addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of IP addresses for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of IP addresses. - **CSV Upload**: Upload a CSV file with IP addresses. It accepts with or without headers and multiple columns, the system will extract all valid IPs. - **Line-Separated Text**: Submit a plain text file with one IP address per line.  ### Example JSON Request: ```json {   \"ips\": [     \"192.168.0.1\",     \"10.0.0.1\",     \"172.16.0.1\"   ],   \"name\": \"my list of IPs\",   \"enableAI\": true } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
 
         :param batch_analyze_ips_request: (required)
         :type batch_analyze_ips_request: BatchAnalyzeIpsRequest
@@ -453,10 +456,13 @@ class IPInsightsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '202': "BatchAnalyzeEmails202Response",
+            '202': "BatchAnalyzeIps202Response",
             '400': "BatchAnalyzeIps400Response",
-            '413': "BatchAnalyzeEmails413Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '413': "BatchAnalyzeEmails413Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -489,7 +495,7 @@ class IPInsightsApi:
     ) -> RESTResponseType:
         """Batch Analyze IPs
 
-        The **Batch Analyze IPs** endpoint enables processing of large volumes of IP addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of IP addresses for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of IP addresses. - **CSV Upload**: Upload a CSV file with IP addresses in a single column (with header row). - **Line-Separated Text**: Submit a plain text file with one IP address per line.  ### Example JSON Request: ```json {   \"ips\": [     \"192.168.0.1\",     \"10.0.0.1\",     \"172.16.0.1\"   ] } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
+        The **Batch Analyze IPs** endpoint enables processing of large volumes of IP addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of IP addresses for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of IP addresses. - **CSV Upload**: Upload a CSV file with IP addresses. It accepts with or without headers and multiple columns, the system will extract all valid IPs. - **Line-Separated Text**: Submit a plain text file with one IP address per line.  ### Example JSON Request: ```json {   \"ips\": [     \"192.168.0.1\",     \"10.0.0.1\",     \"172.16.0.1\"   ],   \"name\": \"my list of IPs\",   \"enableAI\": true } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
 
         :param batch_analyze_ips_request: (required)
         :type batch_analyze_ips_request: BatchAnalyzeIpsRequest
@@ -524,10 +530,13 @@ class IPInsightsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '202': "BatchAnalyzeEmails202Response",
+            '202': "BatchAnalyzeIps202Response",
             '400': "BatchAnalyzeIps400Response",
-            '413': "BatchAnalyzeEmails413Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '413': "BatchAnalyzeEmails413Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -632,7 +641,7 @@ class IPInsightsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> GetEmailBatchStatus200Response:
+    ) -> GetIpBatchStatus200Response:
         """Get IP Batch Status
 
         The **Get IP Batch Status** endpoint allows you to retrieve the current status of a previously submitted batch processing job. Use this endpoint to track the progress of your batch IP analysis request and retrieve results when processing is complete.  ### Response Information: - When status is `QUEUED`: The job is in the processing queue waiting to be processed. - When status is `PROCESSING`: The job is actively being processed. - When status is `COMPLETED`: The job has finished successfully. - When status is `ERROR`: An issue occurred during processing; check the statusDescription for details. 
@@ -670,9 +679,12 @@ class IPInsightsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetEmailBatchStatus200Response",
-            '404': "GetEmailBatchStatus404Response",
+            '200': "GetIpBatchStatus200Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '404': "GetEmailBatchStatus404Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -702,7 +714,7 @@ class IPInsightsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[GetEmailBatchStatus200Response]:
+    ) -> ApiResponse[GetIpBatchStatus200Response]:
         """Get IP Batch Status
 
         The **Get IP Batch Status** endpoint allows you to retrieve the current status of a previously submitted batch processing job. Use this endpoint to track the progress of your batch IP analysis request and retrieve results when processing is complete.  ### Response Information: - When status is `QUEUED`: The job is in the processing queue waiting to be processed. - When status is `PROCESSING`: The job is actively being processed. - When status is `COMPLETED`: The job has finished successfully. - When status is `ERROR`: An issue occurred during processing; check the statusDescription for details. 
@@ -740,9 +752,12 @@ class IPInsightsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetEmailBatchStatus200Response",
-            '404': "GetEmailBatchStatus404Response",
+            '200': "GetIpBatchStatus200Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '404': "GetEmailBatchStatus404Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -810,9 +825,12 @@ class IPInsightsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetEmailBatchStatus200Response",
-            '404': "GetEmailBatchStatus404Response",
+            '200': "GetIpBatchStatus200Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '404': "GetEmailBatchStatus404Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(

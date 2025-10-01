@@ -25,30 +25,34 @@ class TestAsn(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> Asn:
-        """Test Asn
-            include_optional is a boolean, when False only required
-            params are included, when True both required and
-            optional params are included """
-        # uncomment below to create an instance of `Asn`
+    def make_instance(self, include_optional: bool) -> Asn:
+        """Create an Asn instance for testing.
+
+        When include_optional is False return an empty model (all optional fields None);
+        when True populate all available fields.
         """
-        model = Asn()
         if include_optional:
             return Asn(
-                asn_id = '15169',
-                as_name = 'GOOGLE',
-                descr = ["Google LLC","Mountain View, CA"],
-                email = ["asn-email@somedomain.com"]
+                asnId="15169",
+                asName="GOOGLE",
+                descr=["Google LLC", "Mountain View, CA"],
+                email=["asn-email@somedomain.com"],
             )
-        else:
-            return Asn(
-        )
-        """
+        return Asn()
 
-    def testAsn(self):
-        """Test Asn"""
-        # inst_req_only = self.make_instance(include_optional=False)
-        # inst_req_and_optional = self.make_instance(include_optional=True)
+    def test_asn_minimal_and_full_serialization(self):
+        """Ensure minimal and fully populated Asn serialize correctly and preserve field aliases."""
+        inst_req_only = self.make_instance(include_optional=False)
+        self.assertEqual(inst_req_only.to_dict(), {}, "Empty optional fields should be excluded from dict")
+
+        inst_full = self.make_instance(include_optional=True)
+        asn_dict = inst_full.to_dict()
+        self.assertIn("asnId", asn_dict)
+        self.assertIn("asName", asn_dict)
+        self.assertEqual(asn_dict["asnId"], "15169")
+        self.assertEqual(asn_dict["asName"], "GOOGLE")
+        self.assertIsInstance(asn_dict.get("descr"), list)
+        self.assertIsInstance(asn_dict.get("email"), list)
 
 if __name__ == '__main__':
     unittest.main()

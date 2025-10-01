@@ -35,8 +35,8 @@ class TestNOTFOUND(unittest.TestCase):
         model = NOTFOUND()
         if include_optional:
             return NOTFOUND(
-                message = 'The input provided doesn’t match any RIR database.',
-                code = 'NOT_FOUND'
+                error_message = 'The input provided doesn’t match any RIR database.',
+                error_code = 'NOT_FOUND'
             )
         else:
             return NOTFOUND(

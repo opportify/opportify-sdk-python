@@ -15,6 +15,11 @@
 import unittest
 
 from openapi_client.models.whois import Whois
+from openapi_client.models.asn import Asn
+from openapi_client.models.organization import Organization
+from openapi_client.models.abuse_contact import AbuseContact
+from openapi_client.models.admin_contact import AdminContact
+from openapi_client.models.tech_contact import TechContact
 
 class TestWhois(unittest.TestCase):
     """Whois unit test stubs"""
@@ -25,66 +30,64 @@ class TestWhois(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> Whois:
-        """Test Whois
-            include_optional is a boolean, when False only required
-            params are included, when True both required and
-            optional params are included """
-        # uncomment below to create an instance of `Whois`
-        """
-        model = Whois()
+    def make_instance(self, include_optional: bool) -> Whois:
         if include_optional:
             return Whois(
-                rir = 'ARIN',
-                asn = openapi_client.models.asn.Asn(
-                    asn_id = '15169', 
-                    as_name = 'GOOGLE', 
-                    descr = ["Google LLC","Mountain View, CA"], 
-                    email = ["asn-email@somedomain.com"], ),
-                organization = openapi_client.models.organization.Organization(
-                    org_id = 'GOOGL', 
-                    org_name = 'Google LLC', 
-                    org_type = 'ISP', 
-                    descr = ["Leading internet provider","Mountain View, CA"], 
-                    address = ["1600 Amphitheatre Parkway"], 
-                    country = 'US', 
-                    phone = ["+1-800-555-1234"], 
-                    fax = ["+1-800-555-5678"], 
-                    email = ["support@organization.com"], ),
-                abuse_contact = openapi_client.models.abuse_contact.AbuseContact(
-                    contact_id = 'ABUSE123', 
-                    contact_type = 'abuse', 
-                    name = 'Abuse Desk', 
-                    address = ["123 Abuse St, Suite 100"], 
-                    phone = ["+1-800-ABUSE-123"], 
-                    fax = ["+1-800-ABUSE-456"], 
-                    email = ["abuse@organization.com"], ),
-                admin_contact = openapi_client.models.admin_contact.AdminContact(
-                    contact_id = 'ADMIN123', 
-                    contact_type = 'admin', 
-                    name = 'Admin Desk', 
-                    address = ["456 Admin Lane"], 
-                    phone = ["+1-800-ADMIN-123"], 
-                    fax = ["+1-800-ADMIN-456"], 
-                    email = ["admin@organization.com"], ),
-                tech_contact = openapi_client.models.tech_contact.TechContact(
-                    contact_id = 'TECH123', 
-                    contact_type = 'tech', 
-                    name = 'Tech Desk', 
-                    address = ["456 Tech Lane"], 
-                    phone = ["+1-800-TECH-123"], 
-                    fax = ["+1-800-TECH-456"], 
-                    email = ["tech@organization.com"], )
+                rir="ARIN",
+                asn=Asn(asnId="15169", asName="GOOGLE", descr=["Google LLC"], email=["asn-email@somedomain.com"]),
+                organization=Organization(
+                    orgId="GOOGL",
+                    orgName="Google LLC",
+                    orgType="ISP",
+                    descr=["Leading internet provider"],
+                    address=["1600 Amphitheatre Parkway"],
+                    country="US",
+                    phone=["+1-800-555-1234"],
+                    fax=["+1-800-555-5678"],
+                    email=["support@organization.com"],
+                ),
+                abuseContact=AbuseContact(
+                    contactId="ABUSE123",
+                    contactType="abuse",
+                    name="Abuse Desk",
+                    address=["123 Abuse St, Suite 100"],
+                    phone=["+1-800-ABUSE-123"],
+                    fax=["+1-800-ABUSE-456"],
+                    email=["abuse@organization.com"],
+                ),
+                adminContact=AdminContact(
+                    contactId="ADMIN123",
+                    contactType="admin",
+                    name="Admin Desk",
+                    address=["456 Admin Lane"],
+                    phone=["+1-800-ADMIN-123"],
+                    fax=["+1-800-ADMIN-456"],
+                    email=["admin@organization.com"],
+                ),
+                techContact=TechContact(
+                    contactId="TECH123",
+                    contactType="tech",
+                    name="Tech Desk",
+                    address=["456 Tech Lane"],
+                    phone=["+1-800-TECH-123"],
+                    fax=["+1-800-TECH-456"],
+                    email=["tech@organization.com"],
+                ),
             )
-        else:
-            return Whois(
-        )
-        """
+        return Whois()
 
-    def testWhois(self):
-        """Test Whois"""
-        # inst_req_only = self.make_instance(include_optional=False)
-        # inst_req_and_optional = self.make_instance(include_optional=True)
+    def test_whois_minimal_and_full_serialization(self):
+        minimal = self.make_instance(include_optional=False)
+        self.assertEqual(minimal.to_dict(), {})
+
+        full = self.make_instance(include_optional=True)
+        data = full.to_dict()
+        self.assertEqual(data.get("rir"), "ARIN")
+        self.assertIn("asn", data)
+        self.assertIn("organization", data)
+        self.assertIn("abuseContact", data)
+        self.assertIn("adminContact", data)
+        self.assertIn("techContact", data)
 
 if __name__ == '__main__':
     unittest.main()

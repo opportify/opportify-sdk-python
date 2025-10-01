@@ -35,7 +35,8 @@ class TestAnalyzeEmail400Response(unittest.TestCase):
         model = AnalyzeEmail400Response()
         if include_optional:
             return AnalyzeEmail400Response(
-                error = openapi_client.models.analyze_email_400_response_error.analyzeEmail_400_response_error()
+                error_message = 'The email provided is invalid, please provide a valid email.',
+                error_code = 'INVALID_EMAIL'
             )
         else:
             return AnalyzeEmail400Response(
