@@ -153,3 +153,41 @@ def test_ip_batch_requires_ips():
     wrapper, _ = _prepare_ip_wrapper()
     with pytest.raises(ValueError):
         wrapper.batch_analyze({})
+
+
+# Additions for IpInsights extended batch support
+
+def test_ip_batch_text_plain_build_from_list():
+    # For text/plain path we need the real generated api_instance with an api_client
+    wrapper = IpInsights("dummy-key")  # do not swap in dummy
+    # Monkeypatch ApiClient.call_api to avoid network
+    original_call = wrapper.api_instance.api_client.call_api  # type: ignore[attr-defined]
+
+    class _Resp:
+        def __init__(self):
+            self.status = 202
+            self.data = b'{"jobId":"abc123"}'
+            self.headers = {}
+            self.reason = "ACCEPTED"
+        def read(self):
+            return self.data
+        def getheader(self, name, default=None):
+            return None
+        def getheaders(self):
+            return {}
+
+    def fake_call(method, url, headers=None, body=None, post_params=None, _request_timeout=None):  # noqa: D401
+        return _Resp()
+
+    wrapper.api_instance.api_client.call_api = fake_call  # type: ignore[attr-defined]
+    try:
+        res = wrapper.batch_analyze({"ips": ["1.2.3.4", "5.6.7.8"], "name": "list-to-text"}, content_type="text/plain")
+        assert res["jobId"] == "abc123"
+    finally:
+        wrapper.api_instance.api_client.call_api = original_call  # type: ignore[attr-defined]
+
+
+def test_ip_batch_text_plain_missing_inputs():
+    wrapper, _ = _prepare_ip_wrapper()
+    with pytest.raises(ValueError):
+        wrapper.batch_analyze({}, content_type="text/plain")

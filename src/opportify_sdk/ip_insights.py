@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, List
+from pathlib import Path
+import json
 
 from openapi_client.configuration import Configuration as ApiConfiguration
 from openapi_client.api_client import ApiClient
@@ -78,15 +80,73 @@ class IpInsights:
         except ApiException as exc:  # pragma: no cover
             raise Exception(f"API exception: {exc.status} {exc.reason}") from exc
 
-    def batch_analyze(self, params: Dict[str, Any]) -> Dict[str, Any]:
+    def batch_analyze(self, params: Dict[str, Any], *, content_type: str = "application/json") -> Dict[str, Any]:
+        """Submit a batch IP analysis job.
+
+        Supports:
+          - application/json (default): expects 'ips' list
+          - multipart/form-data: expects 'file' path containing IPs (one per line or CSV); optional name/enableAi
+          - text/plain: expects 'text' raw newline separated IPs OR 'ips' list
+        """
         self._refresh_api_instance()
-        norm = self._normalize_batch_request(params)
-        request_body = BatchAnalyzeIpsRequest(**norm)
-        try:
-            result = self.api_instance.batch_analyze_ips(request_body)
-            return result.to_dict()
-        except ApiException as exc:  # pragma: no cover
-            raise Exception(f"API exception: {exc.status} {exc.reason}") from exc
+        ct = content_type.lower()
+        if ct == "application/json":
+            norm = self._normalize_batch_request(params)
+            request_body = BatchAnalyzeIpsRequest(**norm)
+            try:
+                result = self.api_instance.batch_analyze_ips(request_body)
+                return result.to_dict()
+            except ApiException as exc:  # pragma: no cover
+                raise Exception(f"API exception: {exc.status} {exc.reason}") from exc
+        if ct == "text/plain":
+            if "text" in params:
+                raw_text = str(params["text"]).strip()
+            else:
+                if "ips" not in params:
+                    raise ValueError("'ips' or 'text' is required for text/plain submission")
+                ips = params["ips"]
+                if not isinstance(ips, list):
+                    raise ValueError("'ips' must be a list when deriving text body")
+                raw_text = "\n".join(str(i).strip() for i in ips if i)
+            api_client: ApiClient = self.api_instance.api_client  # type: ignore[assignment]
+            method, url, headers, body, post_params = api_client.param_serialize(
+                method="POST",
+                resource_path="/ip/batch",
+                path_params={},
+                query_params=[],
+                header_params={"Content-Type": "text/plain", "Accept": "application/json"},
+                body=raw_text,
+                post_params=[],
+                files={},
+                auth_settings=["opportifyToken"],
+                collection_formats={},
+                _host=None,
+                _request_auth=None,
+            )
+            response = api_client.call_api(method, url, headers, body, post_params)
+            response.read()
+            return api_client.response_deserialize(
+                response_data=response,
+                response_types_map={
+                    "202": "BatchAnalyzeIps202Response",
+                    "400": "BatchAnalyzeIps400Response",
+                    "401": "BatchAnalyzeIps401Response",
+                    "402": "BatchAnalyzeIps402Response",
+                    "403": "BatchAnalyzeIps403Response",
+                    "413": "BatchAnalyzeIps413Response",
+                    "429": "BatchAnalyzeIps429Response",
+                    "500": "AnalyzeEmail500Response",
+                },
+            ).data.to_dict()
+        if ct == "multipart/form-data":
+            if "file" not in params:
+                raise ValueError("'file' parameter is required for multipart/form-data")
+            return self._batch_analyze_file_multipart(params)
+        raise ValueError(f"Unsupported content_type: {content_type}")
+
+    def batch_analyze_file(self, file_path: str, **options: Any) -> Dict[str, Any]:
+        params = {"file": file_path, **options}
+        return self.batch_analyze(params, content_type="multipart/form-data")
 
     def get_batch_status(self, job_id: str) -> Dict[str, Any]:
         self._refresh_api_instance()
@@ -144,4 +204,42 @@ class IpInsights:
         if "enable_ai" in params:
             out["enable_ai"] = bool(params["enable_ai"])
         return out
+
+    def _batch_analyze_file_multipart(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        self._refresh_api_instance()
+        file_path = Path(str(params["file"]))
+        if not file_path.is_file():
+            raise ValueError(f"File does not exist: {file_path}")
+        enable_ai = params.get("enable_ai") or params.get("enableAi")
+        name = params.get("name")
+        with file_path.open("rb") as fh:
+            file_content = fh.read()
+        fields: List[tuple] = [("file", (file_path.name, file_content))]
+        if enable_ai is not None:
+            fields.append(("enable_ai", "true" if bool(enable_ai) else "false"))
+        if name is not None:
+            fields.append(("name", str(name)))
+        api_client: ApiClient = self.api_instance.api_client  # type: ignore[assignment]
+        token = self.config.get_api_key_with_prefix("opportifyToken")
+        headers = {"Accept": "application/json"}
+        if token:
+            headers["x-opportify-token"] = token
+        response = api_client.rest_client.pool_manager.request(
+            "POST",
+            f"{self._final_url}/ip/batch",
+            fields=fields,
+            encode_multipart=True,
+            headers=headers,
+            preload_content=False,
+        )
+        data = response.data
+        status = response.status
+        text = data.decode("utf-8") if isinstance(data, (bytes, bytearray)) else str(data)
+        if status < 200 or status > 299 and status != 202:
+            raise Exception(f"API exception: {status} {response.reason}: {text}")
+        try:
+            parsed = json.loads(text)
+        except json.JSONDecodeError:
+            raise Exception("Unexpected non-JSON response from IP batch file upload")
+        return parsed
 
