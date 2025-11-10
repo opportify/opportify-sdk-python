@@ -17,18 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 
-class BatchAnalyzeEmails413ResponseError(BaseModel):
+class ExportCreatedResponse(BaseModel):
     """
-    BatchAnalyzeEmails413ResponseError
+    Response when an export request is accepted.
     """ # noqa: E501
-    message: Optional[StrictStr] = None
-    code: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["message", "code"]
+    job_id: StrictStr = Field(description="The batch job identifier. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\". ", alias="jobId")
+    export_id: StrictStr = Field(description="The unique identifier for the export job. Format: uuid. Example: \"6f8d88ef-0896-4f69-90cd-7cc6ce5e6ddf\". ", alias="exportId")
+    status: StrictStr = Field(description="Initial status of the export job. Allowed value: `QUEUED`. Example: `QUEUED`. ")
+    __properties: ClassVar[List[str]] = ["jobId", "exportId", "status"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +49,7 @@ class BatchAnalyzeEmails413ResponseError(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of BatchAnalyzeEmails413ResponseError from a JSON string"""
+        """Create an instance of ExportCreatedResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +74,7 @@ class BatchAnalyzeEmails413ResponseError(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of BatchAnalyzeEmails413ResponseError from a dict"""
+        """Create an instance of ExportCreatedResponse from a dict"""
         if obj is None:
             return None
 
@@ -81,8 +82,9 @@ class BatchAnalyzeEmails413ResponseError(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "message": obj.get("message"),
-            "code": obj.get("code")
+            "jobId": obj.get("jobId"),
+            "exportId": obj.get("exportId"),
+            "status": obj.get("status")
         })
         return _obj
 

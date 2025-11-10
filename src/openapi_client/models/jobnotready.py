@@ -17,18 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from openapi_client.models.internalerror import INTERNALERROR
 from typing import Optional, Set
 from typing_extensions import Self
 
-class AnalyzeIp500Response(BaseModel):
+class JOBNOTREADY(BaseModel):
     """
-    AnalyzeIp500Response
+    JOBNOTREADY
     """ # noqa: E501
-    error: Optional[INTERNALERROR] = None
-    __properties: ClassVar[List[str]] = ["error"]
+    error_message: Optional[StrictStr] = Field(default=None, alias="errorMessage")
+    error_code: Optional[StrictStr] = Field(default=None, alias="errorCode")
+    __properties: ClassVar[List[str]] = ["errorMessage", "errorCode"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +48,7 @@ class AnalyzeIp500Response(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AnalyzeIp500Response from a JSON string"""
+        """Create an instance of JOBNOTREADY from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,14 +69,11 @@ class AnalyzeIp500Response(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of error
-        if self.error:
-            _dict['error'] = self.error.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AnalyzeIp500Response from a dict"""
+        """Create an instance of JOBNOTREADY from a dict"""
         if obj is None:
             return None
 
@@ -84,7 +81,8 @@ class AnalyzeIp500Response(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "error": INTERNALERROR.from_dict(obj["error"]) if obj.get("error") is not None else None
+            "errorMessage": obj.get("errorMessage"),
+            "errorCode": obj.get("errorCode")
         })
         return _obj
 

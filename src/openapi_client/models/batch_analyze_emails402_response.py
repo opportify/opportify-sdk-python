@@ -17,24 +17,24 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
-from openapi_client.models.invaliddata import INVALIDDATA
-from openapi_client.models.malformedrequest2 import MALFORMEDREQUEST2
+from openapi_client.models.invalidplan1 import INVALIDPLAN1
+from openapi_client.models.quotaexceeded import QUOTAEXCEEDED
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-BATCHANALYZEEMAILS400RESPONSEERROR_ONE_OF_SCHEMAS = ["INVALIDDATA", "MALFORMEDREQUEST2"]
+BATCHANALYZEEMAILS402RESPONSE_ONE_OF_SCHEMAS = ["INVALIDPLAN1", "QUOTAEXCEEDED"]
 
-class BatchAnalyzeEmails400ResponseError(BaseModel):
+class BatchAnalyzeEmails402Response(BaseModel):
     """
-    BatchAnalyzeEmails400ResponseError
+    BatchAnalyzeEmails402Response
     """
-    # data type: MALFORMEDREQUEST2
-    oneof_schema_1_validator: Optional[MALFORMEDREQUEST2] = None
-    # data type: INVALIDDATA
-    oneof_schema_2_validator: Optional[INVALIDDATA] = None
-    actual_instance: Optional[Union[INVALIDDATA, MALFORMEDREQUEST2]] = None
-    one_of_schemas: Set[str] = { "INVALIDDATA", "MALFORMEDREQUEST2" }
+    # data type: INVALIDPLAN1
+    oneof_schema_1_validator: Optional[INVALIDPLAN1] = None
+    # data type: QUOTAEXCEEDED
+    oneof_schema_2_validator: Optional[QUOTAEXCEEDED] = None
+    actual_instance: Optional[Union[INVALIDPLAN1, QUOTAEXCEEDED]] = None
+    one_of_schemas: Set[str] = { "INVALIDPLAN1", "QUOTAEXCEEDED" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -54,25 +54,25 @@ class BatchAnalyzeEmails400ResponseError(BaseModel):
 
     @field_validator('actual_instance')
     def actual_instance_must_validate_oneof(cls, v):
-        instance = BatchAnalyzeEmails400ResponseError.model_construct()
+        instance = BatchAnalyzeEmails402Response.model_construct()
         error_messages = []
         match = 0
-        # validate data type: MALFORMEDREQUEST2
-        if not isinstance(v, MALFORMEDREQUEST2):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MALFORMEDREQUEST2`")
+        # validate data type: INVALIDPLAN1
+        if not isinstance(v, INVALIDPLAN1):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `INVALIDPLAN1`")
         else:
             match += 1
-        # validate data type: INVALIDDATA
-        if not isinstance(v, INVALIDDATA):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `INVALIDDATA`")
+        # validate data type: QUOTAEXCEEDED
+        if not isinstance(v, QUOTAEXCEEDED):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `QUOTAEXCEEDED`")
         else:
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in BatchAnalyzeEmails400ResponseError with oneOf schemas: INVALIDDATA, MALFORMEDREQUEST2. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in BatchAnalyzeEmails402Response with oneOf schemas: INVALIDPLAN1, QUOTAEXCEEDED. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in BatchAnalyzeEmails400ResponseError with oneOf schemas: INVALIDDATA, MALFORMEDREQUEST2. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in BatchAnalyzeEmails402Response with oneOf schemas: INVALIDPLAN1, QUOTAEXCEEDED. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -87,25 +87,25 @@ class BatchAnalyzeEmails400ResponseError(BaseModel):
         error_messages = []
         match = 0
 
-        # deserialize data into MALFORMEDREQUEST2
+        # deserialize data into INVALIDPLAN1
         try:
-            instance.actual_instance = MALFORMEDREQUEST2.from_json(json_str)
+            instance.actual_instance = INVALIDPLAN1.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into INVALIDDATA
+        # deserialize data into QUOTAEXCEEDED
         try:
-            instance.actual_instance = INVALIDDATA.from_json(json_str)
+            instance.actual_instance = QUOTAEXCEEDED.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into BatchAnalyzeEmails400ResponseError with oneOf schemas: INVALIDDATA, MALFORMEDREQUEST2. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into BatchAnalyzeEmails402Response with oneOf schemas: INVALIDPLAN1, QUOTAEXCEEDED. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into BatchAnalyzeEmails400ResponseError with oneOf schemas: INVALIDDATA, MALFORMEDREQUEST2. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into BatchAnalyzeEmails402Response with oneOf schemas: INVALIDPLAN1, QUOTAEXCEEDED. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -119,7 +119,7 @@ class BatchAnalyzeEmails400ResponseError(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], INVALIDDATA, MALFORMEDREQUEST2]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], INVALIDPLAN1, QUOTAEXCEEDED]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

@@ -17,18 +17,30 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from openapi_client.models.export_filter import ExportFilter
 from typing import Optional, Set
 from typing_extensions import Self
 
-class INTERNALERROR(BaseModel):
+class ExportStatusResponse(BaseModel):
     """
-    INTERNALERROR
+    Response containing the status and details of an export job.
     """ # noqa: E501
-    error_message: Optional[StrictStr] = Field(default=None, alias="errorMessage")
-    error_code: Optional[StrictStr] = Field(default=None, alias="errorCode")
-    __properties: ClassVar[List[str]] = ["errorMessage", "errorCode"]
+    job_id: StrictStr = Field(description="The batch job identifier. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\". ", alias="jobId")
+    export_id: StrictStr = Field(description="The unique identifier for the export job. Format: uuid. Example: \"6f8d88ef-0896-4f69-90cd-7cc6ce5e6ddf\". ", alias="exportId")
+    status: StrictStr = Field(description="Current status of the export job. Allowed values: `QUEUED`, `PROCESSING`, `COMPLETED`, `FAILED`. Example: `COMPLETED`. ")
+    format: StrictStr = Field(description="The output format of the export. Allowed values: `csv`, `json`. Example: `csv`. ")
+    filters: Optional[List[ExportFilter]] = Field(default=None, description="List of filters applied to the export.")
+    columns: Optional[List[StrictStr]] = Field(default=None, description="List of columns included in the export.")
+    requested_at: StrictStr = Field(description="Timestamp when the export was requested (ISO 8601 format). Format: date-time. Example: \"2025-11-07T10:30:00.000Z\". ", alias="requestedAt")
+    updated_at: StrictStr = Field(description="Timestamp when the export status was last updated (ISO 8601 format). Format: date-time. Example: \"2025-11-07T10:32:15.000Z\". ", alias="updatedAt")
+    download_url: Optional[StrictStr] = Field(default=None, description="Pre-signed URL to download the export file. Only present when status is `COMPLETED`. Format: uri. Example: \"https://opportify-batch-analysis.s3.amazonaws.com/...\". ", alias="downloadUrl")
+    expires_at: Optional[StrictStr] = Field(default=None, description="Expiration timestamp for the download URL (ISO 8601 format). Only present when status is `COMPLETED`. Format: date-time. Example: \"2025-11-07T14:32:15.000Z\". ", alias="expiresAt")
+    result_size_bytes: Optional[StrictInt] = Field(default=None, description="Size of the export file in bytes. Only present when status is `COMPLETED`.", alias="resultSizeBytes")
+    error_code: Optional[StrictStr] = Field(default=None, description="Error code if the export failed. Only present when status is `FAILED`.", alias="errorCode")
+    error_message: Optional[StrictStr] = Field(default=None, description="Error message if the export failed. Only present when status is `FAILED`.", alias="errorMessage")
+    __properties: ClassVar[List[str]] = ["jobId", "exportId", "status", "format", "filters", "columns", "requestedAt", "updatedAt", "downloadUrl", "expiresAt", "resultSizeBytes", "errorCode", "errorMessage"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +60,7 @@ class INTERNALERROR(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of INTERNALERROR from a JSON string"""
+        """Create an instance of ExportStatusResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,11 +81,18 @@ class INTERNALERROR(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in filters (list)
+        _items = []
+        if self.filters:
+            for _item_filters in self.filters:
+                if _item_filters:
+                    _items.append(_item_filters.to_dict())
+            _dict['filters'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of INTERNALERROR from a dict"""
+        """Create an instance of ExportStatusResponse from a dict"""
         if obj is None:
             return None
 
@@ -81,8 +100,19 @@ class INTERNALERROR(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "errorMessage": obj.get("errorMessage"),
-            "errorCode": obj.get("errorCode")
+            "jobId": obj.get("jobId"),
+            "exportId": obj.get("exportId"),
+            "status": obj.get("status"),
+            "format": obj.get("format"),
+            "filters": [ExportFilter.from_dict(_item) for _item in obj["filters"]] if obj.get("filters") is not None else None,
+            "columns": obj.get("columns"),
+            "requestedAt": obj.get("requestedAt"),
+            "updatedAt": obj.get("updatedAt"),
+            "downloadUrl": obj.get("downloadUrl"),
+            "expiresAt": obj.get("expiresAt"),
+            "resultSizeBytes": obj.get("resultSizeBytes"),
+            "errorCode": obj.get("errorCode"),
+            "errorMessage": obj.get("errorMessage")
         })
         return _obj
 

@@ -28,9 +28,10 @@ class AnalyzeEmailRequest(BaseModel):
     AnalyzeEmailRequest
     """ # noqa: E501
     email: Annotated[str, Field(strict=True, max_length=320)] = Field(description="The email address to validate.")
-    enable_ai: Optional[StrictBool] = Field(default=None, description="Enable AI-based analysis for insights.", alias="enableAI")
-    enable_auto_correction: Optional[StrictBool] = Field(default=None, description="Suggest possible corrections for misspelled emails.", alias="enableAutoCorrection")
-    __properties: ClassVar[List[str]] = ["email", "enableAI", "enableAutoCorrection"]
+    enable_ai: Optional[StrictBool] = Field(default=None, description="Enable AI-driven risk analysis. Optional; defaults to `true`. ", alias="enableAI")
+    enable_auto_correction: Optional[StrictBool] = Field(default=None, description="Attempt typo correction and return `emailCorrection` when confident. Optional; defaults to `true`. ", alias="enableAutoCorrection")
+    enable_domain_enrichment: Optional[StrictBool] = Field(default=None, description="Include domain-level enrichment details. Optional; defaults to `true`. Set to `false` to omit the `domain` block even when the data exists. ", alias="enableDomainEnrichment")
+    __properties: ClassVar[List[str]] = ["email", "enableAI", "enableAutoCorrection", "enableDomainEnrichment"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -85,7 +86,8 @@ class AnalyzeEmailRequest(BaseModel):
         _obj = cls.model_validate({
             "email": obj.get("email"),
             "enableAI": obj.get("enableAI"),
-            "enableAutoCorrection": obj.get("enableAutoCorrection")
+            "enableAutoCorrection": obj.get("enableAutoCorrection"),
+            "enableDomainEnrichment": obj.get("enableDomainEnrichment")
         })
         return _obj
 

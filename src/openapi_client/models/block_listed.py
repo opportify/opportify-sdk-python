@@ -17,8 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,7 +29,7 @@ class BlockListed(BaseModel):
     is_block_listed: StrictBool = Field(description="Indicates if the IP is blocklisted in some of the known blocklist sources.", alias="isBlockListed")
     sources: StrictInt = Field(description="Number of blocklist sources.")
     active_reports: StrictInt = Field(description="Number of blocklist active reports for the given IP address. We constantly monitor and update this value as new reports are detected or resolved.", alias="activeReports")
-    last_detected: Optional[datetime] = Field(default=None, description="Date and time of the last blocklist detection. ISO 8601 standard.", alias="lastDetected")
+    last_detected: Optional[StrictStr] = Field(default=None, description="Date and time of the last blocklist detection. ISO 8601 standard. Format: date-time. Example: \"2022-01-01T12:00:00Z\". ", alias="lastDetected")
     __properties: ClassVar[List[str]] = ["isBlockListed", "sources", "activeReports", "lastDetected"]
 
     model_config = ConfigDict(

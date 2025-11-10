@@ -17,18 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 
-class INTERNALERROR(BaseModel):
+class AddressSignals(BaseModel):
     """
-    INTERNALERROR
+    Local-part parsing insights produced during analysis. The service always returns this payload; when a specific signal is unavailable, the corresponding value falls back to `false` or an empty string.  When `isNoReply` is `true`, the risk engine enforces a minimum `high` risk level and appends `noreply-detected` to `riskReport.baseAnalysis`. 
     """ # noqa: E501
-    error_message: Optional[StrictStr] = Field(default=None, alias="errorMessage")
-    error_code: Optional[StrictStr] = Field(default=None, alias="errorCode")
-    __properties: ClassVar[List[str]] = ["errorMessage", "errorCode"]
+    tag_detected: StrictBool = Field(description="Indicates whether the local-part contains `+tag` sub-addressing. Default: false. Example: true. ", alias="tagDetected")
+    tag_value: StrictStr = Field(description="Raw tag contents following the plus sign. Empty string when a tag is not present or has no suffix. Default: empty string. Example: \"campaign-123\". ", alias="tagValue")
+    normalized_address: StrictStr = Field(description="Email rebuilt without the tag. Always lower-case. Default: empty string. Example: \"noreply@company.com\". ", alias="normalizedAddress")
+    is_role_address: StrictBool = Field(description="True when the local-part maps to a catalogued role inbox (e.g., support, sales, billing). Default: false. Example: true. ", alias="isRoleAddress")
+    role_type: StrictStr = Field(description="Role category slug. Empty string when `isRoleAddress` is false. Default: empty string. Example: \"support\". ", alias="roleType")
+    is_no_reply: StrictBool = Field(description="True when the local-part matches no-reply or do-not-reply patterns (multi-language aware). Default: false. Example: true. ", alias="isNoReply")
+    no_reply_pattern: StrictStr = Field(description="Canonical pattern matched when `isNoReply` is true (for example `noreply`, `no-responder`, `mailer-daemon`). Empty string when no pattern applies. Default: empty string. Example: \"noreply\". ", alias="noReplyPattern")
+    __properties: ClassVar[List[str]] = ["tagDetected", "tagValue", "normalizedAddress", "isRoleAddress", "roleType", "isNoReply", "noReplyPattern"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +53,7 @@ class INTERNALERROR(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of INTERNALERROR from a JSON string"""
+        """Create an instance of AddressSignals from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +78,7 @@ class INTERNALERROR(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of INTERNALERROR from a dict"""
+        """Create an instance of AddressSignals from a dict"""
         if obj is None:
             return None
 
@@ -81,8 +86,13 @@ class INTERNALERROR(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "errorMessage": obj.get("errorMessage"),
-            "errorCode": obj.get("errorCode")
+            "tagDetected": obj.get("tagDetected"),
+            "tagValue": obj.get("tagValue"),
+            "normalizedAddress": obj.get("normalizedAddress"),
+            "isRoleAddress": obj.get("isRoleAddress"),
+            "roleType": obj.get("roleType"),
+            "isNoReply": obj.get("isNoReply"),
+            "noReplyPattern": obj.get("noReplyPattern")
         })
         return _obj
 

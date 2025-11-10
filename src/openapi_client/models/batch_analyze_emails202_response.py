@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,19 +27,10 @@ class BatchAnalyzeEmails202Response(BaseModel):
     BatchAnalyzeEmails202Response
     """ # noqa: E501
     job_id: Optional[StrictStr] = Field(default=None, description="Unique identifier for the batch job.", alias="jobId")
-    status: Optional[StrictStr] = Field(default=None, description="Current status of the batch job.")
+    name: Optional[StrictStr] = Field(default=None, description="Name of the batch job, if provided.")
+    status: Optional[StrictStr] = Field(default=None, description="Current status of the batch job. Allowed values: `QUEUED`, `PROCESSING`, `COMPLETED`, `ERROR`. Example: `QUEUED`. ")
     status_description: Optional[StrictStr] = Field(default=None, description="Description of the status, particularly useful when status is ERROR.", alias="statusDescription")
-    __properties: ClassVar[List[str]] = ["jobId", "status", "statusDescription"]
-
-    @field_validator('status')
-    def status_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in set(['QUEUED', 'PROCESSING', 'COMPLETED', 'ERROR']):
-            raise ValueError("must be one of enum values ('QUEUED', 'PROCESSING', 'COMPLETED', 'ERROR')")
-        return value
+    __properties: ClassVar[List[str]] = ["jobId", "name", "status", "statusDescription"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -93,6 +84,7 @@ class BatchAnalyzeEmails202Response(BaseModel):
 
         _obj = cls.model_validate({
             "jobId": obj.get("jobId"),
+            "name": obj.get("name"),
             "status": obj.get("status"),
             "statusDescription": obj.get("statusDescription")
         })

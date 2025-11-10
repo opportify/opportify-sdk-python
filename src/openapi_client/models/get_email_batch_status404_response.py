@@ -17,9 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from openapi_client.models.get_email_batch_status404_response_error import GetEmailBatchStatus404ResponseError
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -27,8 +26,9 @@ class GetEmailBatchStatus404Response(BaseModel):
     """
     GetEmailBatchStatus404Response
     """ # noqa: E501
-    error: Optional[GetEmailBatchStatus404ResponseError] = None
-    __properties: ClassVar[List[str]] = ["error"]
+    error_message: Optional[StrictStr] = Field(default=None, alias="errorMessage")
+    error_code: Optional[StrictStr] = Field(default=None, alias="errorCode")
+    __properties: ClassVar[List[str]] = ["errorMessage", "errorCode"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -69,9 +69,6 @@ class GetEmailBatchStatus404Response(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of error
-        if self.error:
-            _dict['error'] = self.error.to_dict()
         return _dict
 
     @classmethod
@@ -84,7 +81,8 @@ class GetEmailBatchStatus404Response(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "error": GetEmailBatchStatus404ResponseError.from_dict(obj["error"]) if obj.get("error") is not None else None
+            "errorMessage": obj.get("errorMessage"),
+            "errorCode": obj.get("errorCode")
         })
         return _obj
 

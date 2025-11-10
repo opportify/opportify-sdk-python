@@ -17,18 +17,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 
-class INTERNALERROR(BaseModel):
+class ExportFilter(BaseModel):
     """
-    INTERNALERROR
+    Describes a filter applied to an export.
     """ # noqa: E501
-    error_message: Optional[StrictStr] = Field(default=None, alias="errorMessage")
-    error_code: Optional[StrictStr] = Field(default=None, alias="errorCode")
-    __properties: ClassVar[List[str]] = ["errorMessage", "errorCode"]
+    var_field: StrictStr = Field(description="The field path that was filtered (supports dot notation for nested fields).", alias="field")
+    kind: StrictStr = Field(description="The type of filter applied. Allowed values: `string`, `number-range`, `number`. Example: `number-range`. ")
+    values: Optional[List[StrictStr]] = Field(default=None, description="Array of values for string filters.")
+    min: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Minimum value for numeric range filters.")
+    max: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum value for numeric range filters.")
+    __properties: ClassVar[List[str]] = ["field", "kind", "values", "min", "max"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +51,7 @@ class INTERNALERROR(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of INTERNALERROR from a JSON string"""
+        """Create an instance of ExportFilter from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +76,7 @@ class INTERNALERROR(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of INTERNALERROR from a dict"""
+        """Create an instance of ExportFilter from a dict"""
         if obj is None:
             return None
 
@@ -81,8 +84,11 @@ class INTERNALERROR(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "errorMessage": obj.get("errorMessage"),
-            "errorCode": obj.get("errorCode")
+            "field": obj.get("field"),
+            "kind": obj.get("kind"),
+            "values": obj.get("values"),
+            "min": obj.get("min"),
+            "max": obj.get("max")
         })
         return _obj
 

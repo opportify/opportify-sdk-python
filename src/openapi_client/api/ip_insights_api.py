@@ -17,12 +17,16 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from pydantic import Field, StrictStr
+from typing import Optional
 from typing_extensions import Annotated
 from openapi_client.models.analyze_ip200_response import AnalyzeIp200Response
 from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
-from openapi_client.models.batch_analyze_emails202_response import BatchAnalyzeEmails202Response
+from openapi_client.models.batch_analyze_ips202_response import BatchAnalyzeIps202Response
 from openapi_client.models.batch_analyze_ips_request import BatchAnalyzeIpsRequest
-from openapi_client.models.get_email_batch_status200_response import GetEmailBatchStatus200Response
+from openapi_client.models.export_created_response import ExportCreatedResponse
+from openapi_client.models.export_request import ExportRequest
+from openapi_client.models.export_status_response import ExportStatusResponse
+from openapi_client.models.get_ip_batch_status200_response import GetIpBatchStatus200Response
 
 from openapi_client.api_client import ApiClient, RequestSerialized
 from openapi_client.api_response import ApiResponse
@@ -98,9 +102,9 @@ class IPInsightsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AnalyzeIp200Response",
             '400': "AnalyzeIp400Response",
-            '404': "AnalyzeIp404Response",
+            '404': "NOTFOUND",
             '403': "AnalyzeEmail403Response",
-            '500': "AnalyzeIp500Response",
+            '500': "INTERNALERROR1",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -169,9 +173,9 @@ class IPInsightsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AnalyzeIp200Response",
             '400': "AnalyzeIp400Response",
-            '404': "AnalyzeIp404Response",
+            '404': "NOTFOUND",
             '403': "AnalyzeEmail403Response",
-            '500': "AnalyzeIp500Response",
+            '500': "INTERNALERROR1",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -240,9 +244,9 @@ class IPInsightsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AnalyzeIp200Response",
             '400': "AnalyzeIp400Response",
-            '404': "AnalyzeIp404Response",
+            '404': "NOTFOUND",
             '403': "AnalyzeEmail403Response",
-            '500': "AnalyzeIp500Response",
+            '500': "INTERNALERROR1",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -344,10 +348,10 @@ class IPInsightsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> BatchAnalyzeEmails202Response:
+    ) -> BatchAnalyzeIps202Response:
         """Batch Analyze IPs
 
-        The **Batch Analyze IPs** endpoint enables processing of large volumes of IP addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of IP addresses for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of IP addresses. - **CSV Upload**: Upload a CSV file with IP addresses in a single column (with header row). - **Line-Separated Text**: Submit a plain text file with one IP address per line.  ### Example JSON Request: ```json {   \"ips\": [     \"192.168.0.1\",     \"10.0.0.1\",     \"172.16.0.1\"   ] } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
+        The **Batch Analyze IPs** endpoint enables processing of large volumes of IP addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of IP addresses for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, tabular CSV/TSV/XLSX uploads, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Example JSON Request: ```json {   \"ips\": [     \"192.168.0.1\",     \"10.0.0.1\",     \"172.16.0.1\"   ],   \"name\": \"my list of IPs\",   \"enableAI\": true } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
 
         :param batch_analyze_ips_request: (required)
         :type batch_analyze_ips_request: BatchAnalyzeIpsRequest
@@ -382,10 +386,13 @@ class IPInsightsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '202': "BatchAnalyzeEmails202Response",
+            '202': "BatchAnalyzeIps202Response",
             '400': "BatchAnalyzeIps400Response",
-            '413': "BatchAnalyzeEmails413Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '413': "BatchAnalyzeEmails413Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -415,10 +422,10 @@ class IPInsightsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[BatchAnalyzeEmails202Response]:
+    ) -> ApiResponse[BatchAnalyzeIps202Response]:
         """Batch Analyze IPs
 
-        The **Batch Analyze IPs** endpoint enables processing of large volumes of IP addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of IP addresses for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of IP addresses. - **CSV Upload**: Upload a CSV file with IP addresses in a single column (with header row). - **Line-Separated Text**: Submit a plain text file with one IP address per line.  ### Example JSON Request: ```json {   \"ips\": [     \"192.168.0.1\",     \"10.0.0.1\",     \"172.16.0.1\"   ] } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
+        The **Batch Analyze IPs** endpoint enables processing of large volumes of IP addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of IP addresses for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, tabular CSV/TSV/XLSX uploads, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Example JSON Request: ```json {   \"ips\": [     \"192.168.0.1\",     \"10.0.0.1\",     \"172.16.0.1\"   ],   \"name\": \"my list of IPs\",   \"enableAI\": true } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
 
         :param batch_analyze_ips_request: (required)
         :type batch_analyze_ips_request: BatchAnalyzeIpsRequest
@@ -453,10 +460,13 @@ class IPInsightsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '202': "BatchAnalyzeEmails202Response",
+            '202': "BatchAnalyzeIps202Response",
             '400': "BatchAnalyzeIps400Response",
-            '413': "BatchAnalyzeEmails413Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '413': "BatchAnalyzeEmails413Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -489,7 +499,7 @@ class IPInsightsApi:
     ) -> RESTResponseType:
         """Batch Analyze IPs
 
-        The **Batch Analyze IPs** endpoint enables processing of large volumes of IP addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of IP addresses for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of IP addresses. - **CSV Upload**: Upload a CSV file with IP addresses in a single column (with header row). - **Line-Separated Text**: Submit a plain text file with one IP address per line.  ### Example JSON Request: ```json {   \"ips\": [     \"192.168.0.1\",     \"10.0.0.1\",     \"172.16.0.1\"   ] } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
+        The **Batch Analyze IPs** endpoint enables processing of large volumes of IP addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of IP addresses for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, tabular CSV/TSV/XLSX uploads, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Example JSON Request: ```json {   \"ips\": [     \"192.168.0.1\",     \"10.0.0.1\",     \"172.16.0.1\"   ],   \"name\": \"my list of IPs\",   \"enableAI\": true } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
 
         :param batch_analyze_ips_request: (required)
         :type batch_analyze_ips_request: BatchAnalyzeIpsRequest
@@ -524,10 +534,13 @@ class IPInsightsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '202': "BatchAnalyzeEmails202Response",
+            '202': "BatchAnalyzeIps202Response",
             '400': "BatchAnalyzeIps400Response",
-            '413': "BatchAnalyzeEmails413Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '413': "BatchAnalyzeEmails413Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -617,6 +630,592 @@ class IPInsightsApi:
 
 
     @validate_call
+    def create_ip_batch_export(
+        self,
+        job_id: Annotated[StrictStr, Field(description="The unique identifier of the completed batch job. Format: uuid. Example: \"52b36b1f-0c21-41fa-8a4f-423d25a9a8e2\". ")],
+        export_request: Optional[ExportRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ExportCreatedResponse:
+        """Create IP Batch Export
+
+        The **Create IP Batch Export** endpoint allows you to request a custom export of completed batch analysis results. You can apply filters, select specific columns, and choose the output format (CSV or JSON).  ### Features: - **Format Options**: Export results as CSV or JSON - **Filtering**: Apply filters on any field in the response data - **Column Selection**: Choose specific fields to include in the export - **Async Processing**: Export requests are processed asynchronously  ### Filter Syntax: - **String filters**: Exact match, comma-separated values, or arrays - **Numeric filters**: Exact values, arrays, or range objects with `min`/`max` - **Nested fields**: Use dot notation (e.g., `result.riskReport.score`)  ### Example Request: ```json {   \"exportType\": \"json\",   \"filters\": {     \"result.riskReport.level\": \"low,medium\",     \"result.riskReport.score\": { \"max\": 500 },     \"result.geo.countryCode\": [\"US\", \"CA\", \"GB\"]   } } ``` 
+
+        :param job_id: The unique identifier of the completed batch job. Format: uuid. Example: \"52b36b1f-0c21-41fa-8a4f-423d25a9a8e2\".  (required)
+        :type job_id: str
+        :param export_request:
+        :type export_request: ExportRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._create_ip_batch_export_serialize(
+            job_id=job_id,
+            export_request=export_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '202': "ExportCreatedResponse",
+            '400': "CreateEmailBatchExport400Response",
+            '403': "CreateEmailBatchExport403Response",
+            '404': "CreateEmailBatchExport404Response",
+            '409': "CreateEmailBatchExport409Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def create_ip_batch_export_with_http_info(
+        self,
+        job_id: Annotated[StrictStr, Field(description="The unique identifier of the completed batch job. Format: uuid. Example: \"52b36b1f-0c21-41fa-8a4f-423d25a9a8e2\". ")],
+        export_request: Optional[ExportRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ExportCreatedResponse]:
+        """Create IP Batch Export
+
+        The **Create IP Batch Export** endpoint allows you to request a custom export of completed batch analysis results. You can apply filters, select specific columns, and choose the output format (CSV or JSON).  ### Features: - **Format Options**: Export results as CSV or JSON - **Filtering**: Apply filters on any field in the response data - **Column Selection**: Choose specific fields to include in the export - **Async Processing**: Export requests are processed asynchronously  ### Filter Syntax: - **String filters**: Exact match, comma-separated values, or arrays - **Numeric filters**: Exact values, arrays, or range objects with `min`/`max` - **Nested fields**: Use dot notation (e.g., `result.riskReport.score`)  ### Example Request: ```json {   \"exportType\": \"json\",   \"filters\": {     \"result.riskReport.level\": \"low,medium\",     \"result.riskReport.score\": { \"max\": 500 },     \"result.geo.countryCode\": [\"US\", \"CA\", \"GB\"]   } } ``` 
+
+        :param job_id: The unique identifier of the completed batch job. Format: uuid. Example: \"52b36b1f-0c21-41fa-8a4f-423d25a9a8e2\".  (required)
+        :type job_id: str
+        :param export_request:
+        :type export_request: ExportRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._create_ip_batch_export_serialize(
+            job_id=job_id,
+            export_request=export_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '202': "ExportCreatedResponse",
+            '400': "CreateEmailBatchExport400Response",
+            '403': "CreateEmailBatchExport403Response",
+            '404': "CreateEmailBatchExport404Response",
+            '409': "CreateEmailBatchExport409Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def create_ip_batch_export_without_preload_content(
+        self,
+        job_id: Annotated[StrictStr, Field(description="The unique identifier of the completed batch job. Format: uuid. Example: \"52b36b1f-0c21-41fa-8a4f-423d25a9a8e2\". ")],
+        export_request: Optional[ExportRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Create IP Batch Export
+
+        The **Create IP Batch Export** endpoint allows you to request a custom export of completed batch analysis results. You can apply filters, select specific columns, and choose the output format (CSV or JSON).  ### Features: - **Format Options**: Export results as CSV or JSON - **Filtering**: Apply filters on any field in the response data - **Column Selection**: Choose specific fields to include in the export - **Async Processing**: Export requests are processed asynchronously  ### Filter Syntax: - **String filters**: Exact match, comma-separated values, or arrays - **Numeric filters**: Exact values, arrays, or range objects with `min`/`max` - **Nested fields**: Use dot notation (e.g., `result.riskReport.score`)  ### Example Request: ```json {   \"exportType\": \"json\",   \"filters\": {     \"result.riskReport.level\": \"low,medium\",     \"result.riskReport.score\": { \"max\": 500 },     \"result.geo.countryCode\": [\"US\", \"CA\", \"GB\"]   } } ``` 
+
+        :param job_id: The unique identifier of the completed batch job. Format: uuid. Example: \"52b36b1f-0c21-41fa-8a4f-423d25a9a8e2\".  (required)
+        :type job_id: str
+        :param export_request:
+        :type export_request: ExportRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._create_ip_batch_export_serialize(
+            job_id=job_id,
+            export_request=export_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '202': "ExportCreatedResponse",
+            '400': "CreateEmailBatchExport400Response",
+            '403': "CreateEmailBatchExport403Response",
+            '404': "CreateEmailBatchExport404Response",
+            '409': "CreateEmailBatchExport409Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _create_ip_batch_export_serialize(
+        self,
+        job_id,
+        export_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if job_id is not None:
+            _path_params['jobId'] = job_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if export_request is not None:
+            _body_params = export_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'opportifyToken'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/ip/batch/{jobId}/exports',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_ip_batch_export_status(
+        self,
+        job_id: Annotated[StrictStr, Field(description="The unique identifier of the batch job. Format: uuid. Example: \"52b36b1f-0c21-41fa-8a4f-423d25a9a8e2\". ")],
+        export_id: Annotated[StrictStr, Field(description="The unique identifier of the export job. Format: uuid. Example: \"3b90d156-a0d8-4630-8230-f59e9a4e9e33\". ")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ExportStatusResponse:
+        """Get IP Batch Export Status
+
+        The **Get IP Batch Export Status** endpoint retrieves the status and download URL for a previously requested export job.  ### Export Status Values: - `QUEUED`: Export request received, waiting for processing - `PROCESSING`: Worker is filtering and generating the export file - `COMPLETED`: Export ready, `downloadUrl` available - `FAILED`: Export failed, check `errorCode` and `errorMessage` 
+
+        :param job_id: The unique identifier of the batch job. Format: uuid. Example: \"52b36b1f-0c21-41fa-8a4f-423d25a9a8e2\".  (required)
+        :type job_id: str
+        :param export_id: The unique identifier of the export job. Format: uuid. Example: \"3b90d156-a0d8-4630-8230-f59e9a4e9e33\".  (required)
+        :type export_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_ip_batch_export_status_serialize(
+            job_id=job_id,
+            export_id=export_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ExportStatusResponse",
+            '400': "GetEmailBatchExportStatus400Response",
+            '403': "CreateEmailBatchExport403Response",
+            '404': "GetEmailBatchExportStatus404Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_ip_batch_export_status_with_http_info(
+        self,
+        job_id: Annotated[StrictStr, Field(description="The unique identifier of the batch job. Format: uuid. Example: \"52b36b1f-0c21-41fa-8a4f-423d25a9a8e2\". ")],
+        export_id: Annotated[StrictStr, Field(description="The unique identifier of the export job. Format: uuid. Example: \"3b90d156-a0d8-4630-8230-f59e9a4e9e33\". ")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ExportStatusResponse]:
+        """Get IP Batch Export Status
+
+        The **Get IP Batch Export Status** endpoint retrieves the status and download URL for a previously requested export job.  ### Export Status Values: - `QUEUED`: Export request received, waiting for processing - `PROCESSING`: Worker is filtering and generating the export file - `COMPLETED`: Export ready, `downloadUrl` available - `FAILED`: Export failed, check `errorCode` and `errorMessage` 
+
+        :param job_id: The unique identifier of the batch job. Format: uuid. Example: \"52b36b1f-0c21-41fa-8a4f-423d25a9a8e2\".  (required)
+        :type job_id: str
+        :param export_id: The unique identifier of the export job. Format: uuid. Example: \"3b90d156-a0d8-4630-8230-f59e9a4e9e33\".  (required)
+        :type export_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_ip_batch_export_status_serialize(
+            job_id=job_id,
+            export_id=export_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ExportStatusResponse",
+            '400': "GetEmailBatchExportStatus400Response",
+            '403': "CreateEmailBatchExport403Response",
+            '404': "GetEmailBatchExportStatus404Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_ip_batch_export_status_without_preload_content(
+        self,
+        job_id: Annotated[StrictStr, Field(description="The unique identifier of the batch job. Format: uuid. Example: \"52b36b1f-0c21-41fa-8a4f-423d25a9a8e2\". ")],
+        export_id: Annotated[StrictStr, Field(description="The unique identifier of the export job. Format: uuid. Example: \"3b90d156-a0d8-4630-8230-f59e9a4e9e33\". ")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get IP Batch Export Status
+
+        The **Get IP Batch Export Status** endpoint retrieves the status and download URL for a previously requested export job.  ### Export Status Values: - `QUEUED`: Export request received, waiting for processing - `PROCESSING`: Worker is filtering and generating the export file - `COMPLETED`: Export ready, `downloadUrl` available - `FAILED`: Export failed, check `errorCode` and `errorMessage` 
+
+        :param job_id: The unique identifier of the batch job. Format: uuid. Example: \"52b36b1f-0c21-41fa-8a4f-423d25a9a8e2\".  (required)
+        :type job_id: str
+        :param export_id: The unique identifier of the export job. Format: uuid. Example: \"3b90d156-a0d8-4630-8230-f59e9a4e9e33\".  (required)
+        :type export_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_ip_batch_export_status_serialize(
+            job_id=job_id,
+            export_id=export_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ExportStatusResponse",
+            '400': "GetEmailBatchExportStatus400Response",
+            '403': "CreateEmailBatchExport403Response",
+            '404': "GetEmailBatchExportStatus404Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_ip_batch_export_status_serialize(
+        self,
+        job_id,
+        export_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if job_id is not None:
+            _path_params['jobId'] = job_id
+        if export_id is not None:
+            _path_params['exportId'] = export_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'opportifyToken'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/ip/batch/{jobId}/exports/{exportId}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def get_ip_batch_status(
         self,
         job_id: Annotated[StrictStr, Field(description="The unique identifier of the batch job to retrieve status for.")],
@@ -632,7 +1231,7 @@ class IPInsightsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> GetEmailBatchStatus200Response:
+    ) -> GetIpBatchStatus200Response:
         """Get IP Batch Status
 
         The **Get IP Batch Status** endpoint allows you to retrieve the current status of a previously submitted batch processing job. Use this endpoint to track the progress of your batch IP analysis request and retrieve results when processing is complete.  ### Response Information: - When status is `QUEUED`: The job is in the processing queue waiting to be processed. - When status is `PROCESSING`: The job is actively being processed. - When status is `COMPLETED`: The job has finished successfully. - When status is `ERROR`: An issue occurred during processing; check the statusDescription for details. 
@@ -670,9 +1269,12 @@ class IPInsightsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetEmailBatchStatus200Response",
-            '404': "GetEmailBatchStatus404Response",
+            '200': "GetIpBatchStatus200Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '404': "GetEmailBatchStatus404Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -702,7 +1304,7 @@ class IPInsightsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[GetEmailBatchStatus200Response]:
+    ) -> ApiResponse[GetIpBatchStatus200Response]:
         """Get IP Batch Status
 
         The **Get IP Batch Status** endpoint allows you to retrieve the current status of a previously submitted batch processing job. Use this endpoint to track the progress of your batch IP analysis request and retrieve results when processing is complete.  ### Response Information: - When status is `QUEUED`: The job is in the processing queue waiting to be processed. - When status is `PROCESSING`: The job is actively being processed. - When status is `COMPLETED`: The job has finished successfully. - When status is `ERROR`: An issue occurred during processing; check the statusDescription for details. 
@@ -740,9 +1342,12 @@ class IPInsightsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetEmailBatchStatus200Response",
-            '404': "GetEmailBatchStatus404Response",
+            '200': "GetIpBatchStatus200Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '404': "GetEmailBatchStatus404Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -810,9 +1415,12 @@ class IPInsightsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetEmailBatchStatus200Response",
-            '404': "GetEmailBatchStatus404Response",
+            '200': "GetIpBatchStatus200Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '404': "GetEmailBatchStatus404Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(

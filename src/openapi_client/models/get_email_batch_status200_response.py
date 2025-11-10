@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from openapi_client.models.get_email_batch_status200_response_download_urls import GetEmailBatchStatus200ResponseDownloadUrls
 from typing import Optional, Set
@@ -28,21 +28,12 @@ class GetEmailBatchStatus200Response(BaseModel):
     GetEmailBatchStatus200Response
     """ # noqa: E501
     job_id: Optional[StrictStr] = Field(default=None, description="Unique identifier for the batch job.", alias="jobId")
-    status: Optional[StrictStr] = Field(default=None, description="Current status of the batch job.")
+    name: Optional[StrictStr] = Field(default=None, description="Name of the batch job, if provided.")
+    status: Optional[StrictStr] = Field(default=None, description="Current status of the batch job. Allowed values: `QUEUED`, `PROCESSING`, `COMPLETED`, `ERROR`. Example: `COMPLETED`. ")
     status_description: Optional[StrictStr] = Field(default=None, description="Description of the status, particularly useful when status is ERROR.", alias="statusDescription")
     progress: Optional[StrictInt] = Field(default=None, description="Percentage of completion for the batch job (0-100).")
     download_urls: Optional[GetEmailBatchStatus200ResponseDownloadUrls] = Field(default=None, alias="downloadUrls")
-    __properties: ClassVar[List[str]] = ["jobId", "status", "statusDescription", "progress", "downloadUrls"]
-
-    @field_validator('status')
-    def status_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in set(['QUEUED', 'PROCESSING', 'COMPLETED', 'ERROR']):
-            raise ValueError("must be one of enum values ('QUEUED', 'PROCESSING', 'COMPLETED', 'ERROR')")
-        return value
+    __properties: ClassVar[List[str]] = ["jobId", "name", "status", "statusDescription", "progress", "downloadUrls"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -99,6 +90,7 @@ class GetEmailBatchStatus200Response(BaseModel):
 
         _obj = cls.model_validate({
             "jobId": obj.get("jobId"),
+            "name": obj.get("name"),
             "status": obj.get("status"),
             "statusDescription": obj.get("statusDescription"),
             "progress": obj.get("progress"),

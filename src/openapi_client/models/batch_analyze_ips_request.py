@@ -27,8 +27,9 @@ class BatchAnalyzeIpsRequest(BaseModel):
     BatchAnalyzeIpsRequest
     """ # noqa: E501
     ips: List[StrictStr] = Field(description="Array of IP addresses to analyze.")
+    name: Optional[StrictStr] = Field(default=None, description="Optional name for the batch job.")
     enable_ai: Optional[StrictBool] = Field(default=None, description="Enable AI-based analysis for insights.", alias="enableAI")
-    __properties: ClassVar[List[str]] = ["ips", "enableAI"]
+    __properties: ClassVar[List[str]] = ["ips", "name", "enableAI"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -82,6 +83,7 @@ class BatchAnalyzeIpsRequest(BaseModel):
 
         _obj = cls.model_validate({
             "ips": obj.get("ips"),
+            "name": obj.get("name"),
             "enableAI": obj.get("enableAI")
         })
         return _obj
