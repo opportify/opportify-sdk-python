@@ -442,6 +442,19 @@ class TestEmailInsightsWrapper(unittest.TestCase):
         self.assertTrue(normalized["enable_ai"])
         self.assertFalse(normalized["enable_auto_correction"])
 
+    def test_normalize_request_without_optional_params(self) -> None:
+        """Test request normalization when optional params are not provided."""
+        params = {
+            "email": "test@example.com"
+        }
+        normalized = self.email_insights._normalize_request(params)
+
+        self.assertEqual(normalized["email"], "test@example.com")
+        # Optional params should not be in normalized dict if not provided
+        self.assertNotIn("enable_ai", normalized)
+        self.assertNotIn("enable_auto_correction", normalized)
+        self.assertNotIn("enable_domain_enrichment", normalized)
+
     def test_normalize_batch_request_with_name(self) -> None:
         """Test batch request normalization includes name parameter."""
         params = {

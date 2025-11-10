@@ -444,6 +444,17 @@ class TestIpInsightsWrapper(unittest.TestCase):
 
         self.assertTrue(normalized["enable_ai"])
 
+    def test_normalize_request_without_optional_params(self) -> None:
+        """Test request normalization when optional params are not provided."""
+        params = {
+            "ip": "8.8.8.8"
+        }
+        normalized = self.ip_insights._normalize_request(params)
+
+        self.assertEqual(normalized["ip"], "8.8.8.8")
+        # Optional params should not be in normalized dict if not provided
+        self.assertNotIn("enable_ai", normalized)
+
     def test_normalize_batch_request_with_name(self) -> None:
         """Test batch request normalization includes name parameter."""
         params = {

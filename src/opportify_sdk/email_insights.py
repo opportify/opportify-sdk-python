@@ -295,9 +295,19 @@ class EmailInsights:
         
         normalized = {}
         normalized["email"] = str(params["email"])
-        normalized["enable_ai"] = self._resolve_boolean(params, ['enable_ai', 'enableAi'], True)
-        normalized["enable_auto_correction"] = self._resolve_boolean(params, ['enable_auto_correction', 'enableAutoCorrection'], True)
-        normalized["enable_domain_enrichment"] = self._resolve_boolean(params, ['enable_domain_enrichment', 'enableDomainEnrichment'], True)
+        
+        # Only include optional parameters if explicitly provided by user
+        enable_ai = self._resolve_boolean(params, ['enable_ai', 'enableAi'])
+        if enable_ai is not None:
+            normalized["enable_ai"] = enable_ai
+        
+        enable_auto_correction = self._resolve_boolean(params, ['enable_auto_correction', 'enableAutoCorrection'])
+        if enable_auto_correction is not None:
+            normalized["enable_auto_correction"] = enable_auto_correction
+        
+        enable_domain_enrichment = self._resolve_boolean(params, ['enable_domain_enrichment', 'enableDomainEnrichment'])
+        if enable_domain_enrichment is not None:
+            normalized["enable_domain_enrichment"] = enable_domain_enrichment
 
         return normalized
 

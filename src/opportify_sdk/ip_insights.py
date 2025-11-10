@@ -290,7 +290,11 @@ class IpInsights:
         
         normalized = {}
         normalized["ip"] = str(params["ip"])
-        normalized["enable_ai"] = self._resolve_boolean(params, ['enable_ai', 'enableAi'], True)
+        
+        # Only include optional parameters if explicitly provided by user
+        enable_ai = self._resolve_boolean(params, ['enable_ai', 'enableAi'])
+        if enable_ai is not None:
+            normalized["enable_ai"] = enable_ai
 
         return normalized
 
