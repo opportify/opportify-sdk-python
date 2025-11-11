@@ -22,9 +22,9 @@ from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class INTERNALERROR(BaseModel):
+class MALFORMEDREQUEST3(BaseModel):
     """
-    INTERNALERROR
+    MALFORMEDREQUEST3
     """ # noqa: E501
     error_message: Optional[StrictStr] = Field(default=None, alias="errorMessage")
     error_code: Optional[StrictStr] = Field(default=None, alias="errorCode")
@@ -48,7 +48,7 @@ class INTERNALERROR(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of INTERNALERROR from a JSON string"""
+        """Create an instance of MALFORMEDREQUEST3 from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +73,7 @@ class INTERNALERROR(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of INTERNALERROR from a dict"""
+        """Create an instance of MALFORMEDREQUEST3 from a dict"""
         if obj is None:
             return None
 

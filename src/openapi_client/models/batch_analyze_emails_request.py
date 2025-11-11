@@ -27,9 +27,10 @@ class BatchAnalyzeEmailsRequest(BaseModel):
     BatchAnalyzeEmailsRequest
     """ # noqa: E501
     emails: List[StrictStr] = Field(description="Array of email addresses to analyze.")
+    name: Optional[StrictStr] = Field(default=None, description="Optional name for the batch job.")
     enable_ai: Optional[StrictBool] = Field(default=None, description="Enable AI-based analysis for insights.", alias="enableAI")
     enable_auto_correction: Optional[StrictBool] = Field(default=None, description="Suggest possible corrections for misspelled emails.", alias="enableAutoCorrection")
-    __properties: ClassVar[List[str]] = ["emails", "enableAI", "enableAutoCorrection"]
+    __properties: ClassVar[List[str]] = ["emails", "name", "enableAI", "enableAutoCorrection"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -83,6 +84,7 @@ class BatchAnalyzeEmailsRequest(BaseModel):
 
         _obj = cls.model_validate({
             "emails": obj.get("emails"),
+            "name": obj.get("name"),
             "enableAI": obj.get("enableAI"),
             "enableAutoCorrection": obj.get("enableAutoCorrection")
         })

@@ -17,11 +17,15 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from pydantic import Field, StrictStr
+from typing import Optional
 from typing_extensions import Annotated
 from openapi_client.models.analyze_email200_response import AnalyzeEmail200Response
 from openapi_client.models.analyze_email_request import AnalyzeEmailRequest
 from openapi_client.models.batch_analyze_emails202_response import BatchAnalyzeEmails202Response
 from openapi_client.models.batch_analyze_emails_request import BatchAnalyzeEmailsRequest
+from openapi_client.models.export_created_response import ExportCreatedResponse
+from openapi_client.models.export_request import ExportRequest
+from openapi_client.models.export_status_response import ExportStatusResponse
 from openapi_client.models.get_email_batch_status200_response import GetEmailBatchStatus200Response
 
 from openapi_client.api_client import ApiClient, RequestSerialized
@@ -61,7 +65,7 @@ class EmailInsightsApi:
     ) -> AnalyzeEmail200Response:
         """Analyze Email
 
-        The **Analyze Email** endpoint validates an email address and returns its deliverability status, provider details, and potential corrections. This endpoint is ideal for ensuring accurate email data before usage.  ### Features: - Validate email syntax. - Identify email types (free, disposable, private or unknown). - Real time verifications:   - Reachable: Confirms if the email domain has valid MX DNS records using DNS lookup.   - Deliverable: Simulates an SMTP handshake to check if the email address exists and is deliverable.   - Catch-All: Detects if the domain accepts all emails (catch-all configuration). - Intelligent Error Correction: Automatically corrects well-known misspelled email addresses. - Risk Report: Provides an AI-driven normalized score (200-1000) to evaluate email risk, using predefined thresholds.  ### Example Request Body: ```json {   \"email\": \"my-email@company.com\",   \"enableAI\": true,   \"enableAutoCorrection\": true } ```  ### Authentication & Security - **API Key:** Access to the API requires an API key, which must be included in the request headers. Businesses can generate unlimited API keys directly from their account, offering flexibility and ease of use.  - **ACL Rules:** Enhance security with Access Control Lists (ACL), allowing you to restrict API access from specific IP addresses or ranges. This feature provides an additional layer of protection by ensuring only authorized IPs can interact with the API. - **No Query Parameters:** As a precautionary measure, our API avoids the use of query parameters for all operations, including authentication and handling Personally Identifiable Information (PII). This approach minimizes security risks by preventing sensitive data from being exposed in access logs, browser history, cached URLs, debugging tools, or inadvertently shared URLs. All sensitive information is securely transmitted through headers or the request body. 
+        The **Analyze Email** endpoint validates an email address and returns its deliverability status, provider details, and potential corrections. This endpoint is ideal for ensuring accurate email data before usage.  ### Features: - **Syntax intelligence:** Validates RFC compliance, normalizes casing, and suggests corrections for typo-prone domains. - **Provider & classification:** Identifies the provider slug, detects private/free/disposable usage, and flags role or no-reply inboxes. - **Live deliverability checks:** Performs DNS reachability, SMTP handshakes, catch-all detection, and mailbox-full assessments in real time. - **AI risk reporting:** Returns a normalized 200–1000 score with the top weighted reason codes and guardrails for high-risk findings. - **Domain enrichment & DNS snapshot:** Surfaces registrar, age, security posture, and priority-ordered MX records when enrichment is enabled.  ### Example Request Body: ```json {   \"email\": \"my-email@company.com\",   \"enableAI\": true,   \"enableAutoCorrection\": true,   \"enableDomainEnrichment\": true } ```  ### Authentication & Security - **API Key:** Access to the API requires an API key, which must be included in the request headers. Businesses can generate unlimited API keys directly from their account, offering flexibility and ease of use.  - **ACL Rules:** Enhance security with Access Control Lists (ACL), allowing you to restrict API access from specific IP addresses or ranges. This feature provides an additional layer of protection by ensuring only authorized IPs can interact with the API. - **No Query Parameters:** As a precautionary measure, our API avoids the use of query parameters for all operations, including authentication and handling Personally Identifiable Information (PII). This approach minimizes security risks by preventing sensitive data from being exposed in access logs, browser history, cached URLs, debugging tools, or inadvertently shared URLs. All sensitive information is securely transmitted through headers or the request body. 
 
         :param analyze_email_request: (required)
         :type analyze_email_request: AnalyzeEmailRequest
@@ -131,7 +135,7 @@ class EmailInsightsApi:
     ) -> ApiResponse[AnalyzeEmail200Response]:
         """Analyze Email
 
-        The **Analyze Email** endpoint validates an email address and returns its deliverability status, provider details, and potential corrections. This endpoint is ideal for ensuring accurate email data before usage.  ### Features: - Validate email syntax. - Identify email types (free, disposable, private or unknown). - Real time verifications:   - Reachable: Confirms if the email domain has valid MX DNS records using DNS lookup.   - Deliverable: Simulates an SMTP handshake to check if the email address exists and is deliverable.   - Catch-All: Detects if the domain accepts all emails (catch-all configuration). - Intelligent Error Correction: Automatically corrects well-known misspelled email addresses. - Risk Report: Provides an AI-driven normalized score (200-1000) to evaluate email risk, using predefined thresholds.  ### Example Request Body: ```json {   \"email\": \"my-email@company.com\",   \"enableAI\": true,   \"enableAutoCorrection\": true } ```  ### Authentication & Security - **API Key:** Access to the API requires an API key, which must be included in the request headers. Businesses can generate unlimited API keys directly from their account, offering flexibility and ease of use.  - **ACL Rules:** Enhance security with Access Control Lists (ACL), allowing you to restrict API access from specific IP addresses or ranges. This feature provides an additional layer of protection by ensuring only authorized IPs can interact with the API. - **No Query Parameters:** As a precautionary measure, our API avoids the use of query parameters for all operations, including authentication and handling Personally Identifiable Information (PII). This approach minimizes security risks by preventing sensitive data from being exposed in access logs, browser history, cached URLs, debugging tools, or inadvertently shared URLs. All sensitive information is securely transmitted through headers or the request body. 
+        The **Analyze Email** endpoint validates an email address and returns its deliverability status, provider details, and potential corrections. This endpoint is ideal for ensuring accurate email data before usage.  ### Features: - **Syntax intelligence:** Validates RFC compliance, normalizes casing, and suggests corrections for typo-prone domains. - **Provider & classification:** Identifies the provider slug, detects private/free/disposable usage, and flags role or no-reply inboxes. - **Live deliverability checks:** Performs DNS reachability, SMTP handshakes, catch-all detection, and mailbox-full assessments in real time. - **AI risk reporting:** Returns a normalized 200–1000 score with the top weighted reason codes and guardrails for high-risk findings. - **Domain enrichment & DNS snapshot:** Surfaces registrar, age, security posture, and priority-ordered MX records when enrichment is enabled.  ### Example Request Body: ```json {   \"email\": \"my-email@company.com\",   \"enableAI\": true,   \"enableAutoCorrection\": true,   \"enableDomainEnrichment\": true } ```  ### Authentication & Security - **API Key:** Access to the API requires an API key, which must be included in the request headers. Businesses can generate unlimited API keys directly from their account, offering flexibility and ease of use.  - **ACL Rules:** Enhance security with Access Control Lists (ACL), allowing you to restrict API access from specific IP addresses or ranges. This feature provides an additional layer of protection by ensuring only authorized IPs can interact with the API. - **No Query Parameters:** As a precautionary measure, our API avoids the use of query parameters for all operations, including authentication and handling Personally Identifiable Information (PII). This approach minimizes security risks by preventing sensitive data from being exposed in access logs, browser history, cached URLs, debugging tools, or inadvertently shared URLs. All sensitive information is securely transmitted through headers or the request body. 
 
         :param analyze_email_request: (required)
         :type analyze_email_request: AnalyzeEmailRequest
@@ -201,7 +205,7 @@ class EmailInsightsApi:
     ) -> RESTResponseType:
         """Analyze Email
 
-        The **Analyze Email** endpoint validates an email address and returns its deliverability status, provider details, and potential corrections. This endpoint is ideal for ensuring accurate email data before usage.  ### Features: - Validate email syntax. - Identify email types (free, disposable, private or unknown). - Real time verifications:   - Reachable: Confirms if the email domain has valid MX DNS records using DNS lookup.   - Deliverable: Simulates an SMTP handshake to check if the email address exists and is deliverable.   - Catch-All: Detects if the domain accepts all emails (catch-all configuration). - Intelligent Error Correction: Automatically corrects well-known misspelled email addresses. - Risk Report: Provides an AI-driven normalized score (200-1000) to evaluate email risk, using predefined thresholds.  ### Example Request Body: ```json {   \"email\": \"my-email@company.com\",   \"enableAI\": true,   \"enableAutoCorrection\": true } ```  ### Authentication & Security - **API Key:** Access to the API requires an API key, which must be included in the request headers. Businesses can generate unlimited API keys directly from their account, offering flexibility and ease of use.  - **ACL Rules:** Enhance security with Access Control Lists (ACL), allowing you to restrict API access from specific IP addresses or ranges. This feature provides an additional layer of protection by ensuring only authorized IPs can interact with the API. - **No Query Parameters:** As a precautionary measure, our API avoids the use of query parameters for all operations, including authentication and handling Personally Identifiable Information (PII). This approach minimizes security risks by preventing sensitive data from being exposed in access logs, browser history, cached URLs, debugging tools, or inadvertently shared URLs. All sensitive information is securely transmitted through headers or the request body. 
+        The **Analyze Email** endpoint validates an email address and returns its deliverability status, provider details, and potential corrections. This endpoint is ideal for ensuring accurate email data before usage.  ### Features: - **Syntax intelligence:** Validates RFC compliance, normalizes casing, and suggests corrections for typo-prone domains. - **Provider & classification:** Identifies the provider slug, detects private/free/disposable usage, and flags role or no-reply inboxes. - **Live deliverability checks:** Performs DNS reachability, SMTP handshakes, catch-all detection, and mailbox-full assessments in real time. - **AI risk reporting:** Returns a normalized 200–1000 score with the top weighted reason codes and guardrails for high-risk findings. - **Domain enrichment & DNS snapshot:** Surfaces registrar, age, security posture, and priority-ordered MX records when enrichment is enabled.  ### Example Request Body: ```json {   \"email\": \"my-email@company.com\",   \"enableAI\": true,   \"enableAutoCorrection\": true,   \"enableDomainEnrichment\": true } ```  ### Authentication & Security - **API Key:** Access to the API requires an API key, which must be included in the request headers. Businesses can generate unlimited API keys directly from their account, offering flexibility and ease of use.  - **ACL Rules:** Enhance security with Access Control Lists (ACL), allowing you to restrict API access from specific IP addresses or ranges. This feature provides an additional layer of protection by ensuring only authorized IPs can interact with the API. - **No Query Parameters:** As a precautionary measure, our API avoids the use of query parameters for all operations, including authentication and handling Personally Identifiable Information (PII). This approach minimizes security risks by preventing sensitive data from being exposed in access logs, browser history, cached URLs, debugging tools, or inadvertently shared URLs. All sensitive information is securely transmitted through headers or the request body. 
 
         :param analyze_email_request: (required)
         :type analyze_email_request: AnalyzeEmailRequest
@@ -344,7 +348,7 @@ class EmailInsightsApi:
     ) -> BatchAnalyzeEmails202Response:
         """Batch Analyze Emails
 
-        The **Batch Analyze Emails** endpoint enables processing of large volumes of email addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of emails for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of email addresses. - **CSV Upload**: Upload a CSV file with email addresses in a single column (with header row). - **Line-Separated Text**: Submit a plain text file with one email address per line.  ### Example JSON Request: ```json {   \"emails\": [     \"first-email@domain.com\",     \"second-email@domain.com\",     \"third-email@domain.com\"   ] } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
+        The **Batch Analyze Emails** endpoint enables processing of large volumes of email addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of emails for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, tabular CSV/TSV/XLSX uploads, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Example JSON Request: ```json {   \"emails\": [     \"first-email@domain.com\",     \"second-email@domain.com\"   ],   \"name\": \"my list of emails\",   \"enableAI\": true,   \"enableAutoCorrection\": true } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
 
         :param batch_analyze_emails_request: (required)
         :type batch_analyze_emails_request: BatchAnalyzeEmailsRequest
@@ -381,8 +385,11 @@ class EmailInsightsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '202': "BatchAnalyzeEmails202Response",
             '400': "BatchAnalyzeEmails400Response",
-            '413': "BatchAnalyzeEmails413Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '413': "BatchAnalyzeEmails413Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -415,7 +422,7 @@ class EmailInsightsApi:
     ) -> ApiResponse[BatchAnalyzeEmails202Response]:
         """Batch Analyze Emails
 
-        The **Batch Analyze Emails** endpoint enables processing of large volumes of email addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of emails for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of email addresses. - **CSV Upload**: Upload a CSV file with email addresses in a single column (with header row). - **Line-Separated Text**: Submit a plain text file with one email address per line.  ### Example JSON Request: ```json {   \"emails\": [     \"first-email@domain.com\",     \"second-email@domain.com\",     \"third-email@domain.com\"   ] } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
+        The **Batch Analyze Emails** endpoint enables processing of large volumes of email addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of emails for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, tabular CSV/TSV/XLSX uploads, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Example JSON Request: ```json {   \"emails\": [     \"first-email@domain.com\",     \"second-email@domain.com\"   ],   \"name\": \"my list of emails\",   \"enableAI\": true,   \"enableAutoCorrection\": true } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
 
         :param batch_analyze_emails_request: (required)
         :type batch_analyze_emails_request: BatchAnalyzeEmailsRequest
@@ -452,8 +459,11 @@ class EmailInsightsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '202': "BatchAnalyzeEmails202Response",
             '400': "BatchAnalyzeEmails400Response",
-            '413': "BatchAnalyzeEmails413Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '413': "BatchAnalyzeEmails413Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -486,7 +496,7 @@ class EmailInsightsApi:
     ) -> RESTResponseType:
         """Batch Analyze Emails
 
-        The **Batch Analyze Emails** endpoint enables processing of large volumes of email addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of emails for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, CSV files, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Input Formats: - **JSON Array**: Submit a JSON object containing an array of email addresses. - **CSV Upload**: Upload a CSV file with email addresses in a single column (with header row). - **Line-Separated Text**: Submit a plain text file with one email address per line.  ### Example JSON Request: ```json {   \"emails\": [     \"first-email@domain.com\",     \"second-email@domain.com\",     \"third-email@domain.com\"   ] } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
+        The **Batch Analyze Emails** endpoint enables processing of large volumes of email addresses asynchronously. This endpoint accepts various input formats and returns a job ID for tracking the analysis progress.  ### Features: - **Asynchronous Processing**: Submit large lists of emails for background processing. - **Multiple Input Formats**: Submit data as JSON arrays, tabular CSV/TSV/XLSX uploads, or line-separated text. - **Job Tracking**: Monitor processing status using the returned job ID.  ### Example JSON Request: ```json {   \"emails\": [     \"first-email@domain.com\",     \"second-email@domain.com\"   ],   \"name\": \"my list of emails\",   \"enableAI\": true,   \"enableAutoCorrection\": true } ```  ### Authentication & Security - **API Key:** Access requires an API key in the request headers. - **ACL Rules:** Optional IP-based access restrictions for enhanced security. - **No Query Parameters:** All data is transmitted securely through headers or request body.  ### Payload Limits - Maximum payload size: 3MB 
 
         :param batch_analyze_emails_request: (required)
         :type batch_analyze_emails_request: BatchAnalyzeEmailsRequest
@@ -523,8 +533,11 @@ class EmailInsightsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '202': "BatchAnalyzeEmails202Response",
             '400': "BatchAnalyzeEmails400Response",
-            '413': "BatchAnalyzeEmails413Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '413': "BatchAnalyzeEmails413Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -614,6 +627,592 @@ class EmailInsightsApi:
 
 
     @validate_call
+    def create_email_batch_export(
+        self,
+        job_id: Annotated[StrictStr, Field(description="The unique identifier of the completed batch job. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\". ")],
+        export_request: Optional[ExportRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ExportCreatedResponse:
+        """Create Email Batch Export
+
+        The **Create Email Batch Export** endpoint allows you to request a custom export of completed batch analysis results. You can apply filters, select specific columns, and choose the output format (CSV or JSON).  ### Features: - **Format Options**: Export results as CSV or JSON - **Filtering**: Apply filters on any field in the response data - **Column Selection**: Choose specific fields to include in the export - **Async Processing**: Export requests are processed asynchronously  ### Filter Syntax: - **String filters**: Exact match, comma-separated values, or arrays - **Numeric filters**: Exact values, arrays, or range objects with `min`/`max` - **Nested fields**: Use dot notation (e.g., `riskReport.score`)  ### Example Request: ```json {   \"exportType\": \"csv\",   \"filters\": {     \"isDeliverable\": \"yes\",     \"riskReport.score\": { \"min\": 0, \"max\": 400 },     \"emailProvider\": [\"gmail\", \"yahoo\", \"outlook\"]   },   \"columns\": [     \"emailAddress\",     \"emailProvider\",     \"riskReport.score\",     \"isDeliverable\"   ] } ``` 
+
+        :param job_id: The unique identifier of the completed batch job. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\".  (required)
+        :type job_id: str
+        :param export_request:
+        :type export_request: ExportRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._create_email_batch_export_serialize(
+            job_id=job_id,
+            export_request=export_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '202': "ExportCreatedResponse",
+            '400': "CreateEmailBatchExport400Response",
+            '403': "CreateEmailBatchExport403Response",
+            '404': "CreateEmailBatchExport404Response",
+            '409': "CreateEmailBatchExport409Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def create_email_batch_export_with_http_info(
+        self,
+        job_id: Annotated[StrictStr, Field(description="The unique identifier of the completed batch job. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\". ")],
+        export_request: Optional[ExportRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ExportCreatedResponse]:
+        """Create Email Batch Export
+
+        The **Create Email Batch Export** endpoint allows you to request a custom export of completed batch analysis results. You can apply filters, select specific columns, and choose the output format (CSV or JSON).  ### Features: - **Format Options**: Export results as CSV or JSON - **Filtering**: Apply filters on any field in the response data - **Column Selection**: Choose specific fields to include in the export - **Async Processing**: Export requests are processed asynchronously  ### Filter Syntax: - **String filters**: Exact match, comma-separated values, or arrays - **Numeric filters**: Exact values, arrays, or range objects with `min`/`max` - **Nested fields**: Use dot notation (e.g., `riskReport.score`)  ### Example Request: ```json {   \"exportType\": \"csv\",   \"filters\": {     \"isDeliverable\": \"yes\",     \"riskReport.score\": { \"min\": 0, \"max\": 400 },     \"emailProvider\": [\"gmail\", \"yahoo\", \"outlook\"]   },   \"columns\": [     \"emailAddress\",     \"emailProvider\",     \"riskReport.score\",     \"isDeliverable\"   ] } ``` 
+
+        :param job_id: The unique identifier of the completed batch job. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\".  (required)
+        :type job_id: str
+        :param export_request:
+        :type export_request: ExportRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._create_email_batch_export_serialize(
+            job_id=job_id,
+            export_request=export_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '202': "ExportCreatedResponse",
+            '400': "CreateEmailBatchExport400Response",
+            '403': "CreateEmailBatchExport403Response",
+            '404': "CreateEmailBatchExport404Response",
+            '409': "CreateEmailBatchExport409Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def create_email_batch_export_without_preload_content(
+        self,
+        job_id: Annotated[StrictStr, Field(description="The unique identifier of the completed batch job. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\". ")],
+        export_request: Optional[ExportRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Create Email Batch Export
+
+        The **Create Email Batch Export** endpoint allows you to request a custom export of completed batch analysis results. You can apply filters, select specific columns, and choose the output format (CSV or JSON).  ### Features: - **Format Options**: Export results as CSV or JSON - **Filtering**: Apply filters on any field in the response data - **Column Selection**: Choose specific fields to include in the export - **Async Processing**: Export requests are processed asynchronously  ### Filter Syntax: - **String filters**: Exact match, comma-separated values, or arrays - **Numeric filters**: Exact values, arrays, or range objects with `min`/`max` - **Nested fields**: Use dot notation (e.g., `riskReport.score`)  ### Example Request: ```json {   \"exportType\": \"csv\",   \"filters\": {     \"isDeliverable\": \"yes\",     \"riskReport.score\": { \"min\": 0, \"max\": 400 },     \"emailProvider\": [\"gmail\", \"yahoo\", \"outlook\"]   },   \"columns\": [     \"emailAddress\",     \"emailProvider\",     \"riskReport.score\",     \"isDeliverable\"   ] } ``` 
+
+        :param job_id: The unique identifier of the completed batch job. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\".  (required)
+        :type job_id: str
+        :param export_request:
+        :type export_request: ExportRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._create_email_batch_export_serialize(
+            job_id=job_id,
+            export_request=export_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '202': "ExportCreatedResponse",
+            '400': "CreateEmailBatchExport400Response",
+            '403': "CreateEmailBatchExport403Response",
+            '404': "CreateEmailBatchExport404Response",
+            '409': "CreateEmailBatchExport409Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _create_email_batch_export_serialize(
+        self,
+        job_id,
+        export_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if job_id is not None:
+            _path_params['jobId'] = job_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if export_request is not None:
+            _body_params = export_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'opportifyToken'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/email/batch/{jobId}/exports',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_email_batch_export_status(
+        self,
+        job_id: Annotated[StrictStr, Field(description="The unique identifier of the batch job. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\". ")],
+        export_id: Annotated[StrictStr, Field(description="The unique identifier of the export job. Format: uuid. Example: \"6f8d88ef-0896-4f69-90cd-7cc6ce5e6ddf\". ")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ExportStatusResponse:
+        """Get Email Batch Export Status
+
+        The **Get Email Batch Export Status** endpoint retrieves the status and download URL for a previously requested export job.  ### Export Status Values: - `QUEUED`: Export request received, waiting for processing - `PROCESSING`: Worker is filtering and generating the export file - `COMPLETED`: Export ready, `downloadUrl` available - `FAILED`: Export failed, check `errorCode` and `errorMessage` 
+
+        :param job_id: The unique identifier of the batch job. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\".  (required)
+        :type job_id: str
+        :param export_id: The unique identifier of the export job. Format: uuid. Example: \"6f8d88ef-0896-4f69-90cd-7cc6ce5e6ddf\".  (required)
+        :type export_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_email_batch_export_status_serialize(
+            job_id=job_id,
+            export_id=export_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ExportStatusResponse",
+            '400': "GetEmailBatchExportStatus400Response",
+            '403': "CreateEmailBatchExport403Response",
+            '404': "GetEmailBatchExportStatus404Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_email_batch_export_status_with_http_info(
+        self,
+        job_id: Annotated[StrictStr, Field(description="The unique identifier of the batch job. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\". ")],
+        export_id: Annotated[StrictStr, Field(description="The unique identifier of the export job. Format: uuid. Example: \"6f8d88ef-0896-4f69-90cd-7cc6ce5e6ddf\". ")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ExportStatusResponse]:
+        """Get Email Batch Export Status
+
+        The **Get Email Batch Export Status** endpoint retrieves the status and download URL for a previously requested export job.  ### Export Status Values: - `QUEUED`: Export request received, waiting for processing - `PROCESSING`: Worker is filtering and generating the export file - `COMPLETED`: Export ready, `downloadUrl` available - `FAILED`: Export failed, check `errorCode` and `errorMessage` 
+
+        :param job_id: The unique identifier of the batch job. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\".  (required)
+        :type job_id: str
+        :param export_id: The unique identifier of the export job. Format: uuid. Example: \"6f8d88ef-0896-4f69-90cd-7cc6ce5e6ddf\".  (required)
+        :type export_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_email_batch_export_status_serialize(
+            job_id=job_id,
+            export_id=export_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ExportStatusResponse",
+            '400': "GetEmailBatchExportStatus400Response",
+            '403': "CreateEmailBatchExport403Response",
+            '404': "GetEmailBatchExportStatus404Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_email_batch_export_status_without_preload_content(
+        self,
+        job_id: Annotated[StrictStr, Field(description="The unique identifier of the batch job. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\". ")],
+        export_id: Annotated[StrictStr, Field(description="The unique identifier of the export job. Format: uuid. Example: \"6f8d88ef-0896-4f69-90cd-7cc6ce5e6ddf\". ")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Email Batch Export Status
+
+        The **Get Email Batch Export Status** endpoint retrieves the status and download URL for a previously requested export job.  ### Export Status Values: - `QUEUED`: Export request received, waiting for processing - `PROCESSING`: Worker is filtering and generating the export file - `COMPLETED`: Export ready, `downloadUrl` available - `FAILED`: Export failed, check `errorCode` and `errorMessage` 
+
+        :param job_id: The unique identifier of the batch job. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\".  (required)
+        :type job_id: str
+        :param export_id: The unique identifier of the export job. Format: uuid. Example: \"6f8d88ef-0896-4f69-90cd-7cc6ce5e6ddf\".  (required)
+        :type export_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_email_batch_export_status_serialize(
+            job_id=job_id,
+            export_id=export_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ExportStatusResponse",
+            '400': "GetEmailBatchExportStatus400Response",
+            '403': "CreateEmailBatchExport403Response",
+            '404': "GetEmailBatchExportStatus404Response",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_email_batch_export_status_serialize(
+        self,
+        job_id,
+        export_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if job_id is not None:
+            _path_params['jobId'] = job_id
+        if export_id is not None:
+            _path_params['exportId'] = export_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'opportifyToken'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/email/batch/{jobId}/exports/{exportId}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def get_email_batch_status(
         self,
         job_id: Annotated[StrictStr, Field(description="The unique identifier of the batch job to retrieve status for.")],
@@ -668,8 +1267,11 @@ class EmailInsightsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GetEmailBatchStatus200Response",
-            '404': "GetEmailBatchStatus404Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '404': "GetEmailBatchStatus404Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -738,8 +1340,11 @@ class EmailInsightsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GetEmailBatchStatus200Response",
-            '404': "GetEmailBatchStatus404Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '404': "GetEmailBatchStatus404Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(
@@ -808,8 +1413,11 @@ class EmailInsightsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GetEmailBatchStatus200Response",
-            '404': "GetEmailBatchStatus404Response",
+            '401': "BatchAnalyzeEmails401Response",
+            '402': "BatchAnalyzeEmails402Response",
             '403': "BatchAnalyzeEmails403Response",
+            '404': "GetEmailBatchStatus404Response",
+            '429': "BatchAnalyzeEmails429Response",
             '500': "AnalyzeEmail500Response",
         }
         response_data = self.api_client.call_api(

@@ -17,24 +17,24 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
-from openapi_client.models.invalidemail import INVALIDEMAIL
-from openapi_client.models.malformedrequest import MALFORMEDREQUEST
+from openapi_client.models.exportnotfound import EXPORTNOTFOUND
+from openapi_client.models.jobnotfound import JOBNOTFOUND
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-ANALYZEEMAIL400RESPONSEERROR_ONE_OF_SCHEMAS = ["INVALIDEMAIL", "MALFORMEDREQUEST"]
+GETEMAILBATCHEXPORTSTATUS404RESPONSE_ONE_OF_SCHEMAS = ["EXPORTNOTFOUND", "JOBNOTFOUND"]
 
-class AnalyzeEmail400ResponseError(BaseModel):
+class GetEmailBatchExportStatus404Response(BaseModel):
     """
-    AnalyzeEmail400ResponseError
+    GetEmailBatchExportStatus404Response
     """
-    # data type: MALFORMEDREQUEST
-    oneof_schema_1_validator: Optional[MALFORMEDREQUEST] = None
-    # data type: INVALIDEMAIL
-    oneof_schema_2_validator: Optional[INVALIDEMAIL] = None
-    actual_instance: Optional[Union[INVALIDEMAIL, MALFORMEDREQUEST]] = None
-    one_of_schemas: Set[str] = { "INVALIDEMAIL", "MALFORMEDREQUEST" }
+    # data type: JOBNOTFOUND
+    oneof_schema_1_validator: Optional[JOBNOTFOUND] = None
+    # data type: EXPORTNOTFOUND
+    oneof_schema_2_validator: Optional[EXPORTNOTFOUND] = None
+    actual_instance: Optional[Union[EXPORTNOTFOUND, JOBNOTFOUND]] = None
+    one_of_schemas: Set[str] = { "EXPORTNOTFOUND", "JOBNOTFOUND" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -54,25 +54,25 @@ class AnalyzeEmail400ResponseError(BaseModel):
 
     @field_validator('actual_instance')
     def actual_instance_must_validate_oneof(cls, v):
-        instance = AnalyzeEmail400ResponseError.model_construct()
+        instance = GetEmailBatchExportStatus404Response.model_construct()
         error_messages = []
         match = 0
-        # validate data type: MALFORMEDREQUEST
-        if not isinstance(v, MALFORMEDREQUEST):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MALFORMEDREQUEST`")
+        # validate data type: JOBNOTFOUND
+        if not isinstance(v, JOBNOTFOUND):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `JOBNOTFOUND`")
         else:
             match += 1
-        # validate data type: INVALIDEMAIL
-        if not isinstance(v, INVALIDEMAIL):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `INVALIDEMAIL`")
+        # validate data type: EXPORTNOTFOUND
+        if not isinstance(v, EXPORTNOTFOUND):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `EXPORTNOTFOUND`")
         else:
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in AnalyzeEmail400ResponseError with oneOf schemas: INVALIDEMAIL, MALFORMEDREQUEST. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in GetEmailBatchExportStatus404Response with oneOf schemas: EXPORTNOTFOUND, JOBNOTFOUND. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in AnalyzeEmail400ResponseError with oneOf schemas: INVALIDEMAIL, MALFORMEDREQUEST. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in GetEmailBatchExportStatus404Response with oneOf schemas: EXPORTNOTFOUND, JOBNOTFOUND. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -87,25 +87,25 @@ class AnalyzeEmail400ResponseError(BaseModel):
         error_messages = []
         match = 0
 
-        # deserialize data into MALFORMEDREQUEST
+        # deserialize data into JOBNOTFOUND
         try:
-            instance.actual_instance = MALFORMEDREQUEST.from_json(json_str)
+            instance.actual_instance = JOBNOTFOUND.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into INVALIDEMAIL
+        # deserialize data into EXPORTNOTFOUND
         try:
-            instance.actual_instance = INVALIDEMAIL.from_json(json_str)
+            instance.actual_instance = EXPORTNOTFOUND.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into AnalyzeEmail400ResponseError with oneOf schemas: INVALIDEMAIL, MALFORMEDREQUEST. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into GetEmailBatchExportStatus404Response with oneOf schemas: EXPORTNOTFOUND, JOBNOTFOUND. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into AnalyzeEmail400ResponseError with oneOf schemas: INVALIDEMAIL, MALFORMEDREQUEST. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into GetEmailBatchExportStatus404Response with oneOf schemas: EXPORTNOTFOUND, JOBNOTFOUND. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -119,7 +119,7 @@ class AnalyzeEmail400ResponseError(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], INVALIDEMAIL, MALFORMEDREQUEST]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], EXPORTNOTFOUND, JOBNOTFOUND]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

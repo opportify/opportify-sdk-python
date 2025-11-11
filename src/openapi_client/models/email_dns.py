@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -26,8 +26,13 @@ class EmailDNS(BaseModel):
     """
     DNS details for an email address domain.
     """ # noqa: E501
-    mx: Optional[List[StrictStr]] = Field(default=None, description="Mail exchange records for the domain.")
-    __properties: ClassVar[List[str]] = ["mx"]
+    mx: List[StrictStr] = Field(description="Mail exchange records for the domain formatted as \"<priority> <hostname>\". Records are sorted ascending by numeric priority before responding. Default: empty array. Example: [\"0 mx1.example.com\", \"10 mx2.example.com\"]. ")
+    spf_valid: StrictBool = Field(description="Indicates whether SPF validation succeeded for the domain. Default: false. Example: true. ", alias="spfValid")
+    dkim_configured: StrictBool = Field(description="Indicates whether DKIM selectors are configured for the domain. Default: false. Example: true. ", alias="dkimConfigured")
+    dmarc_valid: StrictBool = Field(description="Indicates whether a valid DMARC policy is present for the domain. Default: false. Example: false. ", alias="dmarcValid")
+    mx_relay: StrictStr = Field(description="Primary MX relay hostname identified during analysis. Default: empty string. Example: \"mx1.example.com\". ", alias="mxRelay")
+    mx_relay_category: StrictStr = Field(description="Categorization of the MX relay (provider slug or classification when available). Default: empty string. Example: \"google\". ", alias="mxRelayCategory")
+    __properties: ClassVar[List[str]] = ["mx", "spfValid", "dkimConfigured", "dmarcValid", "mxRelay", "mxRelayCategory"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -80,7 +85,12 @@ class EmailDNS(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "mx": obj.get("mx")
+            "mx": obj.get("mx"),
+            "spfValid": obj.get("spfValid"),
+            "dkimConfigured": obj.get("dkimConfigured"),
+            "dmarcValid": obj.get("dmarcValid"),
+            "mxRelay": obj.get("mxRelay"),
+            "mxRelayCategory": obj.get("mxRelayCategory")
         })
         return _obj
 

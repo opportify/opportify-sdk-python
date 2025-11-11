@@ -18,8 +18,10 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
+from openapi_client.models.address_signals import AddressSignals
 from openapi_client.models.email_dns import EmailDNS
+from openapi_client.models.email_domain import EmailDomain
 from openapi_client.models.risk_report_email import RiskReportEmail
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,18 +30,20 @@ class AnalyzeEmail200Response(BaseModel):
     """
     AnalyzeEmail200Response
     """ # noqa: E501
-    email_address: StrictStr = Field(description="The validated email address.", alias="emailAddress")
-    email_provider: StrictStr = Field(description="The email provider or domain name.", alias="emailProvider")
-    email_type: StrictStr = Field(description="Type of email address (e.g., free, disposable, private, unknown).", alias="emailType")
-    is_format_valid: StrictBool = Field(description="Indicates if the email address has a valid format.", alias="isFormatValid")
-    email_correction: StrictStr = Field(description="Suggested corrected email address, if applicable.", alias="emailCorrection")
-    is_deliverable: StrictStr = Field(description="Checks if the email address exists and is deliverable using SMTP handshake simulation. This involves connecting to the mail server and issuing commands to verify deliverability. The possible answers are `yes`, `no`, or `unknown`. We guarantee a high confidence level on this parameter since this is a real time verification. ", alias="isDeliverable")
+    email_address: StrictStr = Field(description="Normalized email address returned by the service (always lower-case).", alias="emailAddress")
+    email_provider: StrictStr = Field(description="Provider slug derived from the domain, or `unknown` when not classified.", alias="emailProvider")
+    email_type: StrictStr = Field(description="Email classification based on provider and enrichment signals. Allowed values: `private`, `free`, `disposable`, `unknown`. Example: `free`. ", alias="emailType")
+    is_deliverable: StrictStr = Field(description="Checks if the email address exists and is deliverable using SMTP handshake simulation. This involves connecting to the mail server and issuing commands to verify deliverability. The possible answers are `yes`, `no`, or `unknown`. We guarantee a high confidence level on this parameter since this is a real time verification. Allowed values: `yes`, `no`, `unknown`. Example: `yes`. ", alias="isDeliverable")
     is_catch_all: StrictBool = Field(description="Determines if the email domain is configured as a catch-all, which accepts emails for all addresses within the domain. This is verified through multiple email tests. ", alias="isCatchAll")
     is_mailbox_full: StrictBool = Field(description="Determines if the mailbox associated with the email is full, in association with isDeliverable field, it can give a reason why the email is not deliverable. ", alias="isMailboxFull")
     is_reachable: StrictBool = Field(description="Confirms if the email domain has valid MX DNS records using DNS lookup.", alias="isReachable")
+    is_format_valid: StrictBool = Field(description="Indicates if the email address meets syntax validation rules.", alias="isFormatValid")
+    email_correction: Optional[StrictStr] = Field(default=None, description="Suggested corrected email address when auto-correction is confident. Present only when `enableAutoCorrection` is true and a correction exists.", alias="emailCorrection")
+    address_signals: AddressSignals = Field(description="Local-part parsing details for the analyzed address. Always present; fields default to empty strings when a signal is not applicable.", alias="addressSignals")
     email_dns: EmailDNS = Field(alias="emailDNS")
-    risk_report: RiskReportEmail = Field(alias="riskReport")
-    __properties: ClassVar[List[str]] = ["emailAddress", "emailProvider", "emailType", "isFormatValid", "emailCorrection", "isDeliverable", "isCatchAll", "isMailboxFull", "isReachable", "emailDNS", "riskReport"]
+    risk_report: Optional[RiskReportEmail] = Field(default=None, description="AI-generated risk report detailing the evaluated risk bucket. Returned only when `enableAI` is true.", alias="riskReport")
+    domain: Optional[EmailDomain] = Field(default=None, description="Domain summary derived from enrichment providers. Omitted when enrichment is unavailable or `enableDomainEnrichment` is set to `false`.")
+    __properties: ClassVar[List[str]] = ["emailAddress", "emailProvider", "emailType", "isDeliverable", "isCatchAll", "isMailboxFull", "isReachable", "isFormatValid", "emailCorrection", "addressSignals", "emailDNS", "riskReport", "domain"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -80,12 +84,18 @@ class AnalyzeEmail200Response(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of address_signals
+        if self.address_signals:
+            _dict['addressSignals'] = self.address_signals.to_dict()
         # override the default output from pydantic by calling `to_dict()` of email_dns
         if self.email_dns:
             _dict['emailDNS'] = self.email_dns.to_dict()
         # override the default output from pydantic by calling `to_dict()` of risk_report
         if self.risk_report:
             _dict['riskReport'] = self.risk_report.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of domain
+        if self.domain:
+            _dict['domain'] = self.domain.to_dict()
         return _dict
 
     @classmethod
@@ -101,14 +111,16 @@ class AnalyzeEmail200Response(BaseModel):
             "emailAddress": obj.get("emailAddress"),
             "emailProvider": obj.get("emailProvider"),
             "emailType": obj.get("emailType"),
-            "isFormatValid": obj.get("isFormatValid"),
-            "emailCorrection": obj.get("emailCorrection"),
             "isDeliverable": obj.get("isDeliverable"),
             "isCatchAll": obj.get("isCatchAll"),
             "isMailboxFull": obj.get("isMailboxFull"),
             "isReachable": obj.get("isReachable"),
+            "isFormatValid": obj.get("isFormatValid"),
+            "emailCorrection": obj.get("emailCorrection"),
+            "addressSignals": AddressSignals.from_dict(obj["addressSignals"]) if obj.get("addressSignals") is not None else None,
             "emailDNS": EmailDNS.from_dict(obj["emailDNS"]) if obj.get("emailDNS") is not None else None,
-            "riskReport": RiskReportEmail.from_dict(obj["riskReport"]) if obj.get("riskReport") is not None else None
+            "riskReport": RiskReportEmail.from_dict(obj["riskReport"]) if obj.get("riskReport") is not None else None,
+            "domain": EmailDomain.from_dict(obj["domain"]) if obj.get("domain") is not None else None
         })
         return _obj
 

@@ -17,18 +17,30 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 
-class INTERNALERROR(BaseModel):
+class EmailDomain(BaseModel):
     """
-    INTERNALERROR
+    Summary of the domain-level enrichment returned when enrichment is available and not opted out via `enableDomainEnrichment`.  The `ageYears` value is sourced from stored enrichment data to keep responses deterministic across subsequent calls. 
     """ # noqa: E501
-    error_message: Optional[StrictStr] = Field(default=None, alias="errorMessage")
-    error_code: Optional[StrictStr] = Field(default=None, alias="errorCode")
-    __properties: ClassVar[List[str]] = ["errorMessage", "errorCode"]
+    name: StrictStr = Field(description="Fully qualified domain name associated with the email. Default: empty string. Example: \"company.com\". ")
+    enrichment_available: StrictBool = Field(description="Indicates whether enrichment data was available at analysis time.  When this is `false`, all enrichment fields (except `name`) represent safe defaults and must not be used for decision-making. Only the `name` field (the queried domain) and the default values of boolean and enum fields are meaningful; all other fields should be treated as informational only and ignored for any logic or risk assessment. Default: false. Example: true. ", alias="enrichmentAvailable")
+    creation_date: StrictStr = Field(description="Domain creation timestamp (ISO 8601). Returns an empty string when enrichment data is unavailable. Format: date-time. Example: \"2014-05-12T00:00:00Z\". ", alias="creationDate")
+    expiration_date: StrictStr = Field(description="Domain expiration timestamp (ISO 8601). Returns an empty string when enrichment data is unavailable. Format: date-time. Example: \"2026-05-11T23:59:59Z\". ", alias="expirationDate")
+    updated_date: StrictStr = Field(description="Last WHOIS update timestamp (ISO 8601). Returns an empty string when enrichment data is unavailable. Format: date-time. Example: \"2024-11-01T08:30:00Z\". ", alias="updatedDate")
+    age_years: StrictInt = Field(description="Domain age in whole years based on stored enrichment data. Returns 0 for domains younger than one year. Default: 0. Example: 11. ", alias="ageYears")
+    registrar: StrictStr = Field(description="Registrar recorded for the domain. Default: empty string. Example: \"Namecheap, Inc.\". ")
+    is_block_listed: StrictBool = Field(description="Indicates whether the domain appears in monitored blocklists. Default: false. Example: false. ", alias="isBlockListed")
+    mta_sts_status: StrictStr = Field(description="Status of the domain's MTA-STS configuration. Allowed values: `present`, `invalid`, `absent`, `unknown`. Default: `unknown`. Example: `present`. ", alias="mtaStsStatus")
+    bimi_status: StrictStr = Field(description="BIMI (Brand Indicators for Message Identification) status. Allowed values: `present`, `present-no-vmc`, `invalid`, `absent`, `unknown`. Default: `unknown`. Example: `present-no-vmc`. ", alias="bimiStatus")
+    has_vmc: StrictBool = Field(description="Indicates whether a Verified Mark Certificate is associated with the domain. Default: false. Example: false. ", alias="hasVMC")
+    a_record_valid: StrictBool = Field(description="Indicates whether the domain has valid A records. Default: false. Example: true. ", alias="aRecordValid")
+    a_record_reverse_host: StrictStr = Field(description="Reverse hostname observed for the A record when available. Empty string when no reverse mapping is returned. Default: empty string. Example: \"reverse.company.com\". ", alias="aRecordReverseHost")
+    ssl_valid: StrictBool = Field(description="Indicates whether the domain serves a valid SSL certificate on common endpoints. Default: false. Example: true. ", alias="sslValid")
+    __properties: ClassVar[List[str]] = ["name", "enrichmentAvailable", "creationDate", "expirationDate", "updatedDate", "ageYears", "registrar", "isBlockListed", "mtaStsStatus", "bimiStatus", "hasVMC", "aRecordValid", "aRecordReverseHost", "sslValid"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +60,7 @@ class INTERNALERROR(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of INTERNALERROR from a JSON string"""
+        """Create an instance of EmailDomain from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +85,7 @@ class INTERNALERROR(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of INTERNALERROR from a dict"""
+        """Create an instance of EmailDomain from a dict"""
         if obj is None:
             return None
 
@@ -81,8 +93,20 @@ class INTERNALERROR(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "errorMessage": obj.get("errorMessage"),
-            "errorCode": obj.get("errorCode")
+            "name": obj.get("name"),
+            "enrichmentAvailable": obj.get("enrichmentAvailable"),
+            "creationDate": obj.get("creationDate"),
+            "expirationDate": obj.get("expirationDate"),
+            "updatedDate": obj.get("updatedDate"),
+            "ageYears": obj.get("ageYears"),
+            "registrar": obj.get("registrar"),
+            "isBlockListed": obj.get("isBlockListed"),
+            "mtaStsStatus": obj.get("mtaStsStatus"),
+            "bimiStatus": obj.get("bimiStatus"),
+            "hasVMC": obj.get("hasVMC"),
+            "aRecordValid": obj.get("aRecordValid"),
+            "aRecordReverseHost": obj.get("aRecordReverseHost"),
+            "sslValid": obj.get("sslValid")
         })
         return _obj
 

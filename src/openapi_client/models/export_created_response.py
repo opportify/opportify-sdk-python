@@ -12,42 +12,80 @@
 """  # noqa: E501
 
 
-import unittest
+from __future__ import annotations
+import pprint
+import re  # noqa: F401
+import json
 
-from openapi_client.models.analyze_ip404_response import AnalyzeIp404Response
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from typing import Any, ClassVar, Dict, List
+from typing import Optional, Set
+from typing_extensions import Self
 
-class TestAnalyzeIp404Response(unittest.TestCase):
-    """AnalyzeIp404Response unit test stubs"""
+class ExportCreatedResponse(BaseModel):
+    """
+    Response when an export request is accepted.
+    """ # noqa: E501
+    job_id: StrictStr = Field(description="The batch job identifier. Format: uuid. Example: \"84d22c8b-2cb6-4606-bfb1-361244a097e4\". ", alias="jobId")
+    export_id: StrictStr = Field(description="The unique identifier for the export job. Format: uuid. Example: \"6f8d88ef-0896-4f69-90cd-7cc6ce5e6ddf\". ", alias="exportId")
+    status: StrictStr = Field(description="Initial status of the export job. Allowed value: `QUEUED`. Example: `QUEUED`. ")
+    __properties: ClassVar[List[str]] = ["jobId", "exportId", "status"]
 
-    def setUp(self):
-        pass
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
 
-    def tearDown(self):
-        pass
 
-    def make_instance(self, include_optional) -> AnalyzeIp404Response:
-        """Test AnalyzeIp404Response
-            include_optional is a boolean, when False only required
-            params are included, when True both required and
-            optional params are included """
-        # uncomment below to create an instance of `AnalyzeIp404Response`
+    def to_str(self) -> str:
+        """Returns the string representation of the model using alias"""
+        return pprint.pformat(self.model_dump(by_alias=True))
+
+    def to_json(self) -> str:
+        """Returns the JSON representation of the model using alias"""
+        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
+        return json.dumps(self.to_dict())
+
+    @classmethod
+    def from_json(cls, json_str: str) -> Optional[Self]:
+        """Create an instance of ExportCreatedResponse from a JSON string"""
+        return cls.from_dict(json.loads(json_str))
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
         """
-        model = AnalyzeIp404Response()
-        if include_optional:
-            return AnalyzeIp404Response(
-                error = openapi_client.models.not_found.NOT_FOUND(
-                    message = 'The input provided doesn’t match any RIR database.', 
-                    code = 'NOT_FOUND', )
-            )
-        else:
-            return AnalyzeIp404Response(
+        excluded_fields: Set[str] = set([
+        ])
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
         )
-        """
+        return _dict
 
-    def testAnalyzeIp404Response(self):
-        """Test AnalyzeIp404Response"""
-        # inst_req_only = self.make_instance(include_optional=False)
-        # inst_req_and_optional = self.make_instance(include_optional=True)
+    @classmethod
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+        """Create an instance of ExportCreatedResponse from a dict"""
+        if obj is None:
+            return None
 
-if __name__ == '__main__':
-    unittest.main()
+        if not isinstance(obj, dict):
+            return cls.model_validate(obj)
+
+        _obj = cls.model_validate({
+            "jobId": obj.get("jobId"),
+            "exportId": obj.get("exportId"),
+            "status": obj.get("status")
+        })
+        return _obj
+
+

@@ -17,18 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from openapi_client.models.get_email_batch_status200_response_download_urls import GetEmailBatchStatus200ResponseDownloadUrls
 from typing import Optional, Set
 from typing_extensions import Self
 
-class GetEmailBatchStatus404ResponseError(BaseModel):
+class GetIpBatchStatus200Response(BaseModel):
     """
-    GetEmailBatchStatus404ResponseError
+    GetIpBatchStatus200Response
     """ # noqa: E501
-    message: Optional[StrictStr] = None
-    code: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["message", "code"]
+    job_id: Optional[StrictStr] = Field(default=None, description="Unique identifier for the batch job.", alias="jobId")
+    name: Optional[StrictStr] = Field(default=None, description="Name of the batch job, if provided.")
+    status: Optional[StrictStr] = Field(default=None, description="Current status of the batch job. Allowed values: `QUEUED`, `PROCESSING`, `COMPLETED`, `ERROR`. Example: `COMPLETED`. ")
+    status_description: Optional[StrictStr] = Field(default=None, description="Description of the status, particularly useful when status is ERROR.", alias="statusDescription")
+    progress: Optional[StrictInt] = Field(default=None, description="Percentage of completion for the batch job (0-100).")
+    download_urls: Optional[GetEmailBatchStatus200ResponseDownloadUrls] = Field(default=None, alias="downloadUrls")
+    __properties: ClassVar[List[str]] = ["jobId", "name", "status", "statusDescription", "progress", "downloadUrls"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +53,7 @@ class GetEmailBatchStatus404ResponseError(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of GetEmailBatchStatus404ResponseError from a JSON string"""
+        """Create an instance of GetIpBatchStatus200Response from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,11 +74,14 @@ class GetEmailBatchStatus404ResponseError(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of download_urls
+        if self.download_urls:
+            _dict['downloadUrls'] = self.download_urls.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of GetEmailBatchStatus404ResponseError from a dict"""
+        """Create an instance of GetIpBatchStatus200Response from a dict"""
         if obj is None:
             return None
 
@@ -81,8 +89,12 @@ class GetEmailBatchStatus404ResponseError(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "message": obj.get("message"),
-            "code": obj.get("code")
+            "jobId": obj.get("jobId"),
+            "name": obj.get("name"),
+            "status": obj.get("status"),
+            "statusDescription": obj.get("statusDescription"),
+            "progress": obj.get("progress"),
+            "downloadUrls": GetEmailBatchStatus200ResponseDownloadUrls.from_dict(obj["downloadUrls"]) if obj.get("downloadUrls") is not None else None
         })
         return _obj
 

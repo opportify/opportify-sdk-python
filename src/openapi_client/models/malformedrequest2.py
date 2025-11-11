@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -26,9 +26,9 @@ class MALFORMEDREQUEST2(BaseModel):
     """
     MALFORMEDREQUEST2
     """ # noqa: E501
-    message: Optional[StrictStr] = None
-    code: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["message", "code"]
+    error_message: Optional[StrictStr] = Field(default=None, alias="errorMessage")
+    error_code: Optional[StrictStr] = Field(default=None, alias="errorCode")
+    __properties: ClassVar[List[str]] = ["errorMessage", "errorCode"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -81,8 +81,8 @@ class MALFORMEDREQUEST2(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "message": obj.get("message"),
-            "code": obj.get("code")
+            "errorMessage": obj.get("errorMessage"),
+            "errorCode": obj.get("errorCode")
         })
         return _obj
 
