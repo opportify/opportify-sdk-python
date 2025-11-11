@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "opportify_sdk"
-version = "0.2.0"
+version = "0.3.1"
 description = "Opportify Insights API"
 authors = ["OpenAPI Generator Community <team@openapitools.org>"]
 license = "NoLicense"
