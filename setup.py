@@ -13,7 +13,7 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 NAME = "opportify_sdk"
-VERSION = "0.2.0"
+VERSION = "0.3.1"
 PYTHON_REQUIRES = ">= 3.8"
 REQUIRES = [
     "urllib3 >= 1.25.3, < 3.0.0",
