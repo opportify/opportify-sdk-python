@@ -8,7 +8,9 @@ readme = "README.md"
 repository = "https://github.com/opportify/opportify-sdk-python"
 keywords = ["OpenAPI", "OpenAPI-Generator", "Opportify Insights API", "Opportify"]
 packages = [
-    { include = "opportify_sdk", from = "src" } 
+    { include = "opportify_sdk", from = "src" },
+    { include = "openapi_client", from = "src" },
+    { include = "fraud_intel_client", from = "src" }
 ]
 
 [tool.poetry.dependencies]
