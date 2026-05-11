@@ -7,6 +7,7 @@
 - [Getting Started](#getting-started)
     - [Calling Email Insights](#calling-email-insights)
     - [Calling IP Insights](#calling-ip-insights)
+    - [Calling Fraud Protection](#calling-fraud-protection)
 - [Batch Analysis (Email & IP)](#batch-analysis-email--ip)
     - [Batch Email Analysis (JSON)](#1-batch-email-analysis-json)
     - [Batch Email Analysis (Plain Text)](#2-batch-email-analysis-plain-text)
@@ -76,6 +77,28 @@ params = {
 }
 
 result = ip_insights.analyze(params)
+```
+
+### Calling Fraud Protection
+
+```python
+from opportify_sdk import FraudProtection
+
+fraud_protection = FraudProtection("<YOUR-KEY-HERE>")
+
+params = {
+    "email": "user@example.com",        # At least one of email or userIp is required
+    "userIp": "1.2.3.4",
+    "firstName": "John",
+    "lastName": "Doe",
+    "origin": "example.com",            # Hostname of the page the form was submitted on
+    "submissionType": "registration",   # E.g. registration, contactForm, checkout
+    "formData": {                        # Optional: any additional form fields
+        "custom_field": "value"
+    }
+}
+
+result = fraud_protection.analyze_fraud(params)
 ```
 
 
@@ -254,6 +277,19 @@ try:
 except ApiException as e:
     print(f"API Error: {e.status} - {e.reason}")
     print(f"Response: {e.body}")
+except Exception as e:
+    print(f"Error: {str(e)}")
+```
+
+For **Fraud Protection**, import `ApiException` from `fraud_intel_client` instead:
+
+```python
+from fraud_intel_client.exceptions import ApiException
+
+try:
+    result = fraud_protection.analyze_fraud(params)
+except ApiException as e:
+    print(f"API Error: {e.status} - {e.reason}")
 except Exception as e:
     print(f"Error: {str(e)}")
 ```
