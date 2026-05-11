@@ -43,8 +43,8 @@ class TestFraudProtectionWrapper(unittest.TestCase):
 
     def test_set_host(self) -> None:
         """Test setting custom host."""
-        self.fraud_protection.set_host("https://api.staging.opportify.ai")
-        self.assertEqual(self.fraud_protection.host, "https://api.staging.opportify.ai")
+        self.fraud_protection.set_host("https://api.custom.example.com")
+        self.assertEqual(self.fraud_protection.host, "https://api.custom.example.com")
         self.assertTrue(self.fraud_protection.config_changed)
 
     def test_set_version(self) -> None:

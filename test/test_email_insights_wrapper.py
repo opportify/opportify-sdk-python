@@ -49,8 +49,8 @@ class TestEmailInsightsWrapper(unittest.TestCase):
 
     def test_set_host(self) -> None:
         """Test setting custom host."""
-        self.email_insights.set_host("https://api.staging.opportify.ai")
-        self.assertEqual(self.email_insights.host, "https://api.staging.opportify.ai")
+        self.email_insights.set_host("https://api.custom.example.com")
+        self.assertEqual(self.email_insights.host, "https://api.custom.example.com")
         self.assertTrue(self.email_insights.config_changed)
 
     def test_set_version(self) -> None:
