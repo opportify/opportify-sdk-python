@@ -242,6 +242,23 @@ class TestFraudProtectionWrapper(unittest.TestCase):
         self.assertNotIn("first_name", normalized)
         self.assertNotIn("form_data", normalized)
 
+    def test_get_first_skips_empty_string_alias(self) -> None:
+        """Test that _get_first skips empty strings so a later camelCase alias wins."""
+        result = self.fraud_protection._get_first(
+            {"user_ip": "", "userIp": "1.2.3.4"}, ["user_ip", "userIp"]
+        )
+        self.assertEqual(result, "1.2.3.4")
+
+    def test_analyze_fraud_camel_wins_over_empty_snake(self) -> None:
+        """Test that camelCase userIp is used when snake_case is an empty string."""
+        mock_response = Mock()
+        mock_response.to_dict.return_value = {"riskScore": 5}
+        self.mock_api.analyze_fraud.return_value = mock_response
+
+        params = {"user_ip": "", "userIp": "1.2.3.4"}
+        result = self.fraud_protection.analyze_fraud(params)
+        self.assertEqual(result["riskScore"], 5)
+
 
 if __name__ == "__main__":
     unittest.main()

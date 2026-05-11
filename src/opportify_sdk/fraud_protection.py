@@ -217,13 +217,16 @@ class FraudProtection:
 
     def _get_first(self, params: Dict[str, Any], keys: List[str]) -> Any:
         """
-        Return the value of the first matching key found in params, or None.
+        Return the first truthy value found in params for any of the given keys, or None.
+
+        Empty strings and other falsy values are treated as absent so that a later
+        alias key (e.g. camelCase after snake_case) can still match.
 
         :param params: The parameters dictionary.
         :param keys: List of keys to check in order.
-        :return: First matched value, or None.
+        :return: First matched truthy value, or None.
         """
         for key in keys:
-            if key in params and params[key] is not None:
+            if key in params and params[key]:
                 return params[key]
         return None
