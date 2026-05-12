@@ -5,6 +5,8 @@ from .ip_insights import IpInsights
 
 from .fraud_protection import FraudProtection
 
-__all__ = ["EmailInsights", "IpInsights",
+__all__ = [
+    "EmailInsights",
+    "IpInsights",
     "FraudProtection",
 ]

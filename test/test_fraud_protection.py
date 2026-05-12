@@ -185,9 +185,10 @@ class TestFraudProtectionWrapper(unittest.TestCase):
         """Test analyze_fraud handles 403 Forbidden."""
         self.mock_api.analyze_fraud.side_effect = ApiException(status=403, reason="Forbidden")
 
-        with self.assertRaises(Exception) as ctx:
+        with self.assertRaises(ApiException) as ctx:
             self.fraud_protection.analyze_fraud({"email": "user@example.com"})
-        self.assertIn("API exception", str(ctx.exception))
+        self.assertEqual(ctx.exception.status, 403)
+        self.assertEqual(ctx.exception.reason, "Forbidden")
 
     def test_analyze_fraud_api_exception_500(self) -> None:
         """Test analyze_fraud handles 500 Internal Server Error."""
@@ -195,9 +196,10 @@ class TestFraudProtectionWrapper(unittest.TestCase):
             status=500, reason="Internal Server Error"
         )
 
-        with self.assertRaises(Exception) as ctx:
+        with self.assertRaises(ApiException) as ctx:
             self.fraud_protection.analyze_fraud({"email": "user@example.com"})
-        self.assertIn("API exception", str(ctx.exception))
+        self.assertEqual(ctx.exception.status, 500)
+        self.assertEqual(ctx.exception.reason, "Internal Server Error")
 
     def test_analyze_fraud_api_exception_402(self) -> None:
         """Test analyze_fraud handles 402 Payment Required."""
@@ -205,9 +207,10 @@ class TestFraudProtectionWrapper(unittest.TestCase):
             status=402, reason="Payment Required"
         )
 
-        with self.assertRaises(Exception) as ctx:
+        with self.assertRaises(ApiException) as ctx:
             self.fraud_protection.analyze_fraud({"email": "user@example.com"})
-        self.assertIn("API exception", str(ctx.exception))
+        self.assertEqual(ctx.exception.status, 402)
+        self.assertEqual(ctx.exception.reason, "Payment Required")
 
     def test_analyze_fraud_api_exception_429(self) -> None:
         """Test analyze_fraud handles 429 Too Many Requests."""
@@ -215,9 +218,10 @@ class TestFraudProtectionWrapper(unittest.TestCase):
             status=429, reason="Too Many Requests"
         )
 
-        with self.assertRaises(Exception) as ctx:
+        with self.assertRaises(ApiException) as ctx:
             self.fraud_protection.analyze_fraud({"email": "user@example.com"})
-        self.assertIn("API exception", str(ctx.exception))
+        self.assertEqual(ctx.exception.status, 429)
+        self.assertEqual(ctx.exception.reason, "Too Many Requests")
 
     # ========== Normalization Tests ==========
 

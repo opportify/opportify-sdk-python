@@ -97,7 +97,7 @@ class FraudProtection:
                 - opportifyToken / opportify_token (str): Token from Opportify frontend SDK.
                 - opportifyFormUUID / opportify_form_uuid (str): UUID of the form in the dashboard.
         :return: The fraud risk assessment result as a dictionary.
-        :raises Exception: If an API exception occurs.
+        :raises ApiException: If an API exception occurs.
         """
         self._refresh_api_instance()
 
@@ -107,8 +107,8 @@ class FraudProtection:
         try:
             result = self.api_instance.analyze_fraud(analyze_fraud_request)
             return result.to_dict()
-        except ApiException as e:
-            raise Exception(f"API exception: {e.reason}")
+        except ApiException:
+            raise
 
     def set_host(self, host: str) -> "FraudProtection":
         """
