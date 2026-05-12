@@ -75,7 +75,7 @@ class EmailInsights:
 
         :param params: Dictionary containing parameters for email analysis.
         :return: The analysis result as a dictionary.
-        :raises Exception: If an API exception occurs.
+        :raises ApiException: If an API exception occurs.
         """
         # Ensure latest config before API call
         self._refresh_api_instance()
@@ -86,8 +86,8 @@ class EmailInsights:
         try:
             result = self.api_instance.analyze_email(analyze_email_request)
             return result.to_dict()
-        except ApiException as e:
-            raise Exception(f"API exception: {e.reason}")
+        except ApiException:
+            raise
 
     def batch_analyze(self, params: Dict[str, Any], content_type: Optional[str] = None) -> Dict[str, Any]:
         """
@@ -97,7 +97,7 @@ class EmailInsights:
         :param content_type: Optional content type (defaults to application/json).
                            Supported: 'application/json', 'multipart/form-data', 'text/plain'
         :return: The batch job information as a dictionary (job_id, status, etc.).
-        :raises Exception: If an API exception occurs.
+        :raises ApiException: If an API exception occurs.
         """
         # Ensure latest config before API call
         self._refresh_api_instance()
@@ -153,8 +153,8 @@ class EmailInsights:
                 raise ValueError(f'Unsupported content type: {content_type}')
 
             return result.to_dict()
-        except ApiException as e:
-            raise Exception(f"API exception: {e.reason}")
+        except ApiException:
+            raise
 
     def batch_analyze_file(self, file_path: str, options: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
@@ -163,7 +163,7 @@ class EmailInsights:
         :param file_path: Path to the file containing emails (CSV or text).
         :param options: Additional options like enableAi, enableAutoCorrection, name.
         :return: The batch job information as a dictionary.
-        :raises Exception: If an API exception occurs.
+        :raises ApiException: If an API exception occurs.
         """
         options = options or {}
         params = {'file': file_path, **options}
@@ -175,7 +175,7 @@ class EmailInsights:
 
         :param job_id: The unique identifier of the batch job.
         :return: The batch job status as a dictionary.
-        :raises Exception: If an API exception occurs.
+        :raises ApiException: If an API exception occurs.
         """
         # Ensure latest config before API call
         self._refresh_api_instance()
@@ -183,8 +183,8 @@ class EmailInsights:
         try:
             result = self.api_instance.get_email_batch_status(job_id)
             return result.to_dict()
-        except ApiException as e:
-            raise Exception(f"API exception: {e.reason}")
+        except ApiException:
+            raise
 
     def create_batch_export(self, job_id: str, payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
@@ -193,7 +193,7 @@ class EmailInsights:
         :param job_id: The unique identifier of the batch job.
         :param payload: Optional export configuration (export_type, filters, columns).
         :return: The export creation response as a dictionary.
-        :raises Exception: If an API exception occurs.
+        :raises ApiException: If an API exception occurs.
         """
         self._refresh_api_instance()
         
@@ -208,8 +208,8 @@ class EmailInsights:
         try:
             result = self.api_instance.create_email_batch_export(job_id, export_request)
             return result.to_dict()
-        except ApiException as e:
-            raise Exception(f"API exception: {e.reason}")
+        except ApiException:
+            raise
 
     def get_batch_export_status(self, job_id: str, export_id: str) -> Dict[str, Any]:
         """
@@ -218,7 +218,7 @@ class EmailInsights:
         :param job_id: The unique identifier of the batch job.
         :param export_id: The unique identifier of the export.
         :return: The export status as a dictionary.
-        :raises Exception: If an API exception occurs.
+        :raises ApiException: If an API exception occurs.
         """
         self._refresh_api_instance()
         
@@ -231,8 +231,8 @@ class EmailInsights:
         try:
             result = self.api_instance.get_email_batch_export_status(job_id, export_id)
             return result.to_dict()
-        except ApiException as e:
-            raise Exception(f"API exception: {e.reason}")
+        except ApiException:
+            raise
 
     def set_host(self, host: str) -> "EmailInsights":
         """

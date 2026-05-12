@@ -290,6 +290,7 @@ try:
     result = fraud_protection.analyze_fraud(params)
 except ApiException as e:
     print(f"API Error: {e.status} - {e.reason}")
+    print(f"Response: {e.body}")
 except Exception as e:
     print(f"Error: {str(e)}")
 ```

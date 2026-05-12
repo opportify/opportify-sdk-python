@@ -138,54 +138,60 @@ class TestIpInsightsWrapper(unittest.TestCase):
         self.mock_api.analyze_ip.side_effect = ApiException(status=403, reason="Forbidden")
 
         params = {"ip": "8.8.8.8"}
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(ApiException) as context:
             self.ip_insights.analyze(params)
-        self.assertIn("API exception", str(context.exception))
+        self.assertEqual(context.exception.status, 403)
+        self.assertEqual(context.exception.reason, "Forbidden")
 
     def test_analyze_api_exception_401_unauthorized(self) -> None:
         """Test analyze handles 401 Unauthorized (invalid API key)."""
         self.mock_api.analyze_ip.side_effect = ApiException(status=401, reason="Unauthorized")
 
         params = {"ip": "8.8.8.8"}
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(ApiException) as context:
             self.ip_insights.analyze(params)
-        self.assertIn("API exception", str(context.exception))
+        self.assertEqual(context.exception.status, 401)
+        self.assertEqual(context.exception.reason, "Unauthorized")
 
     def test_analyze_api_exception_402_payment_required(self) -> None:
         """Test analyze handles 402 Payment Required (quota exceeded)."""
         self.mock_api.analyze_ip.side_effect = ApiException(status=402, reason="Payment Required")
 
         params = {"ip": "8.8.8.8"}
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(ApiException) as context:
             self.ip_insights.analyze(params)
-        self.assertIn("API exception", str(context.exception))
+        self.assertEqual(context.exception.status, 402)
+        self.assertEqual(context.exception.reason, "Payment Required")
 
     def test_analyze_api_exception_429_rate_limit(self) -> None:
         """Test analyze handles 429 Too Many Requests."""
         self.mock_api.analyze_ip.side_effect = ApiException(status=429, reason="Too Many Requests")
 
         params = {"ip": "8.8.8.8"}
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(ApiException) as context:
             self.ip_insights.analyze(params)
-        self.assertIn("API exception", str(context.exception))
+        self.assertEqual(context.exception.status, 429)
+        self.assertEqual(context.exception.reason, "Too Many Requests")
 
     def test_analyze_api_exception_400_invalid_ip(self) -> None:
         """Test analyze handles 400 Bad Request (invalid IP)."""
         self.mock_api.analyze_ip.side_effect = ApiException(status=400, reason="Bad Request")
 
         params = {"ip": "invalid-ip"}
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(ApiException) as context:
             self.ip_insights.analyze(params)
-        self.assertIn("API exception", str(context.exception))
+        self.assertEqual(context.exception.status, 400)
+        self.assertEqual(context.exception.reason, "Bad Request")
 
     def test_analyze_api_exception_500_server_error(self) -> None:
         """Test analyze handles 500 Internal Server Error."""
         self.mock_api.analyze_ip.side_effect = ApiException(status=500, reason="Internal Server Error")
 
         params = {"ip": "8.8.8.8"}
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(ApiException) as context:
             self.ip_insights.analyze(params)
-        self.assertIn("API exception", str(context.exception))
+        self.assertEqual(context.exception.status, 500)
+        self.assertEqual(context.exception.reason, "Internal Server Error")
 
     # ========== Batch Analyze Tests (JSON) ==========
 
@@ -324,9 +330,10 @@ class TestIpInsightsWrapper(unittest.TestCase):
         """Test get_batch_status handles API exceptions."""
         self.mock_api.get_ip_batch_status.side_effect = ApiException(status=404, reason="Job Not Found")
 
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(ApiException) as context:
             self.ip_insights.get_batch_status("invalid-job-id")
-        self.assertIn("API exception", str(context.exception))
+        self.assertEqual(context.exception.status, 404)
+        self.assertEqual(context.exception.reason, "Job Not Found")
 
     # ========== Batch Export Tests ==========
 
@@ -392,34 +399,38 @@ class TestIpInsightsWrapper(unittest.TestCase):
         """Test create_batch_export handles API exceptions."""
         self.mock_api.create_ip_batch_export.side_effect = ApiException(status=404, reason="Job Not Found")
 
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(ApiException) as context:
             self.ip_insights.create_batch_export("invalid-job-id", {})
-        self.assertIn("API exception", str(context.exception))
+        self.assertEqual(context.exception.status, 404)
+        self.assertEqual(context.exception.reason, "Job Not Found")
 
     def test_create_batch_export_job_not_ready(self) -> None:
         """Test create_batch_export handles job not ready error."""
         self.mock_api.create_ip_batch_export.side_effect = ApiException(status=409, reason="Conflict")
 
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(ApiException) as context:
             self.ip_insights.create_batch_export("pending-job-id", {})
-        self.assertIn("API exception", str(context.exception))
+        self.assertEqual(context.exception.status, 409)
+        self.assertEqual(context.exception.reason, "Conflict")
 
     def test_get_batch_export_status_api_exception(self) -> None:
         """Test get_batch_export_status handles API exceptions."""
         self.mock_api.get_ip_batch_export_status.side_effect = ApiException(status=404, reason="Export Not Found")
 
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(ApiException) as context:
             self.ip_insights.get_batch_export_status("job-123", "invalid-export-id")
-        self.assertIn("API exception", str(context.exception))
+        self.assertEqual(context.exception.status, 404)
+        self.assertEqual(context.exception.reason, "Export Not Found")
 
     def test_batch_analyze_api_exception(self) -> None:
         """Test batch_analyze handles API exceptions."""
         self.mock_api.batch_analyze_ips.side_effect = ApiException(status=413, reason="Payload Too Large")
 
         params = {"ips": ["8.8.8.8"]}
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(ApiException) as context:
             self.ip_insights.batch_analyze(params)
-        self.assertIn("API exception", str(context.exception))
+        self.assertEqual(context.exception.status, 413)
+        self.assertEqual(context.exception.reason, "Payload Too Large")
 
     # ========== Normalization Tests ==========
 
