@@ -8,7 +8,6 @@ from openapi_client.api.email_insights_api import EmailInsightsApi
 from openapi_client.models.analyze_email_request import AnalyzeEmailRequest
 from openapi_client.models.batch_analyze_emails_request import BatchAnalyzeEmailsRequest
 from openapi_client.models.export_request import ExportRequest
-from openapi_client.exceptions import ApiException
 
 
 class EmailInsights:
@@ -75,7 +74,7 @@ class EmailInsights:
 
         :param params: Dictionary containing parameters for email analysis.
         :return: The analysis result as a dictionary.
-        :raises ApiException: If an API exception occurs.
+        :raises ApiException: Propagates directly from the underlying API client if the request fails.
         """
         # Ensure latest config before API call
         self._refresh_api_instance()
@@ -83,11 +82,8 @@ class EmailInsights:
         params = self._normalize_request(params)
         analyze_email_request = AnalyzeEmailRequest(**params)
 
-        try:
-            result = self.api_instance.analyze_email(analyze_email_request)
-            return result.to_dict()
-        except ApiException:
-            raise
+        result = self.api_instance.analyze_email(analyze_email_request)
+        return result.to_dict()
 
     def batch_analyze(self, params: Dict[str, Any], content_type: Optional[str] = None) -> Dict[str, Any]:
         """
@@ -97,7 +93,7 @@ class EmailInsights:
         :param content_type: Optional content type (defaults to application/json).
                            Supported: 'application/json', 'multipart/form-data', 'text/plain'
         :return: The batch job information as a dictionary (job_id, status, etc.).
-        :raises ApiException: If an API exception occurs.
+        :raises ApiException: Propagates directly from the underlying API client if the request fails.
         """
         # Ensure latest config before API call
         self._refresh_api_instance()
@@ -105,56 +101,53 @@ class EmailInsights:
         # Default to application/json if not specified
         content_type = content_type or 'application/json'
 
-        try:
-            if content_type == 'application/json':
-                params = self._normalize_batch_request(params)
-                batch_analyze_emails_request = BatchAnalyzeEmailsRequest(**params)
+        if content_type == 'application/json':
+            params = self._normalize_batch_request(params)
+            batch_analyze_emails_request = BatchAnalyzeEmailsRequest(**params)
+            result = self.api_instance.batch_analyze_emails(
+                batch_analyze_emails_request,
+                _content_type=content_type
+            )
+        elif content_type == 'multipart/form-data':
+            if 'file' not in params or not os.path.exists(params['file']):
+                raise ValueError('File parameter is required and must be a valid file path')
+            
+            with open(params['file'], 'rb') as file_handle:
+                # Create multipart data
+                files = {'file': (os.path.basename(params['file']), file_handle)}
+                data = {}
+                
+                # Add optional parameters
+                enable_ai = self._resolve_boolean(params, ['enable_ai', 'enableAi'])
+                if enable_ai is not None:
+                    data['enable_ai'] = 'true' if enable_ai else 'false'
+                
+                enable_auto_correction = self._resolve_boolean(params, ['enable_auto_correction', 'enableAutoCorrection'])
+                if enable_auto_correction is not None:
+                    data['enable_auto_correction'] = 'true' if enable_auto_correction else 'false'
+                
+                # Add name parameter if provided
+                if 'name' in params:
+                    data['name'] = str(params['name'])
+                
+                # Prepare the request body as multipart
+                multipart_data = self._prepare_multipart_data(files, data)
                 result = self.api_instance.batch_analyze_emails(
-                    batch_analyze_emails_request,
+                    multipart_data,
                     _content_type=content_type
                 )
-            elif content_type == 'multipart/form-data':
-                if 'file' not in params or not os.path.exists(params['file']):
-                    raise ValueError('File parameter is required and must be a valid file path')
-                
-                with open(params['file'], 'rb') as file_handle:
-                    # Create multipart data
-                    files = {'file': (os.path.basename(params['file']), file_handle)}
-                    data = {}
-                    
-                    # Add optional parameters
-                    enable_ai = self._resolve_boolean(params, ['enable_ai', 'enableAi'])
-                    if enable_ai is not None:
-                        data['enable_ai'] = 'true' if enable_ai else 'false'
-                    
-                    enable_auto_correction = self._resolve_boolean(params, ['enable_auto_correction', 'enableAutoCorrection'])
-                    if enable_auto_correction is not None:
-                        data['enable_auto_correction'] = 'true' if enable_auto_correction else 'false'
-                    
-                    # Add name parameter if provided
-                    if 'name' in params:
-                        data['name'] = str(params['name'])
-                    
-                    # Prepare the request body as multipart
-                    multipart_data = self._prepare_multipart_data(files, data)
-                    result = self.api_instance.batch_analyze_emails(
-                        multipart_data,
-                        _content_type=content_type
-                    )
-            elif content_type == 'text/plain':
-                if 'text' not in params:
-                    raise ValueError('Text parameter is required for text/plain content type')
-                
-                result = self.api_instance.batch_analyze_emails(
-                    params['text'],
-                    _content_type=content_type
-                )
-            else:
-                raise ValueError(f'Unsupported content type: {content_type}')
+        elif content_type == 'text/plain':
+            if 'text' not in params:
+                raise ValueError('Text parameter is required for text/plain content type')
+            
+            result = self.api_instance.batch_analyze_emails(
+                params['text'],
+                _content_type=content_type
+            )
+        else:
+            raise ValueError(f'Unsupported content type: {content_type}')
 
-            return result.to_dict()
-        except ApiException:
-            raise
+        return result.to_dict()
 
     def batch_analyze_file(self, file_path: str, options: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
@@ -175,16 +168,13 @@ class EmailInsights:
 
         :param job_id: The unique identifier of the batch job.
         :return: The batch job status as a dictionary.
-        :raises ApiException: If an API exception occurs.
+        :raises ApiException: Propagates directly from the underlying API client if the request fails.
         """
         # Ensure latest config before API call
         self._refresh_api_instance()
 
-        try:
-            result = self.api_instance.get_email_batch_status(job_id)
-            return result.to_dict()
-        except ApiException:
-            raise
+        result = self.api_instance.get_email_batch_status(job_id)
+        return result.to_dict()
 
     def create_batch_export(self, job_id: str, payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
@@ -193,7 +183,7 @@ class EmailInsights:
         :param job_id: The unique identifier of the batch job.
         :param payload: Optional export configuration (export_type, filters, columns).
         :return: The export creation response as a dictionary.
-        :raises ApiException: If an API exception occurs.
+        :raises ApiException: Propagates directly from the underlying API client if the request fails.
         """
         self._refresh_api_instance()
         
@@ -205,11 +195,8 @@ class EmailInsights:
         normalized_payload = self._normalize_export_request(payload)
         export_request = ExportRequest(**normalized_payload) if normalized_payload else None
 
-        try:
-            result = self.api_instance.create_email_batch_export(job_id, export_request)
-            return result.to_dict()
-        except ApiException:
-            raise
+        result = self.api_instance.create_email_batch_export(job_id, export_request)
+        return result.to_dict()
 
     def get_batch_export_status(self, job_id: str, export_id: str) -> Dict[str, Any]:
         """
@@ -218,7 +205,7 @@ class EmailInsights:
         :param job_id: The unique identifier of the batch job.
         :param export_id: The unique identifier of the export.
         :return: The export status as a dictionary.
-        :raises ApiException: If an API exception occurs.
+        :raises ApiException: Propagates directly from the underlying API client if the request fails.
         """
         self._refresh_api_instance()
         
@@ -228,11 +215,8 @@ class EmailInsights:
         if not job_id or not export_id:
             raise ValueError('Job ID and export ID are required to fetch export status.')
 
-        try:
-            result = self.api_instance.get_email_batch_export_status(job_id, export_id)
-            return result.to_dict()
-        except ApiException:
-            raise
+        result = self.api_instance.get_email_batch_export_status(job_id, export_id)
+        return result.to_dict()
 
     def set_host(self, host: str) -> "EmailInsights":
         """

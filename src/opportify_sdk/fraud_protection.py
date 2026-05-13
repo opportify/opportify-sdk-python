@@ -4,7 +4,7 @@ from fraud_intel_client.configuration import Configuration as ApiConfiguration
 from fraud_intel_client.api_client import ApiClient
 from fraud_intel_client.api.fraud_protection_api import FraudProtectionApi
 from fraud_intel_client.models.analyze_fraud_request import AnalyzeFraudRequest
-from fraud_intel_client.exceptions import ApiException
+
 
 
 class FraudProtection:
@@ -97,18 +97,15 @@ class FraudProtection:
                 - opportifyToken / opportify_token (str): Token from Opportify frontend SDK.
                 - opportifyFormUUID / opportify_form_uuid (str): UUID of the form in the dashboard.
         :return: The fraud risk assessment result as a dictionary.
-        :raises ApiException: If an API exception occurs.
+        :raises ApiException: Propagates directly from the underlying API client if the request fails.
         """
         self._refresh_api_instance()
 
         normalized = self._normalize_request(params)
         analyze_fraud_request = AnalyzeFraudRequest(**normalized)
 
-        try:
-            result = self.api_instance.analyze_fraud(analyze_fraud_request)
-            return result.to_dict()
-        except ApiException:
-            raise
+        result = self.api_instance.analyze_fraud(analyze_fraud_request)
+        return result.to_dict()
 
     def set_host(self, host: str) -> "FraudProtection":
         """
@@ -217,16 +214,22 @@ class FraudProtection:
 
     def _get_first(self, params: Dict[str, Any], keys: List[str]) -> Any:
         """
-        Return the first truthy value found in params for any of the given keys, or None.
+        Return the first non-blank value found in params for any of the given keys, or None.
 
-        Empty strings and other falsy values are treated as absent so that a later
-        alias key (e.g. camelCase after snake_case) can still match.
+        String values are stripped before checking; blank strings and other falsy values
+        are treated as absent so that a later alias key (e.g. camelCase after snake_case)
+        can still match. Non-string values use a standard truthy check.
 
         :param params: The parameters dictionary.
         :param keys: List of keys to check in order.
-        :return: First matched truthy value, or None.
+        :return: First matched non-blank value, or None.
         """
         for key in keys:
-            if key in params and params[key]:
-                return params[key]
+            if key in params:
+                val = params[key]
+                if isinstance(val, str):
+                    if val.strip():
+                        return val
+                elif val:
+                    return val
         return None
