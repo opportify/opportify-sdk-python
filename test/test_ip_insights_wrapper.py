@@ -11,6 +11,7 @@ Tests cover all new features including:
 - Parameter normalization
 """
 
+import json
 import unittest
 from unittest.mock import Mock, MagicMock, patch, mock_open
 import os
@@ -465,6 +466,54 @@ class TestIpInsightsWrapper(unittest.TestCase):
         self.assertEqual(normalized["ip"], "8.8.8.8")
         # Optional params should not be in normalized dict if not provided
         self.assertNotIn("enable_ai", normalized)
+
+    def test_normalize_request_accepts_every_enable_ai_spelling(self) -> None:
+        """Every spelling of the AI option reaches the wire as `enableAI`."""
+        from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
+
+        for key in ("enableAI", "enableAi", "enable_ai"):
+            for value in (True, False):
+                with self.subTest(key=key, value=value):
+                    normalized = self.ip_insights._normalize_request({"ip": "192.0.2.1", key: value})
+
+                    self.assertEqual(normalized, {"ip": "192.0.2.1", "enable_ai": value})
+                    self.assertEqual(
+                        json.loads(AnalyzeIpRequest(**normalized).to_json())["enableAI"], value
+                    )
+
+    def test_normalize_request_without_enable_ai_omits_wire_field(self) -> None:
+        """No AI option means no `enableAI` on the wire, so the API default applies."""
+        from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
+
+        normalized = self.ip_insights._normalize_request({"ip": "192.0.2.1"})
+
+        self.assertNotIn("enableAI", json.loads(AnalyzeIpRequest(**normalized).to_json()))
+
+    def test_normalize_batch_request_accepts_every_enable_ai_spelling(self) -> None:
+        """Batch JSON accepts every spelling of the AI option."""
+        for key in ("enableAI", "enableAi", "enable_ai"):
+            for value in (True, False):
+                with self.subTest(key=key, value=value):
+                    normalized = self.ip_insights._normalize_batch_request(
+                        {"ips": ["192.0.2.1"], key: value}
+                    )
+
+                    self.assertEqual(normalized, {"ips": ["192.0.2.1"], "enable_ai": value})
+
+    @patch('builtins.open', new_callable=mock_open, read_data=b'192.0.2.1')
+    @patch('os.path.exists')
+    def test_batch_analyze_multipart_accepts_documented_enable_ai_key(self, mock_exists, mock_file) -> None:
+        """Multipart batch forwards `enableAI` as the `enable_ai` form field."""
+        mock_exists.return_value = True
+        mock_response = Mock()
+        mock_response.to_dict.return_value = {"job_id": "job-1"}
+        self.mock_api.batch_analyze_ips.return_value = mock_response
+
+        with patch.object(self.ip_insights, '_prepare_multipart_data', wraps=self.ip_insights._prepare_multipart_data) as prepare:
+            self.ip_insights.batch_analyze({"file": "/path/to/ips.csv", "enableAI": False}, "multipart/form-data")
+
+        _files, data = prepare.call_args[0]
+        self.assertEqual(data["enable_ai"], "false")
 
     def test_normalize_batch_request_with_name(self) -> None:
         """Test batch request normalization includes name parameter."""
