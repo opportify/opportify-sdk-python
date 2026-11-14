@@ -9,6 +9,9 @@ from openapi_client.models.analyze_ip_request import AnalyzeIpRequest
 from openapi_client.models.batch_analyze_ips_request import BatchAnalyzeIpsRequest
 from openapi_client.models.export_request import ExportRequest
 
+# Accepted spellings of the AI option. `enableAI` is the wire name used by the API and docs.
+ENABLE_AI_KEYS = ['enable_ai', 'enableAi', 'enableAI']
+
 
 class IpInsights:
     def __init__(self, api_key: str, api_instance: Optional[IPInsightsApi] = None):
@@ -117,7 +120,7 @@ class IpInsights:
                 data = {}
                 
                 # Add optional parameters
-                enable_ai = self._resolve_boolean(params, ['enable_ai', 'enableAi'])
+                enable_ai = self._resolve_boolean(params, ENABLE_AI_KEYS)
                 if enable_ai is not None:
                     data['enable_ai'] = 'true' if enable_ai else 'false'
                 
@@ -276,7 +279,7 @@ class IpInsights:
         normalized["ip"] = str(params["ip"])
         
         # Only include optional parameters if explicitly provided by user
-        enable_ai = self._resolve_boolean(params, ['enable_ai', 'enableAi'])
+        enable_ai = self._resolve_boolean(params, ENABLE_AI_KEYS)
         if enable_ai is not None:
             normalized["enable_ai"] = enable_ai
 
@@ -299,7 +302,7 @@ class IpInsights:
         normalized = {}
         normalized["ips"] = [str(ip) for ip in ips]
 
-        enable_ai = self._resolve_boolean(params, ['enable_ai', 'enableAi'])
+        enable_ai = self._resolve_boolean(params, ENABLE_AI_KEYS)
         if enable_ai is not None:
             normalized['enable_ai'] = enable_ai
 
